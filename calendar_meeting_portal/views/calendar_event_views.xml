@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- 
+        Extend calendar.event form view to add esito_evento_id field
+        Note: This view depends on the AppuntamentiCORE module which adds the appointment_status field
+    -->
+    <record id="view_calendar_event_form_esito" model="ir.ui.view">
+        <field name="name">calendar.event.form.esito</field>
+        <field name="model">calendar.event</field>
+        <field name="inherit_id" ref="calendar.view_calendar_event_form"/>
+        <field name="arch" type="xml">
+            <!-- Add esito_evento_id field after appointment_status (from AppuntamentiCORE) -->
+            <xpath expr="//field[@name='appointment_status']" position="after">
+                <field name="esito_evento_id" 
+                       string="Esito Evento"
+                       domain="[('active', '=', True)]"
+                       options="{'no_create': True, 'no_open': True}"
+                       placeholder="Seleziona l'esito dell'evento..."/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

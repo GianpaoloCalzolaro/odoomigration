@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="contact_detail_view" name="Contact Detail View">
+        <t t-call="portal.portal_layout">
+            <div id="card_body">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <!-- Header con avatar e nome -->
+                                <div class="d-flex align-items-center mb-3">
+                                    <i class="fa fa-user-circle fa-3x text-primary me-3"></i>
+                                    <div class="flex-grow-1">
+                                        <h4 class="mb-1">
+                                            <strong><span t-field="contact.name"/></strong>
+                                        </h4>
+                                        <div class="text-muted small">
+                                            <span t-if="contact.email">
+                                                <i class="fa fa-envelope me-1"></i>
+                                                <span t-field="contact.email"/>
+                                            </span>
+                                            <span t-if="contact.phone" class="ms-3">
+                                                <i class="fa fa-phone me-1"></i>
+                                                <span t-field="contact.phone"/>
+                                            </span>
+                                        </div>
+                                        <!-- Mostra il ruolo dell'utente corrente -->
+                                        <div class="mt-2">
+                                            <t t-if="contact.tutor.user_id.id == request.env.user.id and contact.professional.user_id.id == request.env.user.id">
+                                                <span class="badge bg-success">Tutor e Professionista</span>
+                                            </t>
+                                            <t t-elif="contact.tutor.user_id.id == request.env.user.id">
+                                                <span class="badge bg-primary">Tutor</span>
+                                            </t>
+                                            <t t-elif="contact.professional.user_id.id == request.env.user.id">
+                                                <span class="badge bg-info">Professionista</span>
+                                            </t>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Pulsanti d'azione -->
+                                <div class="d-flex flex-wrap gap-2">
+                                    <a t-attf-href="/my/assigned_contacts/#{contact.id}/edit" 
+                                    class="btn btn-primary btn-sm">
+                                        <i class="fa fa-pencil me-1"/> Modifica Contatto
+                                    </a>
+                                    <a t-attf-href="/my/patient/#{contact.id}/clinical-sheet" 
+                                    class="btn btn-primary btn-sm">
+                                        <i class="fa fa-file-text-o me-1"/>
+                                        <t t-if="contact.clinical_sheet_id">Apri Cartella Clinica</t>
+                                        <t t-else="">Crea Cartella Clinica</t>
+                                    </a>
+                                    <a t-attf-href="/my/patient/#{contact.id}/observations" 
+                                    class="btn btn-primary btn-sm">
+                                        <i class="fa fa-comment-o me-1"/> Osservazioni
+                                    </a>
+                                    <a t-attf-href="#surveys-section" 
+                                    class="btn btn-primary btn-sm">
+                                        <i class="fa fa-bar-chart me-1"/> Survey
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                
+                <!-- Contact Information -->
+                <h2 style="border-top: 1px solid #ccc; border-bottom: 1px solid #ccc; padding: 10px 0; margin-bottom: 20px;">Triage</h2>
+                <div>
+                    <p><strong>Contact Information</strong></p>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <label class="col-4"><strong>Name:</strong></label>
+                                <span t-field="contact.name"/>
+                            </div>
+                            <div class="row">
+                                <label class="col-4"><strong>Email:</strong></label>
+                                <span t-field="contact.email"/>
+                            </div>
+                            <div class="row">
+                                <label class="col-4"><strong>Phone:</strong></label>
+                                <span t-field="contact.phone"/>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <label class="col-4"><strong>Company:</strong></label>
+                                <span t-field="contact.parent_id.name"/>
+                            </div>
+                            <div class="row">
+                                <label class="col-4"><strong>Position:</strong></label>
+                                <span t-field="contact.function"/>
+                            </div>
+                            <div class="row">
+                                <label class="col-4"><strong>Date Taken Charge:</strong></label>
+                                <span t-field="contact.date_taken_charge"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <hr/>
+
+                <!-- Informazioni Anagrafiche -->
+                <div>
+                    <p><strong>Informazioni Anagrafiche</strong></p>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="row mb-2">
+                                <label class="col-4"><strong>Birth Date:</strong></label>
+                                <div class="col-8"><span t-field="contact.birth_date"/></div>
+                            </div>
+                            <div class="row mb-2">
+                                <label class="col-4"><strong>Age:</strong></label>
+                                <div class="col-8"><span t-field="contact.age"/></div>
+                            </div>
+                            <div class="row mb-2">
+                                <label class="col-4"><strong>Biological Sex:</strong></label>
+                                <div class="col-8"><span t-field="contact.biological_sex"/></div>
+                            </div>
+                            <div class="row mb-2">
+                                <label class="col-4"><strong>Gender Identity:</strong></label>
+                                <div class="col-8"><span t-field="contact.gender_identity"/></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="row mb-2">
+                                <label class="col-4"><strong>Birthplace:</strong></label>
+                                <div class="col-8"><span t-field="contact.birthplace"/></div>
+                            </div>
+                            <div class="row mb-2">
+                                <label class="col-4"><strong>Nationality:</strong></label>
+                                <div class="col-8"><span t-field="contact.nationality"/></div>
+                            </div>
+                            <div class="row mb-2">
+                                <label class="col-4"><strong>Marital Status:</strong></label>
+                                <div class="col-8"><span t-field="contact.marital_status"/></div>
+                            </div>
+                            <div class="row mb-2">
+                                <label class="col-4"><strong>Profession:</strong></label>
+                                <div class="col-8"><span t-field="contact.profession"/></div>
+                            </div>
+                            <div class="row mb-2">
+                                <label class="col-4"><strong>Education Level:</strong></label>
+                                <div class="col-8"><span t-field="contact.education_level"/></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr/>
+                
+                <!-- Team Information -->
+                <div>
+                    <p><strong>Team Information</strong></p>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="row mb-2">
+                                <label class="col-4"><strong>Tutor:</strong></label>
+                                <div class="col-8"><span t-field="contact.tutor.name"/></div>
+                            </div>
+                            <div class="row mb-2">
+                                <label class="col-4"><strong>Tutor Assignment Date:</strong></label>
+                                <div class="col-8"><span t-field="contact.date_tutor_assignment"/></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="row mb-2">
+                                <label class="col-4"><strong>Professional Type:</strong></label>
+                                <div class="col-8"><span t-field="contact.type_professional.name"/></div>
+                            </div>
+                            <div class="row mb-2">
+                                <label class="col-4"><strong>Professional:</strong></label>
+                                <div class="col-8"><span t-field="contact.professional.name"/></div>
+                            </div>
+                            <div class="row mb-2">
+                                <label class="col-4"><strong>Professional Assignment Date:</strong></label>
+                                <div class="col-8"><span t-field="contact.date_professional_assignment"/></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Completed Surveys Card -->
+                <div class="card border-primary shadow-lg mt-4" id="surveys-section">
+                    <div class="card-body">
+                        <h5 class="card-title"><strong>Survey Completati</strong></h5>
+                        <t t-if="surveys">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Titolo</th>
+                                        <th>Stato</th>
+                                        <th>Azioni</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="surveys" t-as="s">
+                                        <tr>
+                                            <td><t t-esc="s.survey_id.title"/></td>
+                                            <td><t t-esc="s.state"/></td>
+                                            <td>
+                                                <a t-attf-href="/my/assigned_contacts/#{contact.id}/survey/#{s.id}/responses" class="btn btn-sm btn-outline-secondary">
+                                                    Visualizza Risposte
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </t>
+                        <t t-if="not surveys">
+                            <p class="text-muted mb-0">Nessun survey disponibile.</p>
+                        </t>
+                    </div>
+                </div>
+
+                <hr/>
+                
+            </div>
+        </t>
+    </template>
+
+</odoo>

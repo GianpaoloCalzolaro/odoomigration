@@ -1,0 +1,470 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* hr_applicant_add
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-03-22 10:00+0000\n"
+"PO-Revision-Date: 2025-03-22 10:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields,field_description:hr_applicant_add.field_hr_applicant__birth_date
+msgid "Birth Date"
+msgstr "Data di Nascita"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields,field_description:hr_applicant_add.field_hr_applicant__birth_place
+msgid "Birth Place"
+msgstr "Luogo di Nascita"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields.selection,name:hr_applicant_add.selection__hr_applicant__id_document_type__driver_license
+msgid "Driver's License"
+msgstr "Patente di Guida"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields,field_description:hr_applicant_add.field_hr_applicant__fiscal_code
+msgid "Fiscal Code"
+msgstr "Codice Fiscale"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields.selection,name:hr_applicant_add.selection__hr_applicant__gender__female
+msgid "Female"
+msgstr "Femmina"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields,field_description:hr_applicant_add.field_hr_applicant__gender
+msgid "Gender"
+msgstr "Genere"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields.selection,name:hr_applicant_add.selection__hr_applicant__id_document_type__id_card
+msgid "ID Card"
+msgstr "Carta d'Identità"
+
+#. module: hr_applicant_add
+#: model_terms:ir.ui.view,arch_db:hr_applicant_add.hr_applicant_view_form_inherit
+msgid "ID Document"
+msgstr "Documento d'Identità"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields,field_description:hr_applicant_add.field_hr_applicant__id_document_expiry
+msgid "ID Document Expiry Date"
+msgstr "Data di Scadenza del Documento"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields,field_description:hr_applicant_add.field_hr_applicant__id_document_number
+msgid "ID Document Number"
+msgstr "Numero Documento"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields,field_description:hr_applicant_add.field_hr_applicant__id_document_type
+msgid "ID Document Type"
+msgstr "Tipo di Documento"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields.selection,name:hr_applicant_add.selection__hr_applicant__gender__male
+msgid "Male"
+msgstr "Maschio"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields,field_description:hr_applicant_add.field_hr_applicant__nationality
+msgid "Nationality"
+msgstr "Nazionalità"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields.selection,name:hr_applicant_add.selection__hr_applicant__gender__other
+msgid "Other"
+msgstr "Altro"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields.selection,name:hr_applicant_add.selection__hr_applicant__id_document_type__passport
+msgid "Passport"
+msgstr "Passaporto"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields,field_description:hr_applicant_add.field_hr_applicant__personal_information
+#: model_terms:ir.ui.view,arch_db:hr_applicant_add.hr_applicant_view_form_inherit
+msgid "Personal Information"
+msgstr "Informazioni Personali"
+
+#. module: hr_applicant_add
+#: model_terms:ir.ui.view,arch_db:hr_applicant_add.hr_applicant_view_form_inherit
+msgid "Personal Details"
+msgstr "Dati Personali"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields,help:hr_applicant_add.field_hr_applicant__birth_date
+msgid "Date of birth"
+msgstr "Data di nascita"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields,help:hr_applicant_add.field_hr_applicant__birth_place
+msgid "Place of birth"
+msgstr "Luogo di nascita"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields,help:hr_applicant_add.field_hr_applicant__nationality
+msgid "Country of nationality"
+msgstr "Paese di nazionalità"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields,help:hr_applicant_add.field_hr_applicant__fiscal_code
+msgid "Tax identification number"
+msgstr "Codice fiscale"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields,field_description:hr_applicant_add.field_hr_applicant__availability_start_date
+msgid "Availability Start Date"
+msgstr "Data Inizio Disponibilità"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields,field_description:hr_applicant_add.field_hr_applicant__availability
+#: model_terms:ir.ui.view,arch_db:hr_applicant_add.hr_applicant_view_form_inherit
+msgid "Availability"
+msgstr "Disponibilità"
+
+#. module: hr_applicant_add
+#: model_terms:ir.ui.view,arch_db:hr_applicant_add.hr_applicant_view_form_inherit
+msgid "Availability Details"
+msgstr "Dettagli Disponibilità"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields.selection,name:hr_applicant_add.selection__hr_applicant__education_level__bachelor
+msgid "Bachelor's Degree"
+msgstr "Laurea Triennale"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields.selection,name:hr_applicant_add.selection__hr_applicant__digital_skills__basic
+msgid "Basic"
+msgstr "Base"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields.selection,name:hr_applicant_add.selection__hr_applicant__theoretical_orientation__behavioral
+msgid "Behavioral"
+msgstr "Comportamentale"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields,field_description:hr_applicant_add.field_hr_applicant__certification_number
+msgid "Certification Number"
+msgstr "Numero di Certificazione"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields.selection,name:hr_applicant_add.selection__hr_applicant__education_level__certification
+msgid "Certification"
+msgstr "Certificazione"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields.selection,name:hr_applicant_add.selection__hr_applicant__specialization__clinical
+msgid "Clinical"
+msgstr "Clinica"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields.selection,name:hr_applicant_add.selection__hr_applicant__theoretical_orientation__cognitive_behavioral
+msgid "Cognitive Behavioral"
+msgstr "Cognitivo Comportamentale"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields.selection,name:hr_applicant_add.selection__hr_applicant__specialization__cognitive
+msgid "Cognitive"
+msgstr "Cognitiva"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields.selection,name:hr_applicant_add.selection__hr_applicant__professional_type__coach
+msgid "Coach"
+msgstr "Coach"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields.selection,name:hr_applicant_add.selection__hr_applicant__professional_type__counselor
+msgid "Counselor"
+msgstr "Counselor"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields.selection,name:hr_applicant_add.selection__hr_applicant__specialization__counseling
+msgid "Counseling"
+msgstr "Counseling"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields.selection,name:hr_applicant_add.selection__hr_applicant__theoretical_orientation__constructivist
+msgid "Constructivist"
+msgstr "Costruttivista"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields,field_description:hr_applicant_add.field_hr_applicant__registration_date
+msgid "Registration Date"
+msgstr "Data di Registrazione"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields.selection,name:hr_applicant_add.selection__hr_applicant__specialization__developmental
+msgid "Developmental"
+msgstr "Sviluppo"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields,field_description:hr_applicant_add.field_hr_applicant__digital_skills
+msgid "Digital Skills"
+msgstr "Competenze Digitali"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields.selection,name:hr_applicant_add.selection__hr_applicant__specialization__educational
+msgid "Educational"
+msgstr "Educativo"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields,field_description:hr_applicant_add.field_hr_applicant__education_level
+msgid "Education Level"
+msgstr "Livello di Istruzione"
+
+#. module: hr_applicant_add
+#: model_terms:ir.ui.view,arch_db:hr_applicant_add.hr_applicant_view_form_inherit
+msgid "Education"
+msgstr "Istruzione"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields.selection,name:hr_applicant_add.selection__hr_applicant__digital_skills__expert
+msgid "Expert"
+msgstr "Esperto"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields,field_description:hr_applicant_add.field_hr_applicant__experience
+#: model_terms:ir.ui.view,arch_db:hr_applicant_add.hr_applicant_view_form_inherit
+msgid "Experience"
+msgstr "Esperienza"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields,field_description:hr_applicant_add.field_hr_applicant__graduation_year
+msgid "Graduation Year"
+msgstr "Anno di Laurea"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields.selection,name:hr_applicant_add.selection__hr_applicant__theoretical_orientation__humanistic
+msgid "Humanistic"
+msgstr "Umanistica"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields,field_description:hr_applicant_add.field_hr_applicant__insurance_company
+msgid "Insurance Company"
+msgstr "Compagnia Assicurativa"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields,field_description:hr_applicant_add.field_hr_applicant__insurance_policy_number
+msgid "Insurance Policy Number"
+msgstr "Numero Polizza Assicurativa"
+
+#. module: hr_applicant_add
+#: model_terms:ir.ui.view,arch_db:hr_applicant_add.hr_applicant_view_form_inherit
+msgid "Insurance Information"
+msgstr "Informazioni Assicurative"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields.selection,name:hr_applicant_add.selection__hr_applicant__theoretical_orientation__integrative
+msgid "Integrative"
+msgstr "Integrativa"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields.selection,name:hr_applicant_add.selection__hr_applicant__digital_skills__intermediate
+msgid "Intermediate"
+msgstr "Intermedio"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields,field_description:hr_applicant_add.field_hr_applicant__languages
+msgid "Languages"
+msgstr "Lingue"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields.selection,name:hr_applicant_add.selection__hr_applicant__education_level__master
+msgid "Master's Degree"
+msgstr "Laurea Magistrale"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields.selection,name:hr_applicant_add.selection__hr_applicant__specialization__organizational
+msgid "Organizational"
+msgstr "Organizzativo"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields.selection,name:hr_applicant_add.selection__hr_applicant__specialization__other
+msgid "Other"
+msgstr "Altro"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields.selection,name:hr_applicant_add.selection__hr_applicant__theoretical_orientation__other
+msgid "Other"
+msgstr "Altro"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields.selection,name:hr_applicant_add.selection__hr_applicant__professional_type__other
+msgid "Other"
+msgstr "Altro"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields.selection,name:hr_applicant_add.selection__hr_applicant__education_level__other
+msgid "Other"
+msgstr "Altro"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields.selection,name:hr_applicant_add.selection__hr_applicant__education_level__phd
+msgid "Ph.D."
+msgstr "Dottorato"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields,field_description:hr_applicant_add.field_hr_applicant__preferred_working_days
+msgid "Preferred Working Days"
+msgstr "Giorni di Lavoro Preferiti"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields,field_description:hr_applicant_add.field_hr_applicant__professional_insurance
+msgid "Professional Insurance"
+msgstr "Assicurazione Professionale"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields,field_description:hr_applicant_add.field_hr_applicant__professional_information
+#: model_terms:ir.ui.view,arch_db:hr_applicant_add.hr_applicant_view_form_inherit
+msgid "Professional Information"
+msgstr "Informazioni Professionali"
+
+#. module: hr_applicant_add
+#: model_terms:ir.ui.view,arch_db:hr_applicant_add.hr_applicant_view_form_inherit
+msgid "Professional Details"
+msgstr "Dettagli Professionali"
+
+#. module: hr_applicant_add
+#: model_terms:ir.ui.view,arch_db:hr_applicant_add.hr_applicant_view_form_inherit
+msgid "Professional Experience"
+msgstr "Esperienza Professionale"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields,field_description:hr_applicant_add.field_hr_applicant__professional_id
+msgid "Professional ID"
+msgstr "ID Professionale"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields,field_description:hr_applicant_add.field_hr_applicant__professional_type
+msgid "Professional Type"
+msgstr "Tipo di Professionista"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields.selection,name:hr_applicant_add.selection__hr_applicant__professional_type__psychologist
+msgid "Psychologist"
+msgstr "Psicologo"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields.selection,name:hr_applicant_add.selection__hr_applicant__theoretical_orientation__psychodynamic
+msgid "Psychodynamic"
+msgstr "Psicodinamica"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields,field_description:hr_applicant_add.field_hr_applicant__remote_session_experience
+msgid "Remote Session Experience"
+msgstr "Esperienza in Sessioni Remote"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields,field_description:hr_applicant_add.field_hr_applicant__specialization
+msgid "Specialization"
+msgstr "Specializzazione"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields.selection,name:hr_applicant_add.selection__hr_applicant__education_level__specialization
+msgid "Specialization"
+msgstr "Specializzazione"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields.selection,name:hr_applicant_add.selection__hr_applicant__specialization__social
+msgid "Social"
+msgstr "Sociale"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields.selection,name:hr_applicant_add.selection__hr_applicant__professional_type__social_worker
+msgid "Social Worker"
+msgstr "Assistente Sociale"
+
+#. module: hr_applicant_add
+#: model_terms:ir.ui.view,arch_db:hr_applicant_add.hr_applicant_view_form_inherit
+msgid "Skills"
+msgstr "Competenze"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields.selection,name:hr_applicant_add.selection__hr_applicant__theoretical_orientation__systemic
+msgid "Systemic"
+msgstr "Sistemica"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields,field_description:hr_applicant_add.field_hr_applicant__theoretical_orientation
+msgid "Theoretical Orientation"
+msgstr "Orientamento Teorico"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields.selection,name:hr_applicant_add.selection__hr_applicant__professional_type__therapist
+msgid "Therapist"
+msgstr "Terapeuta"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields,field_description:hr_applicant_add.field_hr_applicant__university
+msgid "University"
+msgstr "Università"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields,field_description:hr_applicant_add.field_hr_applicant__weekly_availability_hours
+msgid "Weekly Availability Hours"
+msgstr "Ore di Disponibilità Settimanale"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields,field_description:hr_applicant_add.field_hr_applicant__years_experience
+msgid "Years of Experience"
+msgstr "Anni di Esperienza"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields,help:hr_applicant_add.field_hr_applicant__availability_start_date
+msgid "Date from which the professional is available"
+msgstr "Data a partire dalla quale il professionista è disponibile"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields,help:hr_applicant_add.field_hr_applicant__graduation_year
+msgid "Year of graduation"
+msgstr "Anno di laurea"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields,help:hr_applicant_add.field_hr_applicant__education_level
+msgid "Highest level of education achieved"
+msgstr "Livello di istruzione più alto raggiunto"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields,help:hr_applicant_add.field_hr_applicant__professional_insurance
+msgid "Has professional insurance"
+msgstr "Possiede un'assicurazione professionale"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields,help:hr_applicant_add.field_hr_applicant__insurance_policy_number
+msgid "Policy number of professional insurance"
+msgstr "Numero della polizza assicurativa professionale"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields,help:hr_applicant_add.field_hr_applicant__languages
+msgid "Languages spoken"
+msgstr "Lingue parlate"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields,help:hr_applicant_add.field_hr_applicant__preferred_working_days
+msgid "Preferred days of the week to work"
+msgstr "Giorni della settimana preferiti per lavorare"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields,help:hr_applicant_add.field_hr_applicant__digital_skills
+msgid "Level of digital proficiency"
+msgstr "Livello di competenza digitale"
+
+#. module: hr_applicant_add
+#: model:ir.model.fields,help:hr_applicant_add.field_hr_applicant__remote_session_experience
+msgid "Has experience with remote sessions"
+msgstr "Ha esperienza con sessioni remote"
+
+#. module: hr_applicant_add
+#: model:ir.model,name:hr_applicant_add.model_hr_applicant
+msgid "Applicant"
+msgstr "Candidato"

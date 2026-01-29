@@ -1,0 +1,832 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* contacts_patient
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-05-22 19:06+0000\n"
+"PO-Revision-Date: 2025-05-24 09:54+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.6\n"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_edit_form
+msgid "<i class=\"fa fa-arrow-left\"/> Cancel"
+msgstr "<i class=\"fa fa-arrow-left\"/> Annullamento"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.portal_side_content_patient_extend
+msgid "<i class=\"fa fa-calendar\"/> Prenota"
+msgstr "<i class=\"fa fa-calendar\"/> Prenota"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.portal_my_contacts
+msgid "<i class=\"fa fa-edit\"/> Edit"
+msgstr "<i class=\"fa fa-edit\"/> Modifica"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_detail_view
+msgid "<i class=\"fa fa-edit\"/> Edit Contact"
+msgstr "<i class=\"fa fa-edit\"/> Modifica del contatto"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.portal_my_contacts
+msgid "<i class=\"fa fa-eye\"/> View"
+msgstr "<i class=\"fa fa-eye\"/> Vista"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_edit_form
+msgid "<i class=\"fa fa-save\"/> Save Changes"
+msgstr "<i class=\"fa fa-save\"/> Salva le modifiche"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_edit_form
+msgid "<option value=\"\">Select Professional Type</option>"
+msgstr "<option value=\"\">Selezionare il tipo di professionista</option>"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_edit_form
+msgid "<option value=\"\">Select Professional</option>"
+msgstr "<option value=\"\">Seleziona il professionista</option>"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_edit_form
+msgid "<option value=\"\">Select Risk Level</option>"
+msgstr "<option value=\"\">Selezionare il livello di rischio</option>"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.portal_my_equipe
+msgid "<span class=\"text-muted\">Non sono presenti professionisti</span>"
+msgstr "<span class=\"text-muted\">Non sono presenti professionisti</span>"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.portal_my_equipe
+msgid "<strong>Certificato:</strong>"
+msgstr "<strong>Certificato:</strong>"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_detail_view
+msgid "<strong>Clinical Information</strong>"
+msgstr "<strong>Informazioni cliniche</strong>"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_detail_view
+msgid "<strong>Comorbidity:</strong>"
+msgstr "<strong>Comorbilità:</strong>"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_detail_view
+msgid "<strong>Company:</strong>"
+msgstr "<strong>Azienda:</strong>"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_detail_view
+msgid "<strong>Consultation Reason:</strong>"
+msgstr "<strong>Motivo della consultazione:</strong>"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_detail_view
+msgid "<strong>Contact Information</strong>"
+msgstr "<strong>Informazioni di contatto</strong>"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_detail_view
+msgid "<strong>Current Issues:</strong>"
+msgstr "<strong>Problemi attuali:</strong>"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_detail_view
+msgid "<strong>Date Taken Charge:</strong>"
+msgstr "<strong>Data di assunzione dell'incarico:</strong>"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_detail_view
+msgid "<strong>Diagnosis Code:</strong>"
+msgstr "<strong>Codice di diagnosi:</strong>"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_detail_view
+msgid "<strong>Diagnosis Information</strong>"
+msgstr "<strong>Informazioni sulla diagnosi</strong>"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_detail_view
+msgid "<strong>Diagnostic Criteria:</strong>"
+msgstr "<strong>Criteri diagnostici:</strong>"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_detail_view
+msgid "<strong>Differential Diagnosis:</strong>"
+msgstr "<strong>Diagnosi differenziale:</strong>"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_detail_view
+msgid "<strong>Email:</strong>"
+msgstr "<strong>E-mail:</strong>"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_detail_view
+msgid "<strong>Family Context:</strong>"
+msgstr "<strong>Contesto familiare:</strong>"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.portal_my_equipe
+msgid "<strong>ID Professionale:</strong>"
+msgstr "<strong>ID Professionale:</strong>"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_detail_view
+msgid "<strong>Name:</strong>"
+msgstr "<strong>Nome:</strong>"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_detail_view
+msgid "<strong>Phone:</strong>"
+msgstr "<strong>Telefono:</strong>"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_detail_view
+msgid "<strong>Position:</strong>"
+msgstr "<strong>Posizione:</strong>"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_detail_view
+msgid "<strong>Previous Treatments:</strong>"
+msgstr "<strong>Trattamenti precedenti:</strong>"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_detail_view
+msgid "<strong>Primary Diagnosis:</strong>"
+msgstr "<strong>Diagnosi primaria:</strong>"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_detail_view
+msgid "<strong>Problem Description:</strong>"
+msgstr "<strong>Descrizione del problema:</strong>"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_detail_view
+msgid "<strong>Professional Assignment Date:</strong>"
+msgstr "<strong>Data dell'incarico professionale:</strong>"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_detail_view
+msgid "<strong>Professional Type:</strong>"
+msgstr "<strong>Tipo professionale:</strong>"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_detail_view
+msgid "<strong>Professional:</strong>"
+msgstr "<strong>Professionale:</strong>"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.portal_side_content_patient_extend
+msgid "<strong>Professionista:</strong>"
+msgstr "<strong>Professionista:</strong>"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_detail_view
+msgid "<strong>Referrals</strong>"
+msgstr "<strong>Referral</strong>"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_detail_view
+msgid "<strong>Risk Assessment:</strong>"
+msgstr "<strong>Valutazione del rischio:</strong>"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.portal_my_equipe
+msgid "<strong>Ruolo:</strong>"
+msgstr "<strong>Ruolo:</strong>"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_detail_view
+msgid "<strong>Secondary Diagnosis:</strong>"
+msgstr "<strong>Diagnosi secondaria:</strong>"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_detail_view
+msgid "<strong>Social Context:</strong>"
+msgstr "<strong>Contesto sociale:</strong>"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_detail_view
+msgid "<strong>Symptoms Duration:</strong>"
+msgstr "<strong>Durata dei sintomi:</strong>"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_detail_view
+msgid "<strong>Symptoms Onset:</strong>"
+msgstr "<strong>Insorgenza dei sintomi:</strong>"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_detail_view
+msgid "<strong>Team Information</strong>"
+msgstr "<strong>Informazioni sulla squadra</strong>"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_detail_view
+msgid "<strong>Treatment Goals:</strong>"
+msgstr "<strong>Obiettivi del trattamento:</strong>"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_detail_view
+msgid "<strong>Tutor Assignment Date:</strong>"
+msgstr "<strong>Data di assegnazione del tutor:</strong>"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_detail_view
+#: model_terms:ir.ui.view,arch_db:contacts_patient.portal_side_content_patient_extend
+msgid "<strong>Tutor:</strong>"
+msgstr "<strong>Tutor:</strong>"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_detail_view
+msgid "<strong>Work Context:</strong>"
+msgstr "<strong>Contesto lavorativo:</strong>"
+
+#. module: contacts_patient
+#: model:ir.model.fields.selection,name:contacts_patient.selection__res_partner__risk_assessment__high
+msgid "Alto"
+msgstr "Alto"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.portal_my_contacts
+#: model_terms:ir.ui.view,arch_db:contacts_patient.portal_my_home_menu_contacts
+msgid "Assigned Contacts"
+msgstr "Contatti assegnati"
+
+#. module: contacts_patient
+#: model:ir.model.fields.selection,name:contacts_patient.selection__res_partner__risk_assessment__low
+msgid "Basso"
+msgstr "Basso"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.view_partner_form_patient_inherit
+msgid "Cartella clinica"
+msgstr "Cartella clinica"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_edit_form
+msgid "Clinical Information"
+msgstr "Informazioni cliniche"
+
+#. module: contacts_patient
+#: model:ir.model.fields,field_description:contacts_patient.field_res_partner__diagnosis_code
+#: model:ir.model.fields,field_description:contacts_patient.field_res_users__diagnosis_code
+msgid "Codice diagnosi (es. da DSM-5 o ICD-10)"
+msgstr "Codice diagnosi (es. da DSM-5 o ICD-10)"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_edit_form
+msgid "Comorbidity"
+msgstr "Comorbilità"
+
+#. module: contacts_patient
+#: model:ir.model.fields,field_description:contacts_patient.field_res_partner__comorbidity
+#: model:ir.model.fields,field_description:contacts_patient.field_res_users__comorbidity
+msgid "Comorbilità e sintomi secondari"
+msgstr "Comorbilità e sintomi secondari"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.portal_my_contacts
+msgid "Company"
+msgstr "Azienda"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_edit_form
+msgid "Consultation Reason"
+msgstr "Motivo della consultazione"
+
+#. module: contacts_patient
+#: model:ir.model,name:contacts_patient.model_res_partner
+msgid "Contact"
+msgstr "Cerca i trasferimenti per nome, contatto, documento di origine."
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.view_partner_form_patient_inherit
+msgid "Contesto"
+msgstr "Contesto"
+
+#. module: contacts_patient
+#: model:ir.model.fields,field_description:contacts_patient.field_res_partner__family_context
+#: model:ir.model.fields,field_description:contacts_patient.field_res_users__family_context
+msgid "Contesto familiare rilevante"
+msgstr "Contesto familiare rilevante"
+
+#. module: contacts_patient
+#: model:ir.model.fields,field_description:contacts_patient.field_res_partner__work_context
+#: model:ir.model.fields,field_description:contacts_patient.field_res_users__work_context
+msgid "Contesto lavorativo o scolastico"
+msgstr "Contesto lavorativo o scolastico"
+
+#. module: contacts_patient
+#: model:ir.model.fields,field_description:contacts_patient.field_res_partner__social_context
+#: model:ir.model.fields,field_description:contacts_patient.field_res_users__social_context
+msgid "Contesto sociale e relazionale"
+msgstr "Contesto sociale e relazionale"
+
+#. module: contacts_patient
+#: model:ir.model.fields,field_description:contacts_patient.field_res_partner__diagnostic_criteria
+#: model:ir.model.fields,field_description:contacts_patient.field_res_users__diagnostic_criteria
+msgid "Criteri diagnostici utilizzati"
+msgstr "Criteri diagnostici utilizzati"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_edit_form
+msgid "Current Issues"
+msgstr "Problemi attuali"
+
+#. module: contacts_patient
+#: model:ir.model.fields,field_description:contacts_patient.field_res_partner__date_professional_assignment
+#: model:ir.model.fields,field_description:contacts_patient.field_res_users__date_professional_assignment
+msgid "Data di assegnazione del professionista"
+msgstr "Dati di assegnazione del professionista"
+
+#. module: contacts_patient
+#: model:ir.model.fields,field_description:contacts_patient.field_res_partner__date_tutor_assignment
+#: model:ir.model.fields,field_description:contacts_patient.field_res_users__date_tutor_assignment
+msgid "Data di assegnazione del tutor"
+msgstr "Dati di assegnazione del tutor"
+
+#. module: contacts_patient
+#: model:ir.model.fields,field_description:contacts_patient.field_res_partner__symptoms_onset
+#: model:ir.model.fields,field_description:contacts_patient.field_res_users__symptoms_onset
+msgid "Data di inizio dei sintomi"
+msgstr "Dati di inizio dei sintomi"
+
+#. module: contacts_patient
+#: model:ir.model.fields,field_description:contacts_patient.field_res_partner__date_taken_charge
+#: model:ir.model.fields,field_description:contacts_patient.field_res_users__date_taken_charge
+msgid "Data di presa in carico"
+msgstr "Dati di presa in carico"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.portal_my_contacts
+msgid "Date Taken Charge"
+msgstr "Data di assunzione della carica"
+
+#. module: contacts_patient
+#. odoo-python
+#: code:addons/contacts_patient/controllers/portal.py:0
+msgid "Date Taken Charge Ascending"
+msgstr "Data di assunzione Carica crescente"
+
+#. module: contacts_patient
+#. odoo-python
+#: code:addons/contacts_patient/controllers/portal.py:0
+msgid "Date Taken Charge Descending"
+msgstr "Data di assunzione Carica decrescente"
+
+#. module: contacts_patient
+#: model:ir.model.fields,field_description:contacts_patient.field_res_partner__problem_description
+#: model:ir.model.fields,field_description:contacts_patient.field_res_users__problem_description
+msgid "Descrizione del problema presentato"
+msgstr "Descrizione del problema presentato"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.view_partner_form_patient_inherit
+msgid "Diagnosi"
+msgstr "Diagnosi"
+
+#. module: contacts_patient
+#: model:ir.model.fields,field_description:contacts_patient.field_res_partner__differential_diagnosis
+#: model:ir.model.fields,field_description:contacts_patient.field_res_users__differential_diagnosis
+msgid "Diagnosi differenziale considerata"
+msgstr "Diagnosi differenziale considerata"
+
+#. module: contacts_patient
+#: model:ir.model.fields,field_description:contacts_patient.field_res_partner__primary_diagnosis
+#: model:ir.model.fields,field_description:contacts_patient.field_res_users__primary_diagnosis
+msgid "Diagnosi primaria"
+msgstr "Diagnosi primaria"
+
+#. module: contacts_patient
+#: model:ir.model.fields,field_description:contacts_patient.field_res_partner__secondary_diagnosis
+#: model:ir.model.fields,field_description:contacts_patient.field_res_users__secondary_diagnosis
+msgid "Diagnosi secondaria"
+msgstr "Diagnosi secondaria"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_edit_form
+msgid "Diagnosis Code"
+msgstr "Codice di diagnosi"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_edit_form
+msgid "Diagnosis Information"
+msgstr "Informazioni sulla diagnosi"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_edit_form
+msgid "Diagnostic Criteria"
+msgstr "Criteri diagnostici"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_edit_form
+msgid "Differential Diagnosis"
+msgstr "Diagnosi differenziale"
+
+#. module: contacts_patient
+#: model:ir.model.fields,field_description:contacts_patient.field_res_partner__symptoms_duration
+#: model:ir.model.fields,field_description:contacts_patient.field_res_users__symptoms_duration
+msgid "Durata dei sintomi"
+msgstr "Durata dei sintomi"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.portal_my_home_menu_contacts
+msgid "Edit"
+msgstr "Modifica"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_edit_form
+msgid "Edit Contact:"
+msgstr "Contatto Edit:"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.portal_my_contacts
+msgid "Email"
+msgstr "Email"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_edit_form
+msgid "Family Context"
+msgstr "Contesto familiare"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_edit_form
+msgid "High"
+msgstr "Alta"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.portal_my_home_contacts
+msgid "I miei pazienti"
+msgstr "I miei pazienti"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.view_partner_form_patient_inherit
+msgid "Informazioni generali"
+msgstr "Informazioni generali"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.portal_my_equipe
+#: model_terms:ir.ui.view,arch_db:contacts_patient.portal_my_home_equipe
+#: model_terms:ir.ui.view,arch_db:contacts_patient.portal_side_content_patient_extend
+msgid "La mia Équipe"
+msgstr "La mia équipe"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_edit_form
+msgid "Low"
+msgstr "Bassa"
+
+#. module: contacts_patient
+#: model:ir.model.fields.selection,name:contacts_patient.selection__res_partner__risk_assessment__medium
+msgid "Medio"
+msgstr "Medio"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_edit_form
+msgid "Medium"
+msgstr "Medio"
+
+#. module: contacts_patient
+#: model:ir.model.fields,field_description:contacts_patient.field_res_partner__reason_for_consultation
+#: model:ir.model.fields,field_description:contacts_patient.field_res_users__reason_for_consultation
+msgid "Motivo della consulenza/presa in carico"
+msgstr "Motivo della consulenza/presa in carico"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.portal_my_contacts
+msgid "Name"
+msgstr "Nome"
+
+#. module: contacts_patient
+#. odoo-python
+#: code:addons/contacts_patient/controllers/portal.py:0
+msgid "Name Ascending"
+msgstr "Nome ascendente"
+
+#. module: contacts_patient
+#. odoo-python
+#: code:addons/contacts_patient/controllers/portal.py:0
+msgid "Name Descending"
+msgstr "Nome discendente"
+
+#. module: contacts_patient
+#: model:ir.model.fields,field_description:contacts_patient.field_res_partner__treatment_goals
+#: model:ir.model.fields,field_description:contacts_patient.field_res_users__treatment_goals
+msgid "Obiettivi del trattamento"
+msgstr "Obiettivi del trattamento"
+
+#. module: contacts_patient
+#: model:ir.model.fields,field_description:contacts_patient.field_res_partner__is_patient
+#: model:ir.model.fields,field_description:contacts_patient.field_res_users__is_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.view_partner_form_patient_inherit
+msgid "Paziente"
+msgstr "Paziente"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.portal_my_contacts
+msgid "Phone"
+msgstr "Telefono"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_edit_form
+msgid "Previous Treatments"
+msgstr "Trattamenti precedenti"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_edit_form
+#: model_terms:ir.ui.view,arch_db:contacts_patient.portal_my_contacts
+msgid "Primary Diagnosis"
+msgstr "Diagnosi primaria"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_edit_form
+msgid "Problem Description"
+msgstr "Descrizione del problema"
+
+#. module: contacts_patient
+#: model:ir.model.fields,field_description:contacts_patient.field_res_partner__current_issues
+#: model:ir.model.fields,field_description:contacts_patient.field_res_users__current_issues
+msgid "Problematiche attuali riferite dal paziente"
+msgstr "Problematiche attuali riferite dal paziente"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_edit_form
+msgid "Professional"
+msgstr "Professionale"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_edit_form
+msgid "Professional Assignment Date"
+msgstr "Data dell'incarico professionale"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_edit_form
+msgid "Professional Type"
+msgstr "Tipo professionale"
+
+#. module: contacts_patient
+#: model:ir.model.fields,field_description:contacts_patient.field_res_partner__professional
+#: model:ir.model.fields,field_description:contacts_patient.field_res_users__professional
+#: model_terms:ir.ui.view,arch_db:contacts_patient.portal_my_equipe
+msgid "Professionista"
+msgstr "Professionista"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_edit_form
+msgid "Referrals"
+msgstr "Referral"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_edit_form
+msgid "Referrals to Other Specialists"
+msgstr "Rinvio ad altri specialisti"
+
+#. module: contacts_patient
+#: model:ir.model.fields,field_description:contacts_patient.field_res_partner__referrals
+#: model:ir.model.fields,field_description:contacts_patient.field_res_users__referrals
+msgid "Riferimenti ad altri specialisti o servizi"
+msgstr "Riferimenti ad altri specialisti o servizi"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_edit_form
+msgid "Risk Assessment"
+msgstr "Valutazione del rischio"
+
+#. module: contacts_patient
+#. odoo-python
+#: code:addons/contacts_patient/controllers/portal.py:0
+msgid "Search in Name"
+msgstr "Ricerca per nome"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_edit_form
+msgid "Secondary Diagnosis"
+msgstr "Diagnosi secondaria"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_edit_form
+msgid "Social Context"
+msgstr "Contesto sociale"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_edit_form
+msgid "Symptoms Duration"
+msgstr "Sintomi Durata"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_edit_form
+msgid "Symptoms Onset"
+msgstr "Insorgenza dei sintomi"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_edit_form
+msgid "Team Information"
+msgstr "Informazioni Squadra"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.portal_my_contacts
+msgid "There are currently no assigned contacts for your account."
+msgstr "Al momento non ci sono contatti assegnati per il vostro account."
+
+#. module: contacts_patient
+#: model:ir.model.fields,field_description:contacts_patient.field_res_partner__type_professional
+#: model:ir.model.fields,field_description:contacts_patient.field_res_users__type_professional
+msgid "Tipo di professionista"
+msgstr "Tipo di professionista"
+
+#. module: contacts_patient
+#: model:ir.model.fields,field_description:contacts_patient.field_res_partner__previous_treatments
+#: model:ir.model.fields,field_description:contacts_patient.field_res_users__previous_treatments
+msgid "Trattamenti precedentemente ricevuti"
+msgstr "Trattamenti precedentemente ricevuti"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_edit_form
+msgid "Treatment Goals"
+msgstr "Obiettivi del trattamento"
+
+#. module: contacts_patient
+#: model:ir.model.fields,field_description:contacts_patient.field_res_partner__tutor
+#: model:ir.model.fields,field_description:contacts_patient.field_res_users__tutor
+#: model_terms:ir.ui.view,arch_db:contacts_patient.portal_my_equipe
+msgid "Tutor"
+msgstr "Tutor"
+
+#. module: contacts_patient
+#: model:ir.model.fields,field_description:contacts_patient.field_res_partner__risk_assessment
+#: model:ir.model.fields,field_description:contacts_patient.field_res_users__risk_assessment
+msgid "Valutazione del rischio"
+msgstr "Valutazione del rischio"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.view_partner_form_patient_inherit
+msgid "Valutazione e trattamento"
+msgstr "Valutazione e trattamento"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.portal_my_home_contacts
+msgid "View your assigned patient contacts"
+msgstr "Visualizzare i contatti dei pazienti assegnati"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.portal_my_home_equipe
+msgid "Visualizza informazioni sul tuo tutor e professionista assegnati"
+msgstr "Visualizza informazioni sul tuo tutor e professionista assegnato"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_edit_form
+msgid "Work Context"
+msgstr "Contesto lavorativo"
+
+#. module: contacts_patient
+#. odoo-python
+#: code:addons/contacts_patient/controllers/portal.py:0
+msgid "You don't have access to this contact."
+msgstr "Non avete accesso a questo contatto."
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.view_partner_form_patient_inherit
+msgid "Équipe"
+msgstr "L'équipe"
+
+#. module: contacts_patient
+#: model:ir.model.fields,field_description:contacts_patient.field_res_partner__birth_date
+msgid "Birth Date"
+msgstr "Data di Nascita"
+
+#. module: contacts_patient
+#: model:ir.model.fields,field_description:contacts_patient.field_res_partner__biological_sex
+msgid "Biological Sex"
+msgstr "Sesso Biologico"
+
+#. module: contacts_patient
+#: model:ir.model.fields,field_description:contacts_patient.field_res_partner__gender_identity
+msgid "Gender Identity"
+msgstr "Identità di Genere"
+
+#. module: contacts_patient
+#: model:ir.model.fields,field_description:contacts_patient.field_res_partner__birthplace
+msgid "Birthplace"
+msgstr "Luogo di Nascita"
+
+#. module: contacts_patient
+#: model:ir.model.fields,field_description:contacts_patient.field_res_partner__nationality
+msgid "Nationality"
+msgstr "Nazionalità"
+
+#. module: contacts_patient
+#: model:ir.model.fields,field_description:contacts_patient.field_res_partner__profession
+msgid "Profession/Occupation"
+msgstr "Professione/Occupazione"
+
+#. module: contacts_patient
+#: model:ir.model.fields,field_description:contacts_patient.field_res_partner__marital_status
+msgid "Marital Status"
+msgstr "Stato Civile"
+
+#. module: contacts_patient
+#: model:ir.model.fields,field_description:contacts_patient.field_res_partner__education_level
+msgid "Education Level"
+msgstr "Livello di Istruzione"
+
+#. module: contacts_patient
+#: model:ir.model.fields,field_description:contacts_patient.field_res_partner__age
+msgid "Age"
+msgstr "Età"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.view_partner_form_patient_inherit
+msgid "Informazioni Anagrafiche"
+msgstr "Informazioni Anagrafiche"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_edit_form
+msgid "Informazioni Anagrafiche"
+msgstr "Informazioni Anagrafiche"
+
+#. module: contacts_patient
+#: model_terms:ir.ui.view,arch_db:contacts_patient.contact_detail_view
+msgid "Informazioni Anagrafiche"
+msgstr "Informazioni Anagrafiche"
+
+#. module: contacts_patient
+#: selection:res.partner,biological_sex:0
+msgid "M"
+msgstr "M"
+
+#. module: contacts_patient
+#: selection:res.partner,biological_sex:0
+msgid "F"
+msgstr "F"
+
+#. module: contacts_patient
+#: selection:res.partner,biological_sex:0
+msgid "Altro"
+msgstr "Altro"
+
+#. module: contacts_patient
+#: selection:res.partner,marital_status:0
+msgid "Single"
+msgstr "Single"
+
+#. module: contacts_patient
+#: selection:res.partner,marital_status:0
+msgid "Married"
+msgstr "Sposato"
+
+#. module: contacts_patient
+#: selection:res.partner,marital_status:0
+msgid "Divorced"
+msgstr "Divorziato"
+
+#. module: contacts_patient
+#: selection:res.partner,marital_status:0
+msgid "Widowed"
+msgstr "Vedovo"
+
+#. module: contacts_patient
+#: selection:res.partner,marital_status:0
+msgid "Separated"
+msgstr "Separato"
+
+#. module: contacts_patient
+#: selection:res.partner,education_level:0
+msgid "Elementary"
+msgstr "Elementare"
+
+#. module: contacts_patient
+#: selection:res.partner,education_level:0
+msgid "Middle"
+msgstr "Media"
+
+#. module: contacts_patient
+#: selection:res.partner,education_level:0
+msgid "High"
+msgstr "Superiore"
+
+#. module: contacts_patient
+#: selection:res.partner,education_level:0
+msgid "Bachelor"
+msgstr "Laurea"
+
+#. module: contacts_patient
+#: selection:res.partner,education_level:0
+msgid "Master"
+msgstr "Magistrale"
+
+#. module: contacts_patient
+#: selection:res.partner,education_level:0
+msgid "Phd"
+msgstr "Dottorato"

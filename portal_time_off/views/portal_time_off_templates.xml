@@ -1,0 +1,1088 @@
+<odoo>
+
+    <!-- MODIFICA: Condizionale per mostrare card solo se user è dipendente -->
+    <template id="portal_time_off_template" inherit_id="portal.portal_my_home">
+        <xpath expr="//div[@class='o_portal_category row g-2 mt-3' and @id='portal_common_category']" position="inside">
+            <!-- MODIFICA: Controllo se l'utente è un dipendente prima di mostrare la card -->
+            <t t-if="request.env['hr.employee'].sudo().search([('user_id', '=', request.env.user.id)], limit=1)">
+                <t t-call="portal.portal_docs_entry">
+                    <t t-set="title">My Time Offs</t>
+                    <t t-set="text">View and manage your time offs</t>
+                    <t t-set="icon" t-value="'/portal_time_off/static/src/img/timeoff.svg'"/>
+                    <t t-set="url" t-value="'/my/time_off'"/>
+                    <t t-set="config_card" t-value="True"/>
+                </t>
+            </t>
+        </xpath>
+    </template>
+
+    <!-- MODIFICA: Condizionali per tutte le card HR nel portal home -->
+    <template id="portal_my_home_inherit" inherit_id="portal.portal_my_home">
+        <xpath expr="//div[@id='portal_common_category']" position="inside">
+            <!-- MODIFICA: Card Apply Time Off nascosta -->
+            <t t-if="False">
+                <t t-call="portal.portal_docs_entry">
+                    <t t-set="title">Apply Time Off</t>
+                    <t t-set="text">Submit your leave application</t>
+                    <t t-set="url" t-value="'/my/apply_time_off'"/>
+                    <t t-set="config_card" t-value="True"/>
+                </t>
+            </t>
+        </xpath>
+        <xpath expr="//div[@id='portal_common_category']" position="inside">
+            <!-- MODIFICA: Card Allocations nascosta -->
+            <t t-if="False">
+                <t t-call="portal.portal_docs_entry">
+                    <t t-set="title">My Leave Allocations</t>
+                    <t t-set="text">My Leave Allocations</t>
+                    <t t-set="url" t-value="'/my/allocations'"/>
+                    <t t-set="config_card" t-value="True"/>
+                </t>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="portal_time_off_page" name="Portal Time Offs">
+        <t t-call="portal.portal_layout">
+            <div class="container mt-3">
+                <!-- MODIFICA: Controllo accesso per dipendenti -->
+                <t t-if="employee">
+                    <h1>My Time Offs</h1>
+                    
+                    <!-- Messaggio di successo -->
+                    <t t-if="request.params.get('success')">
+                        <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+                            <h4 class="alert-heading">
+                                <i class="fa fa-check-circle"></i> Richiesta Inviata con Successo!
+                            </h4>
+                            <p>La tua richiesta di ferie è stata inviata correttamente e sarà processata al più presto.</p>
+                            <t t-if="request.params.get('leave_type')">
+                                <hr/>
+                                <p class="mb-0">
+                                    <strong>Tipo:</strong> <t t-esc="request.params.get('leave_type')"/> | 
+                                    <strong>Dal:</strong> <t t-esc="request.params.get('date_from')"/> | 
+                                    <strong>Al:</strong> <t t-esc="request.params.get('date_to')"/>
+                                </p>
+                            </t>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </t>
+                    
+                    <!-- Sezione per modificare l'orario di lavoro -->
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="o_portal_card card">
+                                <div class="card-header">
+                                    <h4 class="mb-0">Le mie disponibilità</h4>
+                                </div>
+                                <div class="card-body">
+                                    <form action="/my/time_off/update_calendar" method="post">
+                                        <!-- Include CSRF token -->
+                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                        
+                                        <div class="form-group row">
+                                            <label for="resource_calendar_id" class="col-sm-3 col-form-label">Ore lavorative</label>
+                                            <div class="col-sm-6">
+                                                <select id="resource_calendar_id" name="resource_calendar_id" class="form-control">
+                                                    <option value="">-- Seleziona orario di lavoro --</option>
+                                                    <t t-foreach="resource_calendars" t-as="calendar">
+                                                        <option t-att-value="calendar.id" 
+                                                                t-att-selected="'selected' if employee.resource_calendar_id.id == calendar.id else None">
+                                                            <t t-esc="calendar.name"/>
+                                                        </option>
+                                                    </t>
+                                                </select>
+                                                <small class="form-text text-muted">
+                                                    Definisce l'orario di lavoro di una risorsa. Se non configurato, la risorsa avrà un orario completamente flessibile.
+                                                </small>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <button type="submit" class="btn btn-primary">Aggiorna</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ========================================== -->
+                    <!-- SEZIONE: I MIEI CALENDARI PERSONALIZZATI -->
+                    <!-- ========================================== -->
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="o_portal_card card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h4 class="mb-0">
+                                        <i class="fa fa-calendar-alt me-2"></i>
+                                        I Miei Calendari Personalizzati
+                                    </h4>
+                                    <button class="btn btn-sm btn-success" type="button" 
+                                            data-bs-toggle="collapse" data-bs-target="#collapseCalendarForm" 
+                                            aria-expanded="false" aria-controls="collapseCalendarForm">
+                                        <i class="fa fa-plus"></i> Nuovo Calendario
+                                    </button>
+                                </div>
+                                <div class="card-body">
+                                    <!-- Messaggio successo calendario -->
+                                    <t t-if="request.params.get('calendar_success') == '1'">
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                            <i class="fa fa-check-circle me-2"></i>
+                                            <strong>Calendario creato!</strong> Il nuovo calendario è stato creato e assegnato come tuo orario di lavoro.
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        </div>
+                                    </t>
+                                    <t t-if="request.params.get('calendar_success') == '2'">
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                            <i class="fa fa-check-circle me-2"></i>
+                                            <strong>Calendario attivato!</strong> Il calendario selezionato è ora il tuo orario di lavoro.
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        </div>
+                                    </t>
+                                    <t t-if="request.params.get('calendar_error')">
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                            <i class="fa fa-exclamation-triangle me-2"></i>
+                                            <strong>Errore!</strong> <t t-esc="request.params.get('calendar_error')"/>
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        </div>
+                                    </t>
+
+                                    <!-- Form inline accordion per creazione calendario -->
+                                    <div class="collapse" id="collapseCalendarForm">
+                                        <div class="card card-body bg-light mb-4">
+                                            <h5 class="mb-3"><i class="fa fa-plus-circle me-2"></i>Crea Nuovo Calendario</h5>
+                                            <form action="/my/time_off/calendar/create" method="post" id="inline_calendar_form">
+                                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                                <input type="hidden" name="slot_config_json" id="inline_slot_config_json" value="[]"/>
+                                                <input type="hidden" name="redirect_to" value="/my/time_off"/>
+
+                                                <div class="row">
+                                                    <!-- Colonna principale: Form multigiorno -->
+                                                    <div class="col-lg-8 col-md-7">
+                                                        <div class="mb-3">
+                                                            <label for="inline_custom_name" class="form-label fw-bold">Nome Calendario *</label>
+                                                            <input type="text" id="inline_custom_name" name="custom_name" 
+                                                                   class="form-control" required="required" 
+                                                                   placeholder="Es: Orario Part-Time, Turno Serale..."/>
+                                                            <small class="form-text text-muted">
+                                                                Il nome completo sarà "Calendario di <t t-esc="employee.name"/> - [Nome inserito]"
+                                                            </small>
+                                                        </div>
+
+                                                        <!-- Form multigiorno con slot multipli -->
+                                                        <div class="mb-3">
+                                                            <label class="form-label fw-bold">Configurazione Slot Orari</label>
+                                                            <p class="text-muted small mb-2">
+                                                                Aggiungi gli slot orari per ogni giorno della settimana. Puoi aggiungere più slot per giorno.
+                                                            </p>
+                                                            
+                                                            <div id="inline_slots_container" class="border rounded p-3 bg-white">
+                                                                <!-- Gli slot verranno aggiunti qui dinamicamente -->
+                                                            </div>
+                                                            
+                                                            <div id="inline_no_slots_message" class="alert alert-info mt-2 mb-0">
+                                                                <i class="fa fa-info-circle me-2"></i>
+                                                                Nessuno slot configurato. Clicca "Aggiungi Slot" per iniziare.
+                                                            </div>
+                                                            
+                                                            <button type="button" class="btn btn-outline-success mt-2" id="inline_add_slot_btn">
+                                                                <i class="fa fa-plus me-1"></i> Aggiungi Slot
+                                                            </button>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Sidebar: Riepilogo ore live e anteprima -->
+                                                    <div class="col-lg-4 col-md-5">
+                                                        <div class="card bg-primary text-white mb-3">
+                                                            <div class="card-header">
+                                                                <h6 class="mb-0"><i class="fa fa-clock me-2"></i>Riepilogo Ore</h6>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <div class="d-flex justify-content-between mb-2">
+                                                                    <span>Ore Settimanali:</span>
+                                                                    <strong id="inline_total_hours">0.0</strong>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between mb-2">
+                                                                    <span>Giorni Lavorativi:</span>
+                                                                    <strong id="inline_days_worked">0</strong>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between">
+                                                                    <span>Media Ore/Giorno:</span>
+                                                                    <strong id="inline_avg_hours">0.0</strong>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="card">
+                                                            <div class="card-header">
+                                                                <h6 class="mb-0"><i class="fa fa-eye me-2"></i>Anteprima Configurazione</h6>
+                                                            </div>
+                                                            <div class="card-body p-2">
+                                                                <div id="inline_preview_container" class="small">
+                                                                    <p class="text-muted mb-0">Aggiungi slot per vedere l'anteprima.</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="d-flex gap-2 mt-3">
+                                                    <button type="submit" class="btn btn-success">
+                                                        <i class="fa fa-save me-1"></i> Crea Calendario
+                                                    </button>
+                                                    <button type="button" class="btn btn-secondary" 
+                                                            data-bs-toggle="collapse" data-bs-target="#collapseCalendarForm">
+                                                        Annulla
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                    <!-- Lista calendari personalizzati con card/summary -->
+                                    <div class="row" id="my_calendars_list">
+                                        <t t-if="my_calendars">
+                                            <t t-foreach="my_calendars" t-as="cal">
+                                                <div class="col-lg-4 col-md-6 mb-3">
+                                                    <div class="card h-100">
+                                                        <div class="card-header d-flex justify-content-between align-items-center">
+                                                            <h6 class="mb-0 text-truncate" t-att-title="cal.name">
+                                                                <t t-esc="cal.custom_name or cal.name"/>
+                                                            </h6>
+                                                            <t t-if="employee.resource_calendar_id.id == cal.id">
+                                                                <span class="badge bg-success">Attivo</span>
+                                                            </t>
+                                                        </div>
+                                                        <div class="card-body p-3">
+                                                            <div class="mb-2">
+                                                                <small class="text-muted">Ore settimanali:</small>
+                                                                <strong class="ms-1"><t t-esc="'%.1f' % cal.total_weekly_hours"/></strong>
+                                                            </div>
+                                                            <div class="mb-2">
+                                                                <small class="text-muted">Giorni:</small>
+                                                                <strong class="ms-1"><t t-esc="cal.days_worked"/></strong>
+                                                            </div>
+                                                            <div>
+                                                                <small class="text-muted">Media/giorno:</small>
+                                                                <strong class="ms-1"><t t-esc="'%.1f' % cal.hours_per_day"/>h</strong>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-footer d-flex gap-2">
+                                                            <a t-att-href="'/my/time_off/calendar/%s' % cal.id" 
+                                                               class="btn btn-sm btn-outline-primary flex-fill">
+                                                                <i class="fa fa-eye"></i> Dettagli
+                                                            </a>
+                                                            <t t-if="employee.resource_calendar_id.id != cal.id">
+                                                                <form t-att-action="'/my/time_off/calendar/%s/use' % cal.id" 
+                                                                      method="post" class="d-inline flex-fill">
+                                                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                                                    <input type="hidden" name="redirect_to" value="/my/time_off"/>
+                                                                    <button type="submit" class="btn btn-sm btn-success w-100">
+                                                                        <i class="fa fa-check"></i> Usa Questo
+                                                                    </button>
+                                                                </form>
+                                                            </t>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </t>
+                                        </t>
+                                        <t t-else="">
+                                            <div class="col-12">
+                                                <div class="text-center py-4 text-muted">
+                                                    <i class="fa fa-calendar-plus fa-3x mb-3 d-block"></i>
+                                                    <p class="mb-0">Non hai ancora creato calendari personalizzati.</p>
+                                                    <p class="small">Clicca su "Nuovo Calendario" per iniziare.</p>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </div>
+
+                                    <div class="mt-3 text-end">
+                                        <a href="/my/time_off/calendars" class="btn btn-outline-secondary btn-sm">
+                                            <i class="fa fa-list me-1"></i> Vedi tutti i calendari
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gestione slot inline affidata al widget Odoo (calendar_manager.js) -->
+
+                    <!-- MODIFICA: Pulsante Apply Time Off spostato dopo configurazione -->
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="o_portal_card card">
+                                <div class="card-header">
+                                    <h4 class="mb-0">Richiedi Ferie</h4>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-text">Puoi richiedere nuove ferie utilizzando il modulo dedicato.</p>
+                                    <a href="/my/apply_time_off" class="btn btn-primary">
+                                        <i class="fa fa-plus"></i> Apply Time Off
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <h3>Your Leave Records</h3>
+                            <div class="o_portal_table table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Leave Type</th>
+                                            <th>Start Date</th>
+                                            <th>End Date</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr t-foreach="time_offs" t-as="time_off">
+                                            <td>
+                                                <t t-esc="time_off.holiday_status_id.name"/>
+                                            </td>
+                                            <td>
+                                                <t t-esc="time_off.date_from.strftime('%Y-%m-%d')"/>
+                                            </td>
+                                            <td>
+                                                <t t-esc="time_off.date_to.strftime('%Y-%m-%d')"/>
+                                            </td>
+                                            <td>
+                                                <t t-esc="dict(time_off._fields['state'].selection).get(time_off.state, 'Unknown')"/>
+                                            </td>
+                                        </tr>
+                                        <tr t-if="not time_offs">
+                                            <td colspan="4" class="text-center">No time offs found.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+                
+                <!-- MODIFICA: Messaggio per utenti non dipendenti -->
+                <t t-if="not employee">
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="alert alert-warning" role="alert">
+                                <h4 class="alert-heading">Accesso Limitato</h4>
+                                <p>Non sei registrato come dipendente nel sistema. Per accedere alle funzionalità di gestione delle ferie, è necessario essere collegati a un record dipendente.</p>
+                                <hr/>
+                                <p class="mb-0">Contatta l'amministratore delle risorse umane per ottenere l'accesso.</p>
+                                <div class="mt-3">
+                                    <a href="/my/home" class="btn btn-primary">Torna alla Dashboard</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </div>
+        </t>
+    </template>
+
+    <template id="portal_apply_time_off_form" name="Apply Time Off">
+        <t t-call="portal.portal_layout">
+            <div class="container mt-3">
+                <h1>Apply Time Off</h1>
+                
+                <!-- Mostra messaggio di errore se presente -->
+                <t t-if="error_message">
+                    <div class="alert alert-danger mt-3" role="alert">
+                        <h4 class="alert-heading">Errore nella richiesta</h4>
+                        <p t-esc="error_message" style="white-space: pre-line;"/>
+                    </div>
+                </t>
+                
+                <form action="/my/apply_time_off/submit" method="post" class="mt-4">
+                    <input type="hidden" name="csrf_token" t-att-value="csrf_token"/>
+
+                    <div class="form-group">
+                        <label for="time_off_type">Time Off Type</label>
+                        <select id="time_off_type" name="time_off_type" class="form-control" required="required">
+                            <option value="">-- Seleziona tipo di ferie --</option>
+                            <option t-foreach="time_off_types" t-as="type" 
+                                    t-att-value="type['id']"
+                                    t-att-selected="'selected' if form_data and form_data.get('time_off_type') == str(type['id']) else None">
+                                <t t-esc="type['label']"/>
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group mt-3">
+                        <label for="date_from">From</label>
+                        <input type="datetime-local" id="date_from" name="date_from" 
+                               class="form-control" required="required"
+                               t-att-value="form_data.get('date_from') if form_data else None"/>
+                    </div>
+                    
+                    <div class="form-group mt-3">
+                        <label for="date_to">To</label>
+                        <input type="datetime-local" id="date_to" name="date_to" 
+                               class="form-control" required="required"
+                               t-att-value="form_data.get('date_to') if form_data else None"/>
+                    </div>
+                    
+                    <div class="form-group mt-3">
+                        <label for="description">Description</label>
+                        <textarea id="description" name="description" class="form-control" rows="3"><t t-if="form_data and form_data.get('description')" t-esc="form_data.get('description')"/></textarea>
+                    </div>
+                    
+                    <div class="form-group mt-3">
+                        <button type="submit" class="btn btn-success">Submit</button>
+                        <a href="/my/time_off" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+                
+                <!-- JavaScript per validazione date -->
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const dateFromInput = document.getElementById('date_from');
+                        const dateToInput = document.getElementById('date_to');
+                        
+                        function validateDates() {
+                            const dateFrom = new Date(dateFromInput.value);
+                            const dateTo = new Date(dateToInput.value);
+                            
+                            if (dateFrom &amp;&amp; dateTo &amp;&amp; dateFrom >= dateTo) {
+                                dateToInput.setCustomValidity('La data di fine deve essere successiva alla data di inizio');
+                            } else {
+                                dateToInput.setCustomValidity('');
+                            }
+                        }
+                        
+                        dateFromInput.addEventListener('change', validateDates);
+                        dateToInput.addEventListener('change', validateDates);
+                    });
+                </script>
+            </div>
+        </t>
+    </template>
+
+    <template id="portal_my_allocations" name="Portal My Allocations">
+        <t t-call="portal.portal_layout">
+            <div class="container mt-4">
+                <!-- MODIFICA: Controllo accesso per dipendenti -->
+                <t t-if="employee">
+                    <h2 class="mb-4">My Leave Allocations</h2>
+                    <div class="row">
+                        <t t-foreach="allocations" t-as="allocation">
+                            <div class="col-md-4 mb-4">
+                                <div class="card text-center">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <t t-esc="allocation['leave_name']"/>
+                                        </h5>
+                                        <p class="card-text">
+                                            <strong>Allocated Days:</strong>
+                                            <t t-esc="allocation['total_leave']"/>
+                                            <br/>
+                                            <strong>Remaining Balance:</strong>
+                                            <t t-esc="allocation['remain_leave']"/>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </t>
+                
+                <!-- MODIFICA: Messaggio per utenti non dipendenti -->
+                <t t-if="not employee">
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="alert alert-info" role="alert">
+                                <h4 class="alert-heading">Informazione</h4>
+                                <p>Le informazioni sulle allocazioni ferie non sono disponibili perché non sei registrato come dipendente.</p>
+                                <hr/>
+                                <p class="mb-0">Contatta l'ufficio risorse umane per maggiori informazioni sui tuoi diritti alle ferie.</p>
+                                <div class="mt-3">
+                                    <a href="/my/home" class="btn btn-primary">Torna alla Dashboard</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </div>
+        </t>
+    </template>
+
+    <!-- =========================================================================
+         TEMPLATE PER GESTIONE CALENDARI PERSONALI
+         ========================================================================= -->
+
+    <!-- Template per lista calendari personali -->
+    <template id="portal_calendars_page" name="I Miei Calendari">
+        <t t-call="portal.portal_layout">
+            <div class="container mt-3">
+                <t t-if="employee">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+                        <h1 class="mb-2 mb-md-0">
+                            <i class="fa fa-calendar-alt me-2"></i>I Miei Calendari
+                        </h1>
+                        <a href="/my/time_off/calendar/create" class="btn btn-primary">
+                            <i class="fa fa-plus"></i> Crea Nuovo Calendario
+                        </a>
+                    </div>
+
+                    <!-- Messaggi di successo Bootstrap style -->
+                    <t t-if="request.params.get('success') == '1'">
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <h5 class="alert-heading mb-1">
+                                <i class="fa fa-check-circle me-2"></i>Calendario Creato con Successo!
+                            </h5>
+                            <p class="mb-0">Il calendario "<t t-esc="request.params.get('calendar_name')"/>" è stato creato e impostato come tuo orario di lavoro.</p>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </t>
+                    <t t-if="request.params.get('success') == '2'">
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <h5 class="alert-heading mb-1">
+                                <i class="fa fa-check-circle me-2"></i>Calendario Attivato!
+                            </h5>
+                            <p class="mb-0">Il calendario "<t t-esc="request.params.get('calendar_name')"/>" è stato impostato come tuo orario di lavoro.</p>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </t>
+                    <t t-if="request.params.get('error')">
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <h5 class="alert-heading mb-1">
+                                <i class="fa fa-exclamation-triangle me-2"></i>Errore
+                            </h5>
+                            <p class="mb-0" t-esc="request.params.get('error')"/>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </t>
+
+                    <!-- Lista calendari con card/summary -->
+                    <div class="row">
+                        <t t-if="calendars">
+                            <t t-foreach="calendars" t-as="calendar">
+                                <div class="col-lg-4 col-md-6 mb-4">
+                                    <div class="card h-100 shadow-sm">
+                                        <div class="card-header bg-white d-flex justify-content-between align-items-start">
+                                            <div class="flex-grow-1 me-2">
+                                                <h5 class="card-title mb-1 text-truncate" t-att-title="calendar.name">
+                                                    <t t-esc="calendar.custom_name or calendar.name"/>
+                                                </h5>
+                                                <small class="text-muted" t-esc="calendar.name"/>
+                                            </div>
+                                            <!-- Badge se è il calendario attivo -->
+                                            <t t-if="employee.resource_calendar_id.id == calendar.id">
+                                                <span class="badge bg-success">
+                                                    <i class="fa fa-check me-1"></i>Attivo
+                                                </span>
+                                            </t>
+                                        </div>
+                                        <div class="card-body">
+                                            <!-- Summary statistiche -->
+                                            <div class="row text-center mb-3">
+                                                <div class="col-4">
+                                                    <div class="border rounded p-2 bg-light">
+                                                        <h6 class="mb-0 text-primary">
+                                                            <t t-esc="'%.1f' % calendar.total_weekly_hours"/>
+                                                        </h6>
+                                                        <small class="text-muted">ore/sett.</small>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="border rounded p-2 bg-light">
+                                                        <h6 class="mb-0 text-primary">
+                                                            <t t-esc="calendar.days_worked"/>
+                                                        </h6>
+                                                        <small class="text-muted">giorni</small>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="border rounded p-2 bg-light">
+                                                        <h6 class="mb-0 text-primary">
+                                                            <t t-esc="'%.1f' % calendar.hours_per_day"/>
+                                                        </h6>
+                                                        <small class="text-muted">ore/giorno</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <p class="card-text small text-muted mb-0">
+                                                <i class="fa fa-globe me-1"></i>
+                                                <strong>Timezone:</strong>
+                                                <t t-esc="calendar.tz or 'Non definito'"/>
+                                            </p>
+                                            <p class="card-text small text-muted mb-0">
+                                                <i class="fa fa-list me-1"></i>
+                                                <strong>Slot orari:</strong>
+                                                <t t-esc="len(calendar.attendance_ids)"/>
+                                            </p>
+                                        </div>
+                                        <div class="card-footer bg-white d-flex gap-2">
+                                            <a t-att-href="'/my/time_off/calendar/%s' % calendar.id" 
+                                               class="btn btn-outline-primary flex-fill">
+                                                <i class="fa fa-eye me-1"></i> Dettagli
+                                            </a>
+                                            <!-- Pulsante "Usa Questo" se non è già il calendario attivo -->
+                                            <t t-if="employee.resource_calendar_id.id != calendar.id">
+                                                <form t-att-action="'/my/time_off/calendar/%s/use' % calendar.id" method="post" class="d-inline flex-fill">
+                                                    <input type="hidden" name="csrf_token" t-att-value="csrf_token"/>
+                                                    <button type="submit" class="btn btn-success w-100">
+                                                        <i class="fa fa-check me-1"></i> Usa Questo
+                                                    </button>
+                                                </form>
+                                            </t>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+                        </t>
+                        <t t-else="">
+                            <div class="col-12">
+                                <div class="alert alert-info text-center py-5" role="alert">
+                                    <i class="fa fa-calendar-plus fa-3x mb-3 d-block text-info"></i>
+                                    <h5>Nessun calendario personalizzato</h5>
+                                    <p class="mb-3">Non hai ancora creato calendari personali. Clicca su "Crea Nuovo Calendario" per iniziare.</p>
+                                    <a href="/my/time_off/calendar/create" class="btn btn-primary">
+                                        <i class="fa fa-plus me-1"></i> Crea il tuo primo calendario
+                                    </a>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+
+                    <div class="mt-3">
+                        <a href="/my/time_off" class="btn btn-secondary">
+                            <i class="fa fa-arrow-left me-1"></i> Torna a Time Off
+                        </a>
+                    </div>
+                </t>
+
+                <t t-if="not employee">
+                    <div class="alert alert-warning" role="alert">
+                        <h4 class="alert-heading">
+                            <i class="fa fa-exclamation-triangle me-2"></i>Accesso Limitato
+                        </h4>
+                        <p><t t-esc="error_message or 'Non sei registrato come dipendente nel sistema.'"/></p>
+                        <hr/>
+                        <p class="mb-0">Contatta l'amministratore delle risorse umane per ottenere l'accesso.</p>
+                        <div class="mt-3">
+                            <a href="/my/home" class="btn btn-primary">Torna alla Dashboard</a>
+                        </div>
+                    </div>
+                </t>
+            </div>
+        </t>
+    </template>
+
+    <!-- Template per creazione calendario -->
+    <template id="portal_calendar_create_form" name="Crea Calendario">
+        <t t-call="portal.portal_layout">
+            <div class="container mt-3">
+                <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+                    <h1 class="mb-2 mb-md-0">
+                        <i class="fa fa-plus-circle me-2"></i>Crea Nuovo Calendario
+                    </h1>
+                    <a href="/my/time_off/calendars" class="btn btn-outline-secondary">
+                        <i class="fa fa-arrow-left me-1"></i> Torna ai Calendari
+                    </a>
+                </div>
+
+                <!-- Messaggi di errore Bootstrap style -->
+                <t t-if="error_message">
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <h5 class="alert-heading mb-1">
+                            <i class="fa fa-exclamation-triangle me-2"></i>Errore nella creazione
+                        </h5>
+                        <p class="mb-0" t-esc="error_message"/>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </t>
+
+                <form action="/my/time_off/calendar/create" method="post" class="mt-4" id="calendar_create_form">
+                    <input type="hidden" name="csrf_token" t-att-value="csrf_token"/>
+                    <input type="hidden" name="slot_config_json" id="slot_config_json" value="[]"/>
+
+                    <div class="row">
+                        <!-- Colonna principale: Form multigiorno -->
+                        <div class="col-lg-8">
+                            <div class="card mb-4 shadow-sm">
+                                <div class="card-header bg-primary text-white">
+                                    <h5 class="mb-0">
+                                        <i class="fa fa-info-circle me-2"></i>Informazioni Calendario
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <label for="custom_name" class="form-label fw-bold">Nome Calendario *</label>
+                                        <input type="text" id="custom_name" name="custom_name" class="form-control form-control-lg" 
+                                               required="required" placeholder="Es: Orario Part-Time, Turno Serale..."
+                                               t-att-value="form_data.get('custom_name') if form_data else ''"/>
+                                        <small class="form-text text-muted">
+                                            <i class="fa fa-lightbulb me-1"></i>
+                                            Il nome completo sarà "Calendario di [Tuo Nome] - [Nome inserito]"
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card mb-4 shadow-sm">
+                                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0">
+                                        <i class="fa fa-clock me-2"></i>Configurazione Slot Orari
+                                    </h5>
+                                    <button type="button" class="btn btn-light btn-sm" id="add_slot_btn">
+                                        <i class="fa fa-plus me-1"></i> Aggiungi Slot
+                                    </button>
+                                </div>
+                                <div class="card-body">
+                                    <p class="text-muted mb-3">
+                                        <i class="fa fa-info-circle me-1"></i>
+                                        Configura gli slot orari del calendario. Puoi aggiungere più slot per ogni giorno della settimana. 
+                                        Gli orari sono selezionabili con step di 30 minuti.
+                                    </p>
+                                    
+                                    <!-- Header tabella slot (desktop) -->
+                                    <div class="d-none d-md-block border-bottom pb-2 mb-3">
+                                        <div class="row text-muted fw-bold small">
+                                            <div class="col-md-4">Giorno</div>
+                                            <div class="col-md-3">Ora Inizio</div>
+                                            <div class="col-md-3">Ora Fine</div>
+                                            <div class="col-md-2 text-end">Azioni</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div id="slots_container">
+                                        <!-- Gli slot verranno aggiunti qui dinamicamente -->
+                                    </div>
+                                    
+                                    <div id="no_slots_message" class="alert alert-info mb-0">
+                                        <i class="fa fa-info-circle me-2"></i>
+                                        Nessuno slot orario configurato. Clicca "Aggiungi Slot" per iniziare.
+                                    </div>
+
+                                    <!-- Pulsante aggiungi slot mobile -->
+                                    <div class="d-md-none mt-3">
+                                        <button type="button" class="btn btn-success w-100" id="add_slot_btn_mobile">
+                                            <i class="fa fa-plus me-1"></i> Aggiungi Slot Orario
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sidebar: Riepilogo ore live e anteprima -->
+                        <div class="col-lg-4">
+                            <!-- Riepilogo ore -->
+                            <div class="card mb-4 shadow-sm">
+                                <div class="card-header bg-success text-white">
+                                    <h5 class="mb-0">
+                                        <i class="fa fa-chart-pie me-2"></i>Riepilogo Ore
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row text-center">
+                                        <div class="col-4">
+                                            <div class="border rounded p-2 bg-light">
+                                                <h4 class="mb-0 text-success" id="total_hours">0.0</h4>
+                                                <small class="text-muted">ore/sett.</small>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="border rounded p-2 bg-light">
+                                                <h4 class="mb-0 text-success" id="days_worked">0</h4>
+                                                <small class="text-muted">giorni</small>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="border rounded p-2 bg-light">
+                                                <h4 class="mb-0 text-success" id="avg_hours">0.0</h4>
+                                                <small class="text-muted">ore/giorno</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Anteprima configurazione -->
+                            <div class="card mb-4 shadow-sm">
+                                <div class="card-header bg-info text-white">
+                                    <h5 class="mb-0">
+                                        <i class="fa fa-eye me-2"></i>Anteprima Configurazione
+                                    </h5>
+                                </div>
+                                <div class="card-body p-3">
+                                    <div id="preview_container">
+                                        <p class="text-muted mb-0 text-center">
+                                            <i class="fa fa-calendar-alt fa-2x mb-2 d-block text-muted"></i>
+                                            Aggiungi slot per vedere l'anteprima settimanale.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Pulsanti azione (sticky su mobile) -->
+                            <div class="card shadow-sm position-sticky" style="top: 1rem;">
+                                <div class="card-body">
+                                    <button type="submit" class="btn btn-success btn-lg w-100 mb-2">
+                                        <i class="fa fa-save me-1"></i> Crea Calendario
+                                    </button>
+                                    <a href="/my/time_off/calendars" class="btn btn-secondary w-100">
+                                        <i class="fa fa-times me-1"></i> Annulla
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Gestione slot (create form) affidata al widget Odoo (calendar_manager.js) -->
+            </div>
+        </t>
+    </template>
+
+    <!-- Template per dettaglio calendario -->
+    <template id="portal_calendar_detail_page" name="Dettaglio Calendario">
+        <t t-call="portal.portal_layout">
+            <div class="container mt-3">
+                <t t-if="calendar">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+                        <div class="mb-2 mb-md-0">
+                            <h1 class="mb-1">
+                                <i class="fa fa-calendar me-2"></i>
+                                <t t-esc="calendar.custom_name or calendar.name"/>
+                                <!-- Badge se è il calendario attivo -->
+                                <t t-if="employee.resource_calendar_id.id == calendar.id">
+                                    <span class="badge bg-success ms-2">Attivo</span>
+                                </t>
+                            </h1>
+                            <p class="text-muted mb-0"><t t-esc="calendar.name"/></p>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <!-- Pulsante "Usa Questo" se non è già il calendario attivo -->
+                            <t t-if="employee.resource_calendar_id.id != calendar.id">
+                                <form t-att-action="'/my/time_off/calendar/%s/use' % calendar.id" method="post" class="d-inline">
+                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                    <button type="submit" class="btn btn-success">
+                                        <i class="fa fa-check me-1"></i> Usa Questo
+                                    </button>
+                                </form>
+                            </t>
+                            <a href="/my/time_off/calendars" class="btn btn-outline-secondary">
+                                <i class="fa fa-arrow-left me-1"></i> Torna ai Calendari
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <!-- Colonna principale: dettagli e slot -->
+                        <div class="col-lg-8">
+                            <div class="card mb-4 shadow-sm">
+                                <div class="card-header bg-primary text-white">
+                                    <h5 class="mb-0">
+                                        <i class="fa fa-info-circle me-2"></i>Informazioni Calendario
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label text-muted small">Nome personalizzato</label>
+                                            <p class="fw-bold mb-0"><t t-esc="calendar.custom_name or '-'"/></p>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label text-muted small">Timezone</label>
+                                            <p class="fw-bold mb-0"><t t-esc="calendar.tz or 'Non definito'"/></p>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label text-muted small">Azienda</label>
+                                            <p class="fw-bold mb-0"><t t-esc="calendar.company_id.name if calendar.company_id else '-'"/></p>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label text-muted small">Ore flessibili</label>
+                                            <p class="fw-bold mb-0">
+                                                <t t-if="calendar.flexible_hours">
+                                                    <span class="badge bg-info">Sì</span>
+                                                </t>
+                                                <t t-else="">
+                                                    <span class="badge bg-secondary">No</span>
+                                                </t>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card mb-4 shadow-sm">
+                                <div class="card-header bg-primary text-white">
+                                    <h5 class="mb-0">
+                                        <i class="fa fa-clock me-2"></i>Slot Orari (<t t-esc="len(attendances) if attendances else 0"/>)
+                                    </h5>
+                                </div>
+                                <div class="card-body p-0">
+                                    <t t-if="attendances">
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-hover mb-0">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th>Nome</th>
+                                                        <th>Giorno</th>
+                                                        <th>Ora Inizio</th>
+                                                        <th>Ora Fine</th>
+                                                        <th>Periodo</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <t t-foreach="attendances" t-as="attendance">
+                                                        <tr>
+                                                            <td><t t-esc="attendance.name"/></td>
+                                                            <td>
+                                                                <span class="badge bg-primary">
+                                                                    <t t-esc="dict(attendance._fields['dayofweek'].selection).get(attendance.dayofweek, attendance.dayofweek)"/>
+                                                                </span>
+                                                            </td>
+                                                            <td>
+                                                                <t t-esc="'%02d:%02d' % (int(attendance.hour_from), int((attendance.hour_from % 1) * 60))"/>
+                                                            </td>
+                                                            <td>
+                                                                <t t-esc="'%02d:%02d' % (int(attendance.hour_to), int((attendance.hour_to % 1) * 60))"/>
+                                                            </td>
+                                                            <td>
+                                                                <t t-if="attendance.day_period == 'morning'">
+                                                                    <span class="badge bg-warning text-dark">Mattina</span>
+                                                                </t>
+                                                                <t t-elif="attendance.day_period == 'afternoon'">
+                                                                    <span class="badge bg-info">Pomeriggio</span>
+                                                                </t>
+                                                                <t t-else="">
+                                                                    <span class="badge bg-secondary">-</span>
+                                                                </t>
+                                                            </td>
+                                                        </tr>
+                                                    </t>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </t>
+                                    <t t-else="">
+                                        <div class="alert alert-info m-3">
+                                            <i class="fa fa-info-circle me-2"></i>
+                                            Nessuno slot orario configurato per questo calendario.
+                                        </div>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sidebar: Riepilogo statistiche -->
+                        <div class="col-lg-4">
+                            <div class="card mb-4 shadow-sm">
+                                <div class="card-header bg-success text-white">
+                                    <h5 class="mb-0">
+                                        <i class="fa fa-chart-pie me-2"></i>Riepilogo Ore
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row text-center">
+                                        <div class="col-4">
+                                            <div class="border rounded p-3 bg-light">
+                                                <h3 class="mb-0 text-success">
+                                                    <t t-esc="'%.1f' % calendar.total_weekly_hours"/>
+                                                </h3>
+                                                <small class="text-muted">ore/sett.</small>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="border rounded p-3 bg-light">
+                                                <h3 class="mb-0 text-success">
+                                                    <t t-esc="calendar.days_worked"/>
+                                                </h3>
+                                                <small class="text-muted">giorni</small>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="border rounded p-3 bg-light">
+                                                <h3 class="mb-0 text-success">
+                                                    <t t-esc="'%.1f' % calendar.hours_per_day"/>
+                                                </h3>
+                                                <small class="text-muted">ore/giorno</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Anteprima settimana -->
+                            <div class="card mb-4 shadow-sm">
+                                <div class="card-header bg-info text-white">
+                                    <h5 class="mb-0">
+                                        <i class="fa fa-calendar-week me-2"></i>Vista Settimanale
+                                    </h5>
+                                </div>
+                                <div class="card-body p-3">
+                                    <t t-if="attendances">
+                                        <table class="table table-sm table-borderless mb-0">
+                                            <tbody>
+                                                <t t-set="day_slots" t-value="{}"/>
+                                                <t t-foreach="attendances" t-as="att">
+                                                    <t t-if="att.dayofweek not in day_slots">
+                                                        <t t-set="day_slots" t-value="dict(day_slots, **{att.dayofweek: []})"/>
+                                                    </t>
+                                                </t>
+                                                <t t-foreach="['0', '1', '2', '3', '4', '5', '6']" t-as="d">
+                                                    <t t-set="day_name" t-value="{'0': 'Lun', '1': 'Mar', '2': 'Mer', '3': 'Gio', '4': 'Ven', '5': 'Sab', '6': 'Dom'}[d]"/>
+                                                    <t t-set="day_attendances" t-value="[a for a in attendances if a.dayofweek == d]"/>
+                                                    <tr t-att-class="'table-success' if day_attendances else ''">
+                                                        <td class="fw-bold"><t t-esc="day_name"/></td>
+                                                        <td>
+                                                            <t t-if="day_attendances">
+                                                                <t t-foreach="day_attendances" t-as="da">
+                                                                    <span class="badge bg-primary me-1">
+                                                                        <t t-esc="'%02d:%02d' % (int(da.hour_from), int((da.hour_from % 1) * 60))"/>-<t t-esc="'%02d:%02d' % (int(da.hour_to), int((da.hour_to % 1) * 60))"/>
+                                                                    </span>
+                                                                </t>
+                                                            </t>
+                                                            <t t-else="">
+                                                                <span class="text-muted">—</span>
+                                                            </t>
+                                                        </td>
+                                                    </tr>
+                                                </t>
+                                            </tbody>
+                                        </table>
+                                    </t>
+                                    <t t-else="">
+                                        <p class="text-muted text-center mb-0">
+                                            <i class="fa fa-calendar-times fa-2x mb-2 d-block"></i>
+                                            Nessun orario configurato
+                                        </p>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-3">
+                        <a href="/my/time_off/calendars" class="btn btn-secondary">
+                            <i class="fa fa-arrow-left me-1"></i> Torna ai Calendari
+                        </a>
+                    </div>
+                </t>
+
+                <t t-if="not calendar">
+                    <div class="alert alert-warning" role="alert">
+                        <h4 class="alert-heading">
+                            <i class="fa fa-exclamation-triangle me-2"></i>Calendario Non Trovato
+                        </h4>
+                        <p><t t-esc="error_message or 'Il calendario richiesto non esiste o non sei autorizzato a visualizzarlo.'"/></p>
+                        <hr/>
+                        <div class="mt-3">
+                            <a href="/my/time_off/calendars" class="btn btn-primary">
+                                <i class="fa fa-arrow-left me-1"></i> Torna ai Calendari
+                            </a>
+                        </div>
+                    </div>
+                </t>
+            </div>
+        </t>
+    </template>
+
+</odoo>

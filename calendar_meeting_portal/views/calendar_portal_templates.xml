@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- MODIFICATO: Aggiunta breadcrumb per pagina creazione -->
+    <template id="portal_my_home_menu_meeting_custom" name="Portal layout : Meetings menu entries"
+        inherit_id="portal.portal_breadcrumbs" priority="20">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'custom_meeting_page_probc' or custom_meeting_request"
+                t-attf-class="breadcrumb-item #{'active ' if not custom_meeting_request else ''}">
+                <a t-if="custom_meeting_request"
+                    t-attf-href="/my/custom_meeting_request?{{ keep_query() }}">Meeting </a>
+                <t t-else="">Meeting </t>
+            </li>
+            <!-- AGGIUNTA: Breadcrumb per pagina creazione appuntamento -->
+            <li t-if="page_name == 'meeting_create'" class="breadcrumb-item">
+                <a href="/my/custom_meeting_request">Meeting</a>
+            </li>
+            <li t-if="page_name == 'meeting_create'" class="breadcrumb-item active">
+                <span>Crea Nuovo Appuntamento</span>
+            </li>
+            <!-- Fine aggiunta breadcrumb -->
+            <li t-if="custom_meeting_request" class="breadcrumb-item active">
+                <span t-field="custom_meeting_request.name" />
+            </li>
+        </xpath>
+    </template>
+
+    <template id="portal_my_home_meeting_custom" name="Portal My Home: Meeting" inherit_id="portal.portal_my_home" priority="28">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-if="custom_meeting_count">
+                <t t-call="portal.portal_docs_entry">
+                    <t t-set="icon" t-value="'/project/static/src/img/tasks.svg'"/>
+                    <t t-set="title" t-value="'Meeting'"/>
+                    <t t-set="url" t-value="'/my/custom_meeting_request'"/>
+                    <t t-set="text" t-value="'Visualizza e gestisci i tuoi meeting programmati'"/>
+                    <t t-set="count" t-value="custom_meeting_count"/>
+                    <t t-set="config_card" t-value="True"/>
+                </t>
+            </t>
+        </xpath>
+    </template>
+
+    <!-- MODIFICATO: Aggiunta pulsante creazione e messaggio successo -->
+    <template id="portal_my_meeting_custom" name="My Meetings">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True" />
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Meeting </t>
+            </t>
+
+            <!-- AGGIUNTA: Messaggio di successo dopo creazione -->
+            <t t-if="success_message">
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <strong>Successo!</strong> Il tuo appuntamento è stato creato con successo.
+                </div>
+            </t>
+
+            <!-- AGGIUNTA: Pulsante per creare nuovo appuntamento (solo per dipendenti) -->
+            <t t-if="is_employee">
+                <div class="row mb-3">
+                    <div class="col-12 col-md-6 mb-3 mb-md-0">
+                        <h4>I Tuoi Appuntamenti</h4>
+                    </div>
+                    <div class="col-12 col-md-6 d-flex justify-content-center justify-content-md-end">
+                        <a href="/my/meeting/create" class="btn btn-primary">
+                            <i class="fa fa-plus me-2"></i>Crea Nuovo Appuntamento
+                        </a>
+                    </div>
+                </div>
+            </t>
+
+            <t t-if="not meetings">
+                <div class="alert alert-info">
+                    <p class="mb-0">There are currently no Meetings for your account.</p>
+                    <t t-if="is_employee">
+                        <p class="mb-0 mt-2">
+                            <a href="/my/meeting/create" class="btn btn-sm btn-primary">
+                                <i class="fa fa-plus me-1"></i>Crea il tuo primo appuntamento
+                            </a>
+                        </p>
+                    </t>
+                </div>
+            </t>
+            <t t-if="meetings" t-call="portal.portal_table">
+                <thead>
+                    <tr class="active">
+                        <th>Subject</th>
+                        <th>Start Date</th>
+                        <th>Duration</th>
+                        <th>Partecipanti</th>
+                        <th>Esito Evento</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <t t-foreach="meetings" t-as="custom_meeting_request">
+                    <tr>
+                        <td>
+                            <!-- Indicatore visivo di stato -->
+                            <t t-set="current_user_attendee" t-value="False"/>
+                            <t t-set="is_confirmed" t-value="False"/>
+                            <t t-foreach="custom_meeting_request.attendee_ids" t-as="attendee">
+                                <t t-if="attendee.partner_id == request.env.user.partner_id">
+                                    <t t-set="current_user_attendee" t-value="attendee"/>
+                                    <t t-set="is_confirmed" t-value="attendee.state == 'accepted'"/>
+                                </t>
+                            </t>
+                            <span t-if="current_user_attendee" 
+                                  t-attf-class="d-inline-block rounded-circle me-2 #{is_confirmed and 'bg-success' or 'bg-danger'}"
+                                  style="width: 8px; height: 8px; vertical-align: middle;"
+                                  t-att-title="is_confirmed and 'Confermato' or 'Non confermato'"></span>
+                            <a
+                                t-attf-href="/my/custom_meeting_request/#{custom_meeting_request.id}?{{ keep_query() }}">
+                                <span t-field="custom_meeting_request.name" />
+                            </a>
+                        </td>
+                        <td>
+                            <span t-field="custom_meeting_request.start" />
+                        </td>
+                        <td><span t-esc="custom_meeting_request.duration"
+                                t-options='{"widget": "float_time"}' /> hours </td>
+                        <td>
+                                <t t-if="custom_meeting_request.attendee_ids">
+                                <t t-set="non_organizer_attendees" t-value="[a for a in custom_meeting_request.attendee_ids if a.partner_id != custom_meeting_request.user_id.partner_id]"/>
+                                <t t-if="non_organizer_attendees">
+                                    <t t-set="first_attendee" t-value="non_organizer_attendees[0]"/>
+                                    <span t-esc="first_attendee.display_name"/>
+                                </t>
+                                <t t-else="">–</t>
+                                </t>
+                        </td>
+                        <td>
+                            <t t-if="custom_meeting_request.esito_evento_id">
+                                <span t-field="custom_meeting_request.esito_evento_id" />
+                            </t>
+                            <t t-else="">–</t>
+                        </td>
+                        <td>
+                            <div class="text-right">
+                                <!-- <a data-toggle="modal"
+                                   class="update_calendar_details" 
+                                   t-attf-data-target="#modal-custom_meeting_request-comment-#{custom_meeting_request.id}" 
+                                   href="">Send Message</a>  -->
+                                <a data-bs-toggle="modal"
+                                    class="update_calendar_details"
+                                    t-attf-data-bs-target="#modal-custom_meeting_request-comment-#{custom_meeting_request.id}"
+                                    href="">Send Message</a>
+                                <t
+                                    t-call="calendar_meeting_portal.custom_modal_update_calendar_comment" />
+                                <t t-call="calendar_meeting_portal.custom_calendar_update_message" />
+                            </div>
+                        </td>
+                    </tr>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="custom_portal_my_meeting" name="My Meeting">
+        <t t-call="portal.portal_layout">
+            <t t-if="confirm_message">
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <span>Your participation has been confirmed.</span>
+                </div>
+            </t>
+            <t t-if="success_message">
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <strong>Successo!</strong> L'appuntamento è stato aggiornato con successo.
+                </div>
+            </t>
+            <t t-if="error_message">
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <strong>Errore:</strong> <span t-esc="error_message"/>
+                </div>
+            </t>
+            <div class="container o_portal_wrap">
+                <div class="row">
+                    <div class="col-12 col-lg-6 mb-3">
+                        <div class="card h-100">
+                            <div class="card-header d-flex align-items-center">
+                                <img t-if="custom_meeting_request.user_id.image_128" t-att-src="'/web/image/res.users/%d/image_128' % custom_meeting_request.user_id.id" class="rounded-circle me-2" width="40" height="40"/>
+                                <h5 class="mb-0">
+                                    <span t-field="custom_meeting_request.name" />
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <p class="mb-2">
+                                    <strong class="me-2">Video call:</strong>
+                                    <a t-if="custom_meeting_request.videocall_location" t-att-href="custom_meeting_request.videocall_location" target="_blank" class="btn btn-sm btn-outline-primary">
+                                        <i class="fa fa-video me-1"/>Video Call
+                                    </a>
+                                    <t t-if="not custom_meeting_request.videocall_location">–</t>
+                                </p>
+                                <p><strong>Start:</strong> <span t-field="custom_meeting_request.start"/></p>
+                                <p><strong>End:</strong> <span t-field="custom_meeting_request.stop"/></p>
+                                <p><strong>Duration:</strong> <span t-esc="custom_meeting_request.duration" t-options='{"widget": "float_time"}'/> h</p>
+                                <p><strong>Location:</strong> <span t-field="custom_meeting_request.location"/></p>
+                                <p><strong>Description:</strong> <span t-field="custom_meeting_request.description"/></p>
+                                <p t-if="is_employee"><strong>Stato Appuntamento:</strong> <span t-field="custom_meeting_request.appointment_status"/></p>
+                                <p t-if="is_employee"><strong>Esito Evento:</strong> 
+                                    <span t-if="custom_meeting_request.esito_evento_id" t-field="custom_meeting_request.esito_evento_id"/>
+                                    <span t-else="" class="text-muted">Non impostato</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h6 class="mb-3">Partecipanti</h6>
+                                <ul class="list-unstyled">
+                                    <t t-foreach="custom_meeting_request.partner_ids" t-as="p">
+                                        <li><span t-esc="p.display_name"/></li>
+                                    </t>
+                                </ul>
+                                <div class="mt-4">
+                                    <div class="d-flex flex-column gap-2">
+                                        <button data-bs-toggle="modal" class="btn btn-outline-primary btn-sm" t-attf-data-bs-target="#modal-custom_meeting_request-comment-#{custom_meeting_request.id}">
+                                            <i class="fa fa-envelope me-2"/>Invia mail
+                                        </button>
+                                        <t t-if="show_confirm_button">
+                                            <a t-att-href="'/my/custom_meeting_request/%d/confirm' % custom_meeting_request.id" class="btn btn-success btn-sm">
+                                                <i class="fa fa-check me-2"/>Conferma partecipazione
+                                            </a>
+                                        </t>
+                                        
+                                    </div>
+                                    
+                                    <!-- FASE 3: Form aggiornamento esito evento (solo per dipendenti) -->
+                                    <t t-if="is_employee">
+                                        <div class="mt-3 border-top pt-3">
+                                            <h6 class="mb-3">Aggiorna Esito Evento</h6>
+                                            <form method="post" t-attf-action="/my/custom_meeting_request/#{custom_meeting_request.id}/update_outcome">
+                                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                                <div class="mb-2">
+                                                    <select name="esito_evento_id" class="form-select form-select-sm">
+                                                        <option value="">-- Seleziona Esito --</option>
+                                                        <t t-set="outcomes" t-value="request.env['calendar.event.outcome'].sudo().search([('active', '=', True)], order='sequence, name')"/>
+                                                        <t t-foreach="outcomes" t-as="outcome">
+                                                            <option t-att-value="outcome.id" 
+                                                                    t-att-selected="'selected' if custom_meeting_request.esito_evento_id and custom_meeting_request.esito_evento_id.id == outcome.id else None"
+                                                                    t-esc="outcome.name"/>
+                                                        </t>
+                                                    </select>
+                                                </div>
+                                                <button type="submit" class="btn btn-primary btn-sm w-100">
+                                                    <i class="fa fa-check me-2"/>Aggiorna Esito
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </t>
+                                    
+                                    <t t-call="calendar_meeting_portal.custom_modal_update_calendar_comment" />
+                                    <t t-call="calendar_meeting_portal.custom_calendar_update_message" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

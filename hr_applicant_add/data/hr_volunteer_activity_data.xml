@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Volunteer Activity Types Data -->
+        <record id="volunteer_activity_psychological_support" model="hr.volunteer.activity">
+            <field name="name">Supporto psicologico online nello sportello volontariato</field>
+            <field name="code">psychological_support</field>
+            <field name="description">Attività di supporto psicologico online attraverso lo sportello volontariato</field>
+            <field name="color">1</field>
+            <field name="sequence">10</field>
+        </record>
+
+        <record id="volunteer_activity_school_talks" model="hr.volunteer.activity">
+            <field name="name">Talk e incontri di sensibilizzazione presso le scuole (in presenza)</field>
+            <field name="code">school_talks</field>
+            <field name="description">Attività di sensibilizzazione e talk presso istituti scolastici in modalità presenza</field>
+            <field name="color">2</field>
+            <field name="sequence">20</field>
+        </record>
+
+        <record id="volunteer_activity_awareness_campaigns" model="hr.volunteer.activity">
+            <field name="name">Banchetti e incontri per campagne di sensibilizzazione (in presenza)</field>
+            <field name="code">awareness_campaigns</field>
+            <field name="description">Partecipazione a banchetti informativi e campagne di sensibilizzazione in presenza</field>
+            <field name="color">3</field>
+            <field name="sequence">30</field>
+        </record>
+
+        <record id="volunteer_activity_scientific_committee" model="hr.volunteer.activity">
+            <field name="name">Partecipazione al comitato scientifico della Fondazione</field>
+            <field name="code">scientific_committee</field>
+            <field name="description">Partecipazione attiva al comitato scientifico e alle attività di ricerca della Fondazione</field>
+            <field name="color">4</field>
+            <field name="sequence">40</field>
+        </record>
+
+        <record id="volunteer_activity_other_presence" model="hr.volunteer.activity">
+            <field name="name">Altre attività in presenza</field>
+            <field name="code">other_presence</field>
+            <field name="description">Altre tipologie di attività di volontariato svolte in modalità presenza</field>
+            <field name="color">5</field>
+            <field name="sequence">50</field>
+        </record>
+
+        <record id="volunteer_activity_other_online" model="hr.volunteer.activity">
+            <field name="name">Altre attività online</field>
+            <field name="code">other_online</field>
+            <field name="description">Altre tipologie di attività di volontariato svolte in modalità online</field>
+            <field name="color">6</field>
+            <field name="sequence">60</field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Extend CRM Lead Form View -->
+    <record id="crm_lead_view_form_inherit" model="ir.ui.view">
+        <field name="name">crm.lead.form.business.classification</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Business Information" name="business_information">
+                    <group>
+                        <group>
+                            <field name="company_type"/>
+                            <field name="company_size"/>
+                            <field name="region"/>
+                        </group>
+                        <group>
+                            <field name="business_sector_id"/>
+                            <field name="annual_volume" widget="monetary"/>
+                            <field name="employee_count"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Extend CRM Lead Search View -->
+    <record id="view_crm_case_opportunities_filter_inherit" model="ir.ui.view">
+        <field name="name">crm.lead.search.business.classification</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.view_crm_case_opportunities_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='tag_ids']" position="after">
+                <field name="company_type"/>
+                <field name="company_size"/>
+                <field name="region"/>
+                <field name="business_sector_id"/>
+                <field name="employee_count"/>
+            </xpath>
+            <xpath expr="//filter[@name='source']" position="after">
+                <filter string="Company Type" name="company_type" context="{'group_by': 'company_type'}"/>
+                <filter string="Company Size" name="company_size" context="{'group_by': 'company_size'}"/>
+                <filter string="Region" name="region" context="{'group_by': 'region'}"/>
+                <filter string="Business Sector" name="business_sector" context="{'group_by': 'business_sector_id'}"/>
+                <filter string="Employee Count" name="employee_count" context="{'group_by': 'employee_count'}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

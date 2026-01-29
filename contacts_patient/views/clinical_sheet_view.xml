@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_clinical_sheet_form" model="ir.ui.view">
+        <field name="name">clinical.sheet.form</field>
+        <field name="model">clinical.sheet</field>
+        <field name="arch" type="xml">
+            <form string="Cartella Clinica" create="false">
+                <sheet>
+                    <group>
+                        <field name="partner_id" readonly="1"/>
+                        <!-- <button name="action_clinical_observations" 
+                                type="action" 
+                                string="Osservazioni Cliniche" 
+                                class="btn-primary"
+                                icon="fa-stethoscope"/> -->
+                    </group>
+                    <group string="Completamento">
+                        <group>
+                            <field name="section_1_completion" widget="progressbar"/>
+                            <field name="section_2_completion" widget="progressbar"/>
+                            <field name="section_3_completion" widget="progressbar"/>
+                            <field name="section_4_completion" widget="progressbar"/>
+                            <field name="section_5_completion" widget="progressbar"/>
+                        </group>
+                        <group>
+                            <field name="section_6_completion" widget="progressbar"/>
+                            <field name="section_7_completion" widget="progressbar"/>
+                            <field name="section_8_completion" widget="progressbar"/>
+                            <field name="section_9_completion" widget="progressbar"/>
+                            <field name="section_10_completion" widget="progressbar"/>
+                        </group>
+                        <field name="overall_completion" widget="progressbar"/>
+                    </group>
+                    <notebook>
+                        <page string="1. Consultazione">
+                            <group>
+                                <field name="reason_for_consultation"/>
+                                <field name="symptoms_duration"/>
+                                <field name="triggering_factors"/>
+                                <field name="daily_life_impact"/>
+                            </group>
+                        </page>
+                        <page string="2. Anamnesi Psichiatrica">
+                            <group>
+                                <field name="previous_psychotherapies"/>
+                                <field name="previous_psychiatric_diagnoses"/>
+                                <field name="previous_medications"/>
+                                <field name="psychiatric_hospitalizations"/>
+                            </group>
+                        </page>
+
+                        <page string="3. Anamnesi Medica">
+                            <group>
+                                <field name="chronic_diseases"/>
+                                <field name="chronic_diseases_details" invisible="not chronic_diseases"/>
+                                <field name="previous_surgeries"/>
+                                <field name="surgeries_details" invisible="not previous_surgeries"/>
+                                <field name="current_medications"/>
+                                <field name="allergies"/>
+                                <field name="allergies_details" invisible="not allergies"/>
+                                <field name="pregnancy_breastfeeding"/>
+                                <field name="pregnancy_weeks" invisible="pregnancy_breastfeeding == 'not_applicable'"/>
+                            </group>
+                        </page>
+                        <page string="4. Sostanze">
+                            <group>
+                                <field name="smoking"/>
+                                <field name="smoking_details" invisible="not smoking"/>
+                                <field name="alcohol"/>
+                                <field name="alcohol_details" invisible="not alcohol"/>
+                                <field name="illegal_drugs"/>
+                                <field name="drugs_details" invisible="not illegal_drugs"/>
+                            </group>
+                        </page>
+                        <page string="5. Sociale/Familiare">
+                            <group>
+                                <field name="living_situation"/>
+                                <field name="social_support"/>
+                                <field name="social_support_description"/>
+                                <field name="significant_relationships"/>
+                                <field name="developmental_history"/>
+                                <field name="family_context"/>
+                                <field name="social_context"/>
+                                <field name="work_context"/>
+                                <field name="cultural_aspects"/>
+                            </group>
+                        </page>
+                        <page string="6. Sintomi Attuali">
+                            <group>
+                                <field name="problem_description"/>
+                                <field name="symptoms_onset"/>
+                                <field name="current_issues"/>
+                                <field name="sadness_depression"/>
+                                <field name="anhedonia"/>
+                                <field name="irritability_anger"/>
+                                <field name="euphoria_elevated_mood"/>
+                                <field name="emotional_lability"/>
+                                <field name="generalized_anxiety"/>
+                                <field name="panic_attacks"/>
+                                <field name="phobias"/>
+                                <field name="ocd_symptoms"/>
+                                <field name="ptsd_symptoms"/>
+                                <field name="hallucinations"/>
+                                <field name="delusions"/>
+                                <field name="thought_disorganization"/>
+                                <field name="concentration_difficulties"/>
+                                <field name="memory_problems"/>
+                                <field name="planning_difficulties"/>
+                                <field name="sleep_disturbances"/>
+                                <field name="appetite_changes"/>
+                                <field name="fatigue"/>
+                                <field name="somatic_symptoms"/>
+                            </group>
+                        </page>
+                        <page string="7. Esame Psichico">
+                            <group>
+                                <field name="appearance_hygiene"/>
+                                <field name="attitude"/>
+                                <field name="mimics_gestures"/>
+                                <field name="psychomotor_activity"/>
+                                <field name="language_quality"/>
+                                <field name="language_quantity"/>
+                                <field name="language_tone"/>
+                                <field name="reported_mood"/>
+                                <field name="observed_affect"/>
+                                <field name="thought_form"/>
+                                <field name="thought_content"/>
+                                <field name="exam_hallucinations"/>
+                                <field name="illusions"/>
+                                <field name="derealization"/>
+                                <field name="orientation"/>
+                                <field name="attention_concentration"/>
+                                <field name="memory_exam"/>
+                                <field name="abstraction_capacity"/>
+                                <field name="insight"/>
+                                <field name="judgment"/>
+                            </group>
+                        </page>
+                        <page string="8. Valutazione Rischio">
+                            <group>
+                                <field name="risk_assessment"/>
+                                <field name="suicidal_ideation"/>
+                                <field name="suicide_planning" invisible="suicidal_ideation == 'absent'"/>
+                                <field name="suicide_plan_details" invisible="suicide_planning == 'absent'"/>
+                                <field name="suicide_intention" invisible="suicidal_ideation == 'absent'"/>
+                                <field name="suicide_means_available" invisible="suicidal_ideation == 'absent'"/>
+                                <field name="suicide_means_details" invisible="not suicide_means_available"/>
+                                <field name="suicide_risk_factors" invisible="suicidal_ideation == 'absent'"/>
+                                <field name="aggressive_ideation"/>
+                                <field name="aggression_target" invisible="aggressive_ideation == 'absent'"/>
+                                <field name="aggression_planning" invisible="aggressive_ideation == 'absent'"/>
+                                <field name="aggression_plan_details" invisible="aggression_planning == 'absent'"/>
+                                <field name="aggression_intention" invisible="aggressive_ideation == 'absent'"/>
+                                <field name="aggression_means_available" invisible="aggressive_ideation == 'absent'"/>
+                                <field name="aggression_means_details" invisible="not aggression_means_available"/>
+                                <field name="aggression_risk_factors" invisible="aggressive_ideation == 'absent'"/>
+                                <field name="hygiene_risk"/>
+                                <field name="nutrition_risk"/>
+                                <field name="medication_risk"/>
+                                <field name="financial_risk"/>
+                                <field name="housing_risk"/>
+                                <field name="exploitation_vulnerability"/>
+                                <field name="self_care_impact"/>
+                            </group>
+                        </page>
+                        <page string="9. Fattori Protettivi">
+                            <group>
+                                <field name="individual_protective_factors"/>
+                                <field name="social_protective_factors"/>
+                                <field name="treatment_engagement"/>
+                                <field name="stability_factors"/>
+                            </group>
+                        </page>
+                        <page string="10. Conclusioni">
+                            <group>
+                                <field name="patient_expectations"/>
+                                <field name="clinical_summary"/>
+                                <field name="diagnostic_hypotheses"/>
+                                <field name="main_problem_areas"/>
+                                <field name="relevant_risk_protective_factors"/>
+                                <field name="primary_diagnosis"/>
+                                <field name="secondary_diagnosis"/>
+                                <field name="diagnosis_code"/>
+                                <field name="diagnostic_criteria"/>
+                                <field name="differential_diagnosis"/>
+                                <field name="comorbidity"/>
+                                <field name="treatment_plan"/>
+                            </group>
+                        </page>
+
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_clinical_sheet_tree" model="ir.ui.view">
+        <field name="name">clinical.sheet.tree</field>
+        <field name="model">clinical.sheet</field>
+        <field name="arch" type="xml">
+
+            <list string="Cartelle Cliniche" create="false">
+                <field name="partner_id"/>
+                <field name="overall_completion" widget="progressbar"/>
+                <field name="write_date"/>
+            </list>
+
+        </field>
+    </record>
+
+    <record id="action_clinical_sheet" model="ir.actions.act_window">
+        <field name="name">Cartelle Cliniche</field>
+        <field name="res_model">clinical.sheet</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_clinical_sheet" name="Cartelle Cliniche" parent="contacts.menu_contacts" action="action_clinical_sheet" sequence="15"/>
+</odoo>

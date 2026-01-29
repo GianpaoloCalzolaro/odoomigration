@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Tree View (List View) per calendar.event.outcome -->
+    <record id="calendar_event_outcome_view_tree" model="ir.ui.view">
+        <field name="name">calendar.event.outcome.view.tree</field>
+        <field name="model">calendar.event.outcome</field>
+        <field name="arch" type="xml">
+            <list string="Tipologie Esito Evento" 
+                  default_order="sequence, name" 
+                  editable="top"
+                  decoration-muted="not active">
+                <field name="sequence" widget="handle"/>
+                <field name="name" required="1"/>
+                <field name="code" required="1"/>
+                <field name="active" widget="boolean_toggle"/>
+                <field name="riciesta_azione" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+    
+    <!-- Form View per calendar.event.outcome -->
+    <record id="calendar_event_outcome_view_form" model="ir.ui.view">
+        <field name="name">calendar.event.outcome.view.form</field>
+        <field name="model">calendar.event.outcome</field>
+        <field name="arch" type="xml">
+            <form string="Tipologia Esito Evento">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <widget name="web_ribbon" title="Archiviato" bg_color="text-bg-danger" invisible="active"/>
+                    </div>
+                    
+                    <group name="main_info">
+                        <group name="main_info_left" string="Informazioni Principali">
+                            <field name="name" 
+                                   placeholder="es. Completato con successo"
+                                   required="1"/>
+                            <field name="code" 
+                                   placeholder="es. completed"
+                                   required="1"
+                                   readonly="id"
+                                   help="Codice univoco identificativo. Non modificabile dopo la creazione."/>
+                        </group>
+                        
+                        <group name="main_info_right" string="Configurazione">
+                            <field name="sequence" 
+                                   placeholder="10"/>
+                            <field name="color" 
+                                   widget="color_picker"
+                                   help="Seleziona un colore per identificare visivamente questa tipologia"/>
+                            <field name="riciesta_azione"
+                                widget="boolean_toggle"
+                                help="Indicare se per questo esito è richiesta una azione"/>
+                        </group>
+                    </group>
+                    
+                    <group name="description_group" string="Descrizione">
+                        <field name="description" 
+                               nolabel="1" 
+                               placeholder="Inserisci una descrizione dettagliata della tipologia di esito..."/>
+                    </group>
+                    
+                    <group name="archive_group" string="Archiviazione">
+                        <field name="active" 
+                               widget="boolean_toggle"
+                               help="Se deselezionato, questa tipologia non sarà disponibile per nuovi eventi"/>
+                    </group>
+            
+                </sheet>
+            </form>
+        </field>
+    </record>
+    
+    <!-- Search View per calendar.event.outcome -->
+    <record id="calendar_event_outcome_view_search" model="ir.ui.view">
+        <field name="name">calendar.event.outcome.view.search</field>
+        <field name="model">calendar.event.outcome</field>
+        <field name="arch" type="xml">
+            <search string="Cerca Tipologie Esito">
+                <field name="name" 
+                       string="Nome o Codice" 
+                       filter_domain="['|', ('name', 'ilike', self), ('code', 'ilike', self)]"/>
+                <field name="code"/>
+                <field name="description"/>
+                
+                <separator/>
+                
+                <filter name="filter_active" 
+                        string="Attivi" 
+                        domain="[('active', '=', True)]"/>
+                <filter name="filter_archived" 
+                        string="Archiviati" 
+                        domain="[('active', '=', False)]"/>
+                
+                <separator/>
+                
+                <group expand="0" string="Raggruppa per">
+                    <filter name="group_by_active" 
+                            string="Stato" 
+                            context="{'group_by': 'active'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    
+    <!-- Action per calendar.event.outcome -->
+    <record id="calendar_event_outcome_action" model="ir.actions.act_window">
+        <field name="name">Tipologie Esito Evento</field>
+        <field name="res_model">calendar.event.outcome</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_filter_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crea una nuova tipologia di esito
+            </p>
+            <p>
+                Le tipologie di esito permettono di tracciare i risultati degli appuntamenti e degli eventi.
+                Crea tipologie personalizzate per adattarle alle tue esigenze operative.
+            </p>
+        </field>
+    </record>
+    
+    <!-- Menu Item sotto Calendario > Configurazione -->
+    <menuitem id="calendar_event_outcome_menu"
+              name="Tipologie Esito Evento"
+              parent="calendar.menu_calendar_configuration"
+              action="calendar_event_outcome_action"
+              sequence="20"/>
+    
+</odoo>

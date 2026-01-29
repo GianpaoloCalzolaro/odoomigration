@@ -1,0 +1,14 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_res_partner_portal,res.partner portal,base.model_res_partner,base.group_portal,1,1,0,0
+access_hr_employee_portal,hr.employee portal,hr.model_hr_employee,base.group_portal,1,0,0,0
+access_clinical_sheet_portal,clinical.sheet portal,model_clinical_sheet,base.group_portal,1,1,1,0
+access_clinical_sheet_user,clinical.sheet user,model_clinical_sheet,base.group_user,1,1,1,1
+access_clinical_observation_portal,clinical.observation portal,model_clinical_observation,base.group_portal,1,1,1,0
+access_clinical_observation_user,clinical.observation user,model_clinical_observation,base.group_user,1,1,1,1
+access_clinical_observation_manager,clinical.observation manager,model_clinical_observation,base.group_system,1,1,1,1
+access_hr_employee_category_portal,hr.employee.category portal,hr.model_hr_employee_category,base.group_portal,1,0,0,0
+access_survey_survey_portal,survey.survey portal,survey.model_survey_survey,base.group_portal,1,0,0,0
+access_survey_user_input_portal,survey.user_input portal,survey.model_survey_user_input,base.group_portal,1,0,0,0
+access_survey_user_input_line_portal,survey.user_input.line portal,survey.model_survey_user_input_line,base.group_portal,1,0,0,0
+access_survey_question_portal,survey.question portal,survey.model_survey_question,base.group_portal,1,0,0,0
+access_survey_question_answer_portal,survey.question.answer portal,survey.model_survey_question_answer,base.group_portal,1,0,0,0

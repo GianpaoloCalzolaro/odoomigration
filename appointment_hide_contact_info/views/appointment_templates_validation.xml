@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Inherit appointment_validated_card template to hide contact information -->
+    <template id="appointment_validated_card_hide_contact" 
+              inherit_id="appointment.appointment_validated_card">
+        
+        <!-- Hide email field -->
+        <xpath expr="//div[@t-if='staff_user.email']" position="attributes">
+            <attribute name="t-if">False</attribute>
+        </xpath>
+        
+        <!-- Hide phone field -->
+        <xpath expr="//div[@t-if='staff_user.partner_id.phone']" position="attributes">
+            <attribute name="t-if">False</attribute>
+        </xpath>
+        
+    </template>
+</odoo>

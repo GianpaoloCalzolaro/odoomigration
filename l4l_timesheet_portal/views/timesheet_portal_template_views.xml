@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="portal_my_home_timesheet" name="Portal My Home: Timesheet" inherit_id="portal.portal_my_home" priority="45">
+    <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+        <t t-if="timesheet_count">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="icon" t-value="'/hr_timesheet/static/img/timesheet.svg'"/>
+                <t t-set="title" t-value="'Timesheet'"/>
+                <t t-set="url" t-value="'/my/timesheets'"/>
+                <t t-set="text" t-value="'Review all timesheets related to your projects'"/>
+                <t t-set="count" t-value="timesheet_count"/>
+                <t t-set="config_card" t-value="True"/>
+            </t>
+        </t>
+    </xpath>
+</template>
+
+
+    <template id="leap_portal_my_timesheets" inherit_id="hr_timesheet.portal_my_timesheets" name="My Timesheets">
+        <xpath expr="//t[@t-call='portal.portal_searchbar']" position="inside">
+            <div class="search-bar">
+                <a class="btn btn-secondary open_timesheet_wizard" title="Create Timesheet"
+                   style="font-size: 15px;">
+                    <i class="fa fa-plus"></i>
+                    Create New
+                </a>
+            </div>
+        </xpath>
+
+        <xpath expr="//t[@t-call='portal.portal_searchbar']" position="after">
+            <div class="timesheet-container">
+                <form id="employee_timesheet_wizard">
+                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom s_website_form_required">
+                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                            <div class="modal fade" id="timesheet_wizard_show">
+                                <div class="modal-dialog modal-md modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title col-11">
+                                                <b>Create Timesheet</b>
+                                            </h5>
+                                            <button type="button" class="btn btn-secondary close_timesheet_wizard"
+                                                    data-dismiss="modal"
+                                                    aria-label="Close">
+                                                <span aria-hidden="true">&#215;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="s_website_form_rows row s_col_no_bgcolor">
+                                                <div class="col-12">
+                                                    <div>
+                                                        <label class="col-form-label s_website_form_label">
+                                                            <span class="s_website_form_label_content">Description
+                                                            </span>
+                                                            <span class="required_star">*</span>
+                                                        </label>
+                                                        <input type="text" name="name" t-att-value="name"
+                                                               id="name"
+                                                               class="form-control s_website_form_input"
+                                                               required="" data-fill-with="name"/>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-12 col-sm-6 mb-3 d-none">
+                                                            <label class="col-form-label s_website_form_label">
+                                                                <span class="s_website_form_label_content">Employees
+                                                                </span>
+                                                                <span class="required_star">*</span>
+                                                            </label>
+                                                            <select name="employee_id"
+                                                                    class="form-control s_website_form_input"
+                                                                    t-options="{'widget': 'selection'}"
+                                                                    data-fill-with="employee_id"
+                                                                    id="employee_id">
+                                                                <option t-foreach="employees" t-as="employee"
+                                                                        t-key="employee.id"
+                                                                        t-att-value="employee.id" required=""
+                                                                        t-esc="employee.name"/>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-12 col-sm-6 mb-3">
+                                                            <label class="col-form-label s_website_form_label">
+                                                                <span class="s_website_form_label_content">Date</span>
+                                                                <span class="required_star">*</span>
+                                                            </label>
+                                                            <input type="date" name="date"
+                                                                   t-att-value="date"
+                                                                   id="date"
+                                                                   class="form-control s_website_form_input"
+                                                                   required="" data-fill-with="date"/>
+                                                        </div>
+
+                                                        <div class="row">
+                                                            <div class="col-12 col-sm-6 mb-3">
+                                                                <label class="col-form-label s_website_form_label">
+                                                                    <span class="s_website_form_label_content">Project
+                                                                    </span>
+                                                                    <span class="required_star">*</span>
+                                                                </label>
+                                                                <select name="project_id"
+                                                                        class="form-control s_website_form_input"
+                                                                        t-options="{'widget': 'selection'}"
+                                                                        data-fill-with="project_id"
+                                                                        id="project_id">
+                                                                    <option t-foreach="projects" t-as="project"
+                                                                            t-key="project.id"
+                                                                            t-att-value="project.id" required=""
+                                                                            t-esc="project.name"/>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-12 col-sm-6 mb-3">
+                                                                <label class="col-form-label s_website_form_label">
+                                                                    <span class="s_website_form_label_content">Task
+                                                                    </span>
+                                                                    <span class="required_star">*</span>
+                                                                </label>
+                                                                <select name="task_id"
+                                                                        class="form-control s_website_form_input"
+                                                                        t-options="{'widget': 'selection'}"
+                                                                        data-fill-with="task_id"
+                                                                        id="task_id">
+                                                                    <option t-foreach="tasks" t-as="task"
+                                                                            t-key="task.id"
+                                                                            t-att-value="task.id" required=""
+                                                                            t-esc="task.name"/>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row">
+                                                            <div class="col-12 col-sm-6 mb-3" id="unit_amount">
+                                                                <label class="col-form-label s_website_form_label">
+                                                                    <span class="s_website_form_label_content">
+                                                                        Duration
+                                                                    </span>
+                                                                </label>
+                                                                <input type="time" name="unit_amount"
+                                                                       t-att-value="unit_amount"
+                                                                       id="l4l_unit_amount"
+                                                                       class="form-control s_website_form_input"
+                                                                       data-fill-with="unit_amount"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary submit_timesheet_wizard">
+                                                Submit
+                                            </button>
+                                            <button type="button" class="btn btn-secondary close_timesheet_wizard"
+                                                    data-dismiss="modal">
+                                                Close
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </xpath>
+
+        <xpath expr="//t[@t-call='portal.portal_table']/thead/tr" position="inside">
+            <th></th>
+            <th></th>
+        </xpath>
+
+        <xpath expr="//t[@t-foreach='timesheets']/tr" position="inside">
+            <td>
+                <t t-if="timesheet.employee_id.work_contact_id.id == env.user.partner_id.id">
+                    <div style="display: flex; justify-content: center; align-items: center;">
+                        <div class="timesheet_wizard"
+                             style="margin-right: 10px; display: flex; justify-content: center;">
+                            <button type="button" class="btn btn-primary open_update_timesheet_wizard"
+                                    t-att-data-timesheet-id="timesheet.id">
+                                <i class="fa fa-pencil" aria-hidden="true"/>
+                            </button>
+                            <t t-call="l4l_timesheet_portal.l4l_portal_update_employee_timesheet"/>
+                        </div>
+                        <div class="timesheet_delete_wizard" style="display: flex; justify-content: center;">
+                            <button type="button" class="btn btn-primary delete_timesheet"
+                                    t-att-data-timesheet-id="timesheet.id">
+                                <i class="fa fa-trash" aria-hidden="true"/>
+                            </button>
+                        </div>
+                    </div>
+                </t>
+            </td>
+
+        </xpath>
+    </template>
+
+    <template id="l4l_portal_update_employee_timesheet">
+        <div class="update-timesheet-container">
+            <form id="update_employee_timesheet_wizard">
+                <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom s_website_form_required">
+                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                        <div class="modal fade hr-timesheet-modal-fade" id="update_timesheet_wizard_show">
+                            <div class="modal-dialog modal-md modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title col-11">
+                                            <b>Update Timesheet</b>
+                                        </h5>
+                                        <button type="button" class="btn btn-secondary close_timesheet_wizard"
+                                                data-dismiss="modal"
+                                                aria-label="Close">
+                                            <span aria-hidden="true">&#215;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="s_website_form_rows row s_col_no_bgcolor">
+                                            <div class="col-12">
+                                                <div>
+                                                    <input id="timesheet_rec_id" type="text"
+                                                           t-att-value="timesheet.id" class="o_hidden"/>
+                                                    <label class="col-form-label s_website_form_label">
+                                                        <span class="s_website_form_label_content">Description
+                                                        </span>
+                                                        <span class="required_star">*</span>
+                                                    </label>
+                                                    <input type="text" name="name" t-att-value="timesheet.name"
+                                                           id="leap_name"
+                                                           class="form-control s_website_form_input"
+                                                           required="" data-fill-with="name"/>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-12 col-sm-6 mb-3 d-none">
+                                                        <label class="col-form-label s_website_form_label">
+                                                            <span class="s_website_form_label_content">Employees
+                                                            </span>
+                                                            <span class="required_star">*</span>
+                                                        </label>
+                                                        <select name="employee_id"
+                                                                class="form-control s_website_form_input"
+                                                                t-options="{'widget': 'selection'}"
+                                                                data-fill-with="employee_id"
+                                                                id="leap_employee_id">
+                                                            <option t-foreach="employees" t-as="employee"
+                                                                    t-key="employee.id"
+                                                                    t-att-value="timesheet.employee_id.id" required=""
+                                                                    t-esc="employee.name"/>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-12 col-sm-6 mb-3">
+                                                        <label class="col-form-label s_website_form_label">
+                                                            <span class="s_website_form_label_content">Date</span>
+                                                            <span class="required_star">*</span>
+                                                        </label>
+                                                        <input type="date" name="date"
+                                                               t-att-value="timesheet.date"
+                                                               id="leap_date"
+                                                               class="form-control s_website_form_input"
+                                                               required="" data-fill-with="date"/>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-12 col-sm-6 mb-3">
+                                                            <label class="col-form-label s_website_form_label">
+                                                                <span class="s_website_form_label_content">Project
+                                                                </span>
+                                                                <span class="required_star">*</span>
+                                                            </label>
+                                                            <select name="project_id"
+                                                                    class="form-control s_website_form_input"
+                                                                    t-options="{'widget': 'selection'}"
+                                                                    data-fill-with="project_id"
+                                                                    id="leap_project_id">
+                                                                <option t-foreach="projects" t-as="project"
+                                                                        t-key="project.id"
+                                                                        t-att-selected="project.id == timesheet.project_id.id"
+                                                                        t-att-value="project.id" required=""
+                                                                        t-esc="project.name"/>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-12 col-sm-6 mb-3">
+                                                            <label class="col-form-label s_website_form_label">
+                                                                <span class="s_website_form_label_content">Task
+                                                                </span>
+                                                                <span class="required_star">*</span>
+                                                            </label>
+                                                            <select name="leap_task_id"
+                                                                    class="form-control s_website_form_input"
+                                                                    t-options="{'widget': 'selection'}"
+                                                                    data-fill-with="task_id"
+                                                                    id="leap_task_id">
+                                                                <option t-foreach="tasks" t-as="task"
+                                                                        t-key="task.id"
+                                                                        t-att-value="task.id" required=""
+                                                                        t-esc="task.name"/>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-12 col-sm-6 mb-3" id="unit_amount">
+                                                            <label class="col-form-label s_website_form_label">
+                                                                <span class="s_website_form_label_content">
+                                                                    Duration
+                                                                </span>
+                                                            </label>
+                                                            <input type="time" name="unit_amount"
+                                                                   t-att-value="timesheet.unit_amount"
+                                                                   id="leap_unit_amount"
+                                                                   class="form-control s_website_form_input"
+                                                                   data-fill-with="unit_amount"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary submit_timesheet_wizard">
+                                            Submit
+                                        </button>
+                                        <button type="button" class="btn btn-secondary close_timesheet_wizard"
+                                                data-dismiss="modal">
+                                            Close
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </template>
+
+</odoo>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="employee_view_form_inherit" model="ir.ui.view">
+        <field name="name">hr.employee.view.form.inherit.add_custom_fields</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+
+                <!-- Contract Information Tab -->
+                <page string="Contract Information" name="contract_information">
+                    <group>
+                        <group string="Contract Dates">
+                            <field name="contract_start_date"/>
+                            <field name="contract_end_date"/>
+                        </group>
+                    </group>
+                </page>
+
+                <!-- Professional Information Tab -->
+                <page string="Professional Information" name="professional_information">
+                    <group>
+                        <group string="Professional Details">
+                            <field name="professional_id"/>
+                            <field name="professional_order"/>
+                            <field name="professional_type"/>
+                            <field name="registration_date"/>
+                            <field name="region"/>
+                        </group>
+                        <group string="Insurance Information">
+                            <field name="professional_insurance"/>
+                            <field name="insurance_company" odoo='{"invisible": [["professional_insurance", "=", False]]}'/>
+                            <field name="insurance_policy_number" odoo='{"invisible": [["professional_insurance", "=", False]]}'/>
+                            <field name="insurance_expiry_date" odoo='{"invisible": [["professional_insurance", "=", False]]}'/>
+                        </group>
+                    </group>
+                </page>
+
+                <!-- Experience Tab -->
+                <page string="Experience" name="experience">
+                    <group>
+                        <group string="Professional Experience">
+                            <field name="years_experience"/>
+                            <field name="specialization"/>
+                            <field name="theoretical_orientation"/>
+                            <field name="remote_session_experience"/>
+                            <field name="specializzazioni" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            <field name="cv" widget="binary"/>
+                        </group>
+                        <group string="Education">
+                            <field name="education_level"/>
+                            <field name="university"/>
+                            <field name="graduation_year"/>
+                        </group>
+                    </group>
+                </page>
+
+                <!-- Availability Tab -->
+                <page string="Availability" name="availability">
+                    <group>
+                        <group string="Availability Details">
+                            <field name="availability_start_date"/>
+                            <field name="weekly_availability_hours"/>
+                            <field name="preferred_working_days"/>
+                            <field name="volunteer_activities" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                        </group>
+                        <group string="Skills">
+                            <field name="languages"/>
+                            <field name="digital_skills"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+            <xpath expr="//page[@name='hr_settings']//group[@name='active_group']" position="inside">
+                <field name="limite_incarichi_raggiunto" readonly="1" widget="boolean"/>
+                <field name="numero_incarichi" readonly="1"/>
+                <field name="percentuale_incarichi" readonly="1" widget="percentage"/>
+            </xpath>
+        </field>
+    </record>
+
+
+</odoo>

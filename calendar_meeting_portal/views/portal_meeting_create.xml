@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Template per form creazione appuntamento -->
+    <template id="portal_meeting_create" name="Create Meeting">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            
+            <div class="o_portal_wrap">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="o_portal_page_header">
+                            <h2>Crea Nuovo Appuntamento</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Messaggi di errore -->
+                <t t-if="error_message">
+                    <div class="alert alert-danger" role="alert">
+                        <strong>Errore:</strong> <t t-esc="error_message"/>
+                    </div>
+                </t>
+
+                <!-- Form creazione appuntamento -->
+                <div class="row">
+                    <div class="col-lg-8 col-md-10 col-12">
+                        <div class="o_portal_card">
+                            <form method="post" action="/my/meeting/save" class="needs-validation">
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                
+                                <div class="row">
+                                    <div class="col-12 mb-3">
+                                        <label for="meeting_name" class="form-label">
+                                            <strong>Nome Appuntamento <span class="text-danger">*</span></strong>
+                                        </label>
+                                        <input type="text" 
+                                               class="form-control" 
+                                               id="meeting_name" 
+                                               name="meeting_name" 
+                                               required="true"
+                                               t-att-value="form_data.get('meeting_name', '')"
+                                               placeholder="Inserisci il nome dell'appuntamento"/>
+                                        <div class="invalid-feedback">
+                                            Inserisci il nome dell'appuntamento.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="start_date" class="form-label">
+                                            <strong>Data e Ora Inizio <span class="text-danger">*</span></strong>
+                                        </label>
+                                        <input type="datetime-local" 
+                                               class="form-control" 
+                                               id="start_date" 
+                                               name="start_date" 
+                                               required="true"
+                                               t-att-value="form_data.get('start_date', '')"/>
+                                        <div class="invalid-feedback">
+                                            Seleziona data e ora di inizio.
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6 mb-3">
+                                        <label for="end_date" class="form-label">
+                                            <strong>Data e Ora Fine <span class="text-danger">*</span></strong>
+                                        </label>
+                                        <input type="datetime-local" 
+                                               class="form-control" 
+                                               id="end_date" 
+                                               name="end_date" 
+                                               required="true"
+                                               t-att-value="form_data.get('end_date', '')"/>
+                                        <div class="invalid-feedback">
+                                            Seleziona data e ora di fine.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12 mb-3">
+                                        <div class="alert alert-light border">
+                                            <i class="fa fa-clock-o me-2"></i>
+                                            <small>
+                                                <strong>Fuso orario:</strong> <t t-esc="user_timezone"/>
+                                                <br/>
+                                                Gli orari saranno salvati secondo il tuo fuso orario.
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12 mb-3">
+                                        <label for="partner_id_search" class="form-label">
+                                            <strong>Partecipante <span class="text-danger">*</span></strong>
+                                        </label>
+                                        <input type="text"
+                                               class="form-control"
+                                               id="partner_id_search"
+                                               name="partner_id_search"
+                                               placeholder="Filtra contatti"
+                                               autocomplete="off"
+                                               required="true"
+                                               t-att-value="form_data.get('partner_name', '')"/>
+                                        <input type="hidden"
+                                               id="partner_id"
+                                               name="partner_id"
+                                               t-att-value="form_data.get('partner_id', '')"/>
+                                        <small class="form-text text-muted d-block mt-2">Contatti disponibili</small>
+                                        <div id="partner_list_container" 
+                                             class="border border-secondary-subtle rounded mt-2" 
+                                             style="height: 150px; overflow-y: auto; background-color: #ffffff;">
+                                            <t t-foreach="partners" t-as="partner">
+                                                <div class="partner-item" 
+                                                     t-att-data-partner-id="partner.id"
+                                                     style="padding: 10px 12px; border-bottom: 1px solid #f0f0f0; cursor: pointer; transition: background-color 0.2s;"
+                                                     role="button"
+                                                     tabindex="0">
+                                                    <div class="font-weight-normal" t-esc="partner.name"/>
+                                                    <small class="text-muted d-block" t-if="partner.email" t-esc="partner.email"/>
+                                                </div>
+                                            </t>
+                                        </div>
+                                        <div class="invalid-feedback" id="partner_id_feedback">
+                                            Seleziona un partecipante valido dalla lista.
+                                        </div>
+                                        <div class="form-text">
+                                            Inizia a digitare e seleziona un contatto dalla lista.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12 mb-3">
+                                        <label for="location" class="form-label">
+                                            <strong>Luogo</strong>
+                                        </label>
+                                        <input type="text" 
+                                               class="form-control" 
+                                               id="location" 
+                                               name="location" 
+                                               t-att-value="form_data.get('location', '')"
+                                               placeholder="Inserisci il luogo dell'appuntamento"/>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12 mb-3">
+                                        <label for="description" class="form-label">
+                                            <strong>Descrizione</strong>
+                                        </label>
+                                        <textarea class="form-control" 
+                                                  id="description" 
+                                                  name="description" 
+                                                  rows="4"
+                                                  placeholder="Inserisci una descrizione dell'appuntamento">
+                                            <t t-esc="form_data.get('description', '')"/>
+                                        </textarea>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="alert alert-info">
+                                            <i class="fa fa-info-circle me-2"></i>
+                                            <strong>Nota:</strong> Verrà generato automaticamente un link per la videochiamata Odoo.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12 d-flex justify-content-between">
+                                        <a href="/my/custom_meeting_request" class="btn btn-secondary">
+                                            <i class="fa fa-arrow-left me-2"></i>Annulla
+                                        </a>
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fa fa-calendar-plus me-2"></i>Crea Appuntamento
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+    =============================================================================
+    REGOLE DI ACCESSO PER CALENDARI PERSONALIZZATI (RECORD RULES)
+    =============================================================================
+    
+    MOTIVAZIONI:
+    - Privacy: I calendari di lavoro contengono informazioni personali relative
+      agli orari e alla disponibilità del dipendente. Questi dati devono essere
+      protetti e accessibili solo al proprietario.
+    - Ownership: Ogni dipendente ha il diritto di gestire esclusivamente i propri
+      calendari personalizzati. La separazione garantisce che un utente non possa
+      visualizzare o modificare i calendari creati da altri.
+    - Sicurezza: Limitare l'accesso ai soli calendari di proprietà previene
+      modifiche accidentali o malevole ai dati di altri dipendenti.
+    
+    IMPLEMENTAZIONE:
+    - I calendari con employee_creator_id = False sono visibili a tutti (calendari
+      standard del sistema, non personalizzati).
+    - I calendari con employee_creator_id valorizzato sono visibili solo al
+      dipendente creatore (tramite user_id collegato all'employee).
+    - La regola si applica solo agli utenti del gruppo portal.
+    
+    NOTA PERMESSI UNLINK:
+    - perm_unlink è impostato a False perché la cancellazione dei calendari
+      dal portale è disabilitata a livello di ir.model.access (perm_unlink=0).
+    - Questa impostazione è coerente con ir.model.access.csv e garantisce
+      che i dati dei calendari siano preservati.
+    - Gli utenti HR/Admin mantengono la possibilità di eliminare tramite backend.
+    
+    MODELLI COINVOLTI:
+    - resource.calendar: Calendario risorse (orari di lavoro)
+    - resource.calendar.attendance: Slot orari del calendario
+    =============================================================================
+    -->
+
+    <!-- Record rule per visibilità privata calendari personalizzati -->
+    <!-- Ogni dipendente vede e gestisce solo i calendari da lui creati -->
+    <record id="resource_calendar_employee_creator_rule" model="ir.rule">
+        <field name="name">Calendari Personalizzati: Visibilità Dipendente Creatore</field>
+        <field name="model_id" ref="resource.model_resource_calendar"/>
+        <field name="domain_force">[
+            '|',
+            ('employee_creator_id', '=', False),
+            ('employee_creator_id.user_id', '=', user.id)
+        ]</field>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <!-- perm_unlink=False: cancellazione disabilitata per utenti portal (coerente con ir.model.access.csv) -->
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <!--
+    Record rule per visibilità privata degli slot orari (attendance) dei calendari.
+    Gli slot seguono le stesse regole di visibilità del calendario a cui appartengono.
+    -->
+    <record id="resource_calendar_attendance_employee_creator_rule" model="ir.rule">
+        <field name="name">Slot Orari Calendario: Visibilità Dipendente Creatore</field>
+        <field name="model_id" ref="resource.model_resource_calendar_attendance"/>
+        <field name="domain_force">[
+            '|',
+            ('calendar_id.employee_creator_id', '=', False),
+            ('calendar_id.employee_creator_id.user_id', '=', user.id)
+        ]</field>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <!-- perm_unlink=False: cancellazione disabilitata per utenti portal (coerente con ir.model.access.csv) -->
+        <field name="perm_unlink" eval="False"/>
+    </record>
+</odoo>

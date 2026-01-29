@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="survey_form" model="ir.ui.view">
+        <field name="model">survey.survey</field>
+        <field name="inherit_id" ref="survey.survey_survey_view_form" />
+        <field name="arch" type="xml">
+            <group name="options" position="inside">
+                <group name="generation_options" string="Generation">
+                    <field name="generation_type"/>
+                    <field name="job_position_id" invisible="generation_type != 'applicant'" required="generation_type == 'applicant'"/>
+                    <field name="generate_contact" invisible="generation_type == 'applicant'"/>
+                    <field name="create_parent_contact" invisible="generation_type == 'applicant' or generate_contact != True"/>
+                </group>
+            </group>
+        </field>
+    </record>
+</odoo>

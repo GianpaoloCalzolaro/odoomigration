@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+<!--    Survey-->
+    <record model="survey.survey" id="survey_applicant_creation">
+        <field name="title">Applicant Creation Survey</field>
+        <field name="access_token">80e5f1e2-1a9d-4c51-8e23-09e93f7fa2c5</field>
+        <field name="access_mode">public</field>
+        <field name="users_can_go_back" eval="True" />
+        <field name="generation_type">applicant</field>
+        <field name="job_position_id" ref="hr_recruitment.hr_job_developer"/>
+    </record>
+    <record id="survey_applicant_category_vendor" model="hr.applicant.category">
+        <field name="name">Vendor</field>
+    </record>
+    <record id="survey_applicant_category_prospect" model="hr.applicant.category">
+        <field name="name">Prospect</field>
+    </record>
+    <record id="survey_applicant_category_employee" model="hr.applicant.category">
+        <field name="name">Employee</field>
+    </record>
+    <record model="survey.question" id="survey_applicant_q0">
+        <field name="survey_id" ref="survey_applicant_creation" />
+        <field name="sequence">0</field>
+        <field name="title">Name</field>
+        <field name="question_type">char_box</field>
+        <field name="constr_mandatory" eval="True" />
+        <field name="hr_applicant_field" ref="hr_recruitment.field_hr_applicant__partner_name" />
+    </record>
+    <record model="survey.question" id="survey_applicant_q1">
+        <field name="survey_id" ref="survey_applicant_creation" />
+        <field name="sequence">1</field>
+        <field name="title">Email</field>
+        <field name="question_type">char_box</field>
+        <field name="hr_applicant_field" ref="hr_recruitment.field_hr_applicant__email_from" />
+    </record>
+    <record model="survey.question" id="survey_applicant_q2">
+        <field name="survey_id" ref="survey_applicant_creation" />
+        <field name="sequence">2</field>
+        <field name="title">Notes</field>
+        <field name="question_type">text_box</field>
+        <field name="hr_applicant_field" ref="hr_recruitment.field_hr_applicant__applicant_notes" />
+    </record>
+    <record model="survey.question" id="survey_applicant_q3">
+        <field name="survey_id" ref="survey_applicant_creation" />
+        <field name="sequence">3</field>
+        <field name="title">Color</field>
+        <field name="question_type">numerical_box</field>
+        <field name="hr_applicant_field" ref="hr_recruitment.field_hr_applicant__color" />
+    </record>
+    <record model="survey.question" id="survey_applicant_q4">
+        <field name="survey_id" ref="survey_applicant_creation" />
+        <field name="sequence">4</field>
+        <field name="title">Availability</field>
+        <field name="question_type">date</field>
+        <field name="hr_applicant_field" ref="hr_recruitment.field_hr_applicant__availability" />
+    </record>
+    <record model="survey.question" id="survey_applicant_q5">
+        <field name="survey_id" ref="survey_applicant_creation" />
+        <field name="sequence">4</field>
+        <field name="title">Stage</field>
+        <field name="question_type">simple_choice</field>
+        <field name="hr_applicant_field" ref="hr_recruitment.field_hr_applicant__stage_id" />
+    </record>
+    <record model="survey.question.answer" id="survey_applicant_q5_sug1">
+        <field name="question_id" ref="survey_applicant_q5" />
+        <field name="sequence">1</field>
+        <field name="value">Initial Qualification</field>
+        <field name="hr_applicant_field_resource_ref" ref="hr_recruitment.stage_job1" />
+    </record>
+    <record model="survey.question.answer" id="survey_applicant_q5_sug2">
+        <field name="question_id" ref="survey_applicant_q5" />
+        <field name="sequence">2</field>
+        <field name="value">First Interview</field>
+        <field name="hr_applicant_field_resource_ref" ref="hr_recruitment.stage_job2" />
+    </record>
+    <record model="survey.question" id="survey_applicant_q6">
+        <field name="survey_id" ref="survey_applicant_creation" />
+        <field name="sequence">4</field>
+        <field name="title">Tags</field>
+        <field name="question_type">multiple_choice</field>
+        <field name="hr_applicant_field" ref="hr_recruitment.field_hr_applicant__categ_ids" />
+    </record>
+    <record model="survey.question.answer" id="survey_applicant_q6_sug1">
+        <field name="question_id" ref="survey_applicant_q6" />
+        <field name="sequence">1</field>
+        <field name="value">Vendor</field>
+        <field name="hr_applicant_field_resource_ref" ref="survey_applicant_category_vendor" />
+    </record>
+    <record model="survey.question.answer" id="survey_applicant_q6_sug2">
+        <field name="question_id" ref="survey_applicant_q6" />
+        <field name="sequence">2</field>
+        <field name="value">Prospects</field>
+        <field name="hr_applicant_field_resource_ref" ref="survey_applicant_category_prospect" />
+    </record>
+    <record model="survey.question.answer" id="survey_applicant_q6_sug3">
+        <field name="question_id" ref="survey_applicant_q6" />
+        <field name="sequence">3</field>
+        <field name="value">Employees</field>
+        <field name="hr_applicant_field_resource_ref" ref="survey_applicant_category_employee" />
+    </record>
+</odoo>

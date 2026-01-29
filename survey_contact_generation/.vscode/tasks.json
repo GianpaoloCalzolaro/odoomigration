@@ -1,0 +1,21 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Test Survey Contact Generation Module",
+			"type": "shell",
+			"command": "python",
+			"args": [
+				"-m",
+				"py_compile",
+				"models/survey_question.py",
+				"models/survey_user_input.py"
+			],
+			"group": "test",
+			"problemMatcher": [
+				"$python"
+			],
+			"isBackground": false
+		}
+	]
+}

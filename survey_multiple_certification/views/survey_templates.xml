@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="survey_multiple_certification_done" inherit_id="survey.survey_fill_form_done">
+        
+        <!-- Sostituisci il messaggio di completamento standard per i sondaggi con soglie multiple -->
+        <xpath expr="//h1[@class='fs-2']" position="replace">
+            <!-- Condizione: se è un sondaggio con certificazione multipla -->
+            <t t-if="answer.survey_id.certification_mode == 'multiple'">
+                <t t-if="answer.threshold_reached_id and answer.threshold_reached_id.name">
+                    <!-- Caso normale: soglia trovata -->
+                    <h1 class="fs-2 text-success">
+                        Grazie per aver completato il test, il livello raggiunto è <strong t-esc="answer.threshold_reached_id.name"/>
+                    </h1>
+                    
+                    <!-- Descrizione della soglia raggiunta -->
+                    <div t-if="answer.threshold_reached_id.description_html" class="mt-3">
+                        <t t-out="answer.threshold_reached_id.description_html"/>
+                    </div>
+
+                    <!-- Azioni suggerite -->
+                    <div class="mt-4">
+                        <a t-if="can_retake" t-att-href="request.httprequest.path" class="btn btn-primary">
+                            Ripeti il test
+                        </a>
+                        <a t-if="survey_url" t-att-href="survey_url" class="btn btn-secondary ms-2">
+                            Torna alla pagina del sondaggio
+                        </a>
+                    </div>
+                </t>
+                
+                <t t-else="">
+                    <!-- Caso edge: modalità multiple ma nessuna soglia trovata -->
+                    <h1 class="fs-2 text-warning">
+                        <i class="fa fa-exclamation-triangle me-2"/>
+                        <span t-esc="answer.current_certification_name or 'Completamento registrato'"/>
+                    </h1>
+                    
+                    <div class="alert alert-warning mt-3" role="alert">
+                        <p class="mb-3">
+                            <strong>Punteggio ottenuto:</strong> 
+                            <span t-esc="'%.1f' % (answer.scoring_percentage or 0)"/>%
+                        </p>
+                        
+                        <div t-if="answer.threshold_reached_id and answer.threshold_reached_id.description_html">
+                            <t t-out="answer.threshold_reached_id.description_html"/>
+                        </div>
+                        <div t-else="">
+                            <p>Le soglie di certificazione potre...o non essere configurate correttamente per questo punteggio.</p>
+                        </div>
+                    </div>
+                </t>
+            </t>
+            
+            <!-- Comportamento standard per tutti gli altri sondaggi -->
+            <t t-else="">
+                <h1 class="fs-2">
+                    <t t-if="answer.survey_id.certification and answer.scoring_success">
+                        <i class="fa fa-trophy me-2"/>
+                        Congratulazioni!
+                    </t>
+                    <t t-elif="answer.survey_id.certification and not answer.scoring_success">
+                        <i class="fa fa-exclamation-triangle me-2"/>
+                        Test non superato
+                    </t>
+                    <t t-else="">
+                        <i class="fa fa-check-circle me-2"/>
+                        Grazie per aver completato il sondaggio!
+                    </t>
+                </h1>
+
+                <div class="mt-3">
+                    <t t-if="answer.survey_id.certification">
+                        <p class="mb-2">
+                            <strong>Risultato:</strong>
+                            <t t-if="answer.scoring_success">
+                                <span>Superato</span>
+                            </t>
+                            <t t-else="">
+                                <span>Non superato</span>
+                            </t>
+                        </p>
+                        <p class="mb-2">
+                            <strong>Punteggio ottenuto:</strong>
+                            <span t-esc="'%.1f' % (answer.scoring_percentage or 0)"/>%
+                        </p>
+                        <t t-if="answer.survey_id.scoring_success_min">
+                            <p class="mb-0">
+                                <strong>Punteggio minimo richiesto:</strong> 
+                                <span t-esc="answer.survey_id.scoring_success_min"/>%
+                            </p>
+                        </t>
+                    </t>
+                    <t t-else="">
+                        <p class="mb-0">
+                            Le tue risposte sono state registrate correttamente.
+                            <t t-if="answer.survey_id.website_url">
+                                Puoi tornare alla <a t-att-href="answer.survey_id.website_url">pagina del sondaggio</a>.
+                            </t>
+                        </p>
+                    </t>
+                </div>
+            </t>
+        </xpath>
+        
+    </template>
+</odoo>

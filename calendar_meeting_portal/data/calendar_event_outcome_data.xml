@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Tipologie Esito Evento Predefinite -->
+        
+        <record id="outcome_completed" model="calendar.event.outcome">
+            <field name="name">Completato con successo</field>
+            <field name="code">completed</field>
+            <field name="description">L'appuntamento si è svolto regolarmente e completato con successo. Tutti gli obiettivi previsti sono stati raggiunti.</field>
+            <field name="sequence">10</field>
+            <field name="color">10</field>
+            <field name="active" eval="True"/>
+        </record>
+        
+        <record id="outcome_partial" model="calendar.event.outcome">
+            <field name="name">Parzialmente completato</field>
+            <field name="code">partial</field>
+            <field name="description">L'appuntamento si è svolto ma solo alcuni obiettivi sono stati raggiunti. Potrebbe essere necessario un follow-up.</field>
+            <field name="sequence">20</field>
+            <field name="color">3</field>
+            <field name="active" eval="True"/>
+        </record>
+        
+        <record id="outcome_no_show" model="calendar.event.outcome">
+            <field name="name">Paziente assente - No Show</field>
+            <field name="code">no_show</field>
+            <field name="description">Il paziente non si è presentato all'appuntamento senza preavviso. L'appuntamento non ha avuto luogo.</field>
+            <field name="sequence">30</field>
+            <field name="color">1</field>
+            <field name="active" eval="True"/>
+        </record>
+        
+        <record id="outcome_cancelled_pro" model="calendar.event.outcome">
+            <field name="name">Annullato dal professionista</field>
+            <field name="code">cancelled_pro</field>
+            <field name="description">L'appuntamento è stato annullato dal professionista per motivi organizzativi, emergenze o altre necessità.</field>
+            <field name="sequence">40</field>
+            <field name="color">2</field>
+            <field name="active" eval="True"/>
+        </record>
+        
+        <record id="outcome_cancelled_patient" model="calendar.event.outcome">
+            <field name="name">Annullato dal paziente</field>
+            <field name="code">cancelled_patient</field>
+            <field name="description">Il paziente ha richiesto l'annullamento dell'appuntamento in anticipo con sufficiente preavviso.</field>
+            <field name="sequence">50</field>
+            <field name="color">2</field>
+            <field name="active" eval="True"/>
+        </record>
+        
+        <record id="outcome_reschedule" model="calendar.event.outcome">
+            <field name="name">Da riprogrammare</field>
+            <field name="code">reschedule</field>
+            <field name="description">L'appuntamento necessita di essere riprogrammato per una data futura a causa di imprevisti o richieste specifiche.</field>
+            <field name="sequence">60</field>
+            <field name="color">4</field>
+            <field name="active" eval="True"/>
+        </record>
+        
+        <record id="outcome_pending_docs" model="calendar.event.outcome">
+            <field name="name">In attesa documentazione</field>
+            <field name="code">pending_docs</field>
+            <field name="description">L'appuntamento si è svolto ma è in attesa di documentazione, referti o altri materiali necessari per la conclusione.</field>
+            <field name="sequence">70</field>
+            <field name="color">5</field>
+            <field name="active" eval="True"/>
+        </record>
+        
+    </data>
+</odoo>

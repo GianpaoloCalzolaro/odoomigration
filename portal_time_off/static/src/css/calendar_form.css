@@ -1,0 +1,638 @@
+/**
+ * =============================================================================
+ * PORTAL TIME OFF - CALENDAR FORM STYLES
+ * =============================================================================
+ * Stili CSS responsive per la gestione del calendario personalizzato Time Off.
+ * Include layout a 2 colonne su desktop, verticale su mobile.
+ * Compatibile con Bootstrap 5.x e Odoo 18.
+ * 
+ * Struttura:
+ * 1. Variabili CSS / CSS Custom Properties
+ * 2. Layout principale - Container e Grid
+ * 3. Form gestione calendario
+ * 4. Lista card calendario
+ * 5. Riepilogo ore / Badge esito
+ * 6. Slot orari
+ * 7. Stili responsive (mobile-first, breakpoint 768px)
+ * 8. Utility e helper classes
+ * =============================================================================
+ */
+
+/* =============================================================================
+   1. VARIABILI CSS / CSS CUSTOM PROPERTIES
+   Colori personalizzati per badge esito e temi coerenti con Bootstrap.
+   ============================================================================= */
+:root {
+    /* Colori esito badge (verde/giallo/rosso) */
+    --pto-success-color: #28a745;      /* Verde - esito positivo */
+    --pto-warning-color: #ffc107;      /* Giallo - esito in sospeso/attenzione */
+    --pto-danger-color: #dc3545;       /* Rosso - esito negativo */
+    --pto-info-color: #17a2b8;         /* Blu info */
+    
+    /* Colori principali form */
+    --pto-primary-color: #56C9F0;
+    --pto-secondary-color: #667eea;
+    --pto-border-color: #dee2e6;
+    --pto-bg-light: #f8f9fa;
+    --pto-bg-white: #ffffff;
+    --pto-text-primary: #333333;
+    --pto-text-secondary: #6c757d;
+    
+    /* Ombre e transizioni */
+    --pto-shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.05);
+    --pto-shadow-md: 0 4px 15px rgba(0, 0, 0, 0.1);
+    --pto-transition: all 0.3s ease;
+    
+    /* Spacing */
+    --pto-spacing-xs: 0.5rem;
+    --pto-spacing-sm: 1rem;
+    --pto-spacing-md: 1.5rem;
+    --pto-spacing-lg: 2rem;
+    
+    /* Border radius */
+    --pto-radius-sm: 6px;
+    --pto-radius-md: 8px;
+    --pto-radius-lg: 12px;
+}
+
+/* =============================================================================
+   2. LAYOUT PRINCIPALE - CONTAINER E GRID
+   Layout a 2 colonne su desktop, verticale su mobile.
+   Breakpoint principale: 768px (min-width per desktop).
+   ============================================================================= */
+
+/**
+ * Container principale del form calendario time off.
+ */
+.pto-calendar-container {
+    background-color: var(--pto-bg-light);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: var(--pto-spacing-sm);
+}
+
+/**
+ * Layout grid a 2 colonne per desktop.
+ * Su mobile diventa layout verticale (1 colonna).
+ */
+.pto-calendar-layout {
+    display: flex;
+    flex-direction: column;
+    gap: var(--pto-spacing-md);
+}
+
+/**
+ * Breakpoint min 768px: Layout a 2 colonne su desktop.
+ */
+@media (min-width: 768px) {
+    .pto-calendar-layout {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+    
+    .pto-calendar-main {
+        flex: 0 0 65%;
+        max-width: 65%;
+    }
+    
+    .pto-calendar-sidebar {
+        flex: 0 0 35%;
+        max-width: 35%;
+        position: sticky;
+        top: 20px;
+    }
+}
+
+/* =============================================================================
+   3. FORM GESTIONE CALENDARIO
+   Stili per form di creazione/modifica calendario.
+   ============================================================================= */
+
+/**
+ * Container form calendario.
+ */
+.pto-calendar-form {
+    background-color: var(--pto-bg-white);
+    border-radius: var(--pto-radius-lg);
+    box-shadow: var(--pto-shadow-sm);
+    padding: var(--pto-spacing-md);
+    margin-bottom: var(--pto-spacing-md);
+}
+
+/**
+ * Header del form.
+ */
+.pto-calendar-form-header {
+    border-bottom: 1px solid var(--pto-border-color);
+    margin-bottom: var(--pto-spacing-md);
+    padding-bottom: var(--pto-spacing-sm);
+}
+
+.pto-calendar-form-header h3,
+.pto-calendar-form-title {
+    color: var(--pto-text-primary);
+    font-weight: 600;
+    font-size: 1.25rem;
+    margin: 0;
+}
+
+/**
+ * Gruppi di campi del form.
+ */
+.pto-calendar-form .form-group,
+.pto-form-group {
+    margin-bottom: var(--pto-spacing-md);
+}
+
+/**
+ * Label dei campi form.
+ */
+.pto-calendar-form label,
+.pto-form-label {
+    font-weight: 500;
+    color: var(--pto-text-primary);
+    margin-bottom: var(--pto-spacing-xs);
+    display: block;
+}
+
+/**
+ * Input, select, textarea del form.
+ */
+.pto-calendar-form .form-control,
+.pto-form-input {
+    border-radius: var(--pto-radius-sm);
+    border: 1px solid var(--pto-border-color);
+    padding: 0.625rem 0.875rem;
+    font-size: 0.95rem;
+    transition: var(--pto-transition);
+}
+
+.pto-calendar-form .form-control:focus,
+.pto-form-input:focus {
+    border-color: var(--pto-secondary-color);
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    outline: none;
+}
+
+/**
+ * Footer form con pulsanti azione.
+ */
+.pto-form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--pto-spacing-sm);
+    margin-top: var(--pto-spacing-md);
+    padding-top: var(--pto-spacing-sm);
+    border-top: 1px solid var(--pto-border-color);
+}
+
+.pto-form-actions .btn {
+    padding: 0.625rem 1.5rem;
+    font-weight: 500;
+    border-radius: var(--pto-radius-md);
+    transition: var(--pto-transition);
+}
+
+/* =============================================================================
+   4. LISTA CARD CALENDARIO
+   Stili per visualizzazione lista calendari in formato card.
+   ============================================================================= */
+
+/**
+ * Container lista card.
+ */
+.pto-card-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--pto-spacing-sm);
+}
+
+/**
+ * Singola card calendario.
+ */
+.pto-calendar-card {
+    background-color: var(--pto-bg-white);
+    border-radius: var(--pto-radius-lg);
+    box-shadow: var(--pto-shadow-sm);
+    overflow: hidden;
+    transition: var(--pto-transition);
+    border: 1px solid transparent;
+}
+
+.pto-calendar-card:hover {
+    box-shadow: var(--pto-shadow-md);
+    border-color: var(--pto-border-color);
+    transform: translateY(-2px);
+}
+
+/**
+ * Header card.
+ */
+.pto-card-header {
+    background: linear-gradient(45deg, var(--pto-bg-light), #e9ecef);
+    padding: var(--pto-spacing-sm) var(--pto-spacing-md);
+    border-bottom: 1px solid var(--pto-border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pto-card-title {
+    font-weight: 600;
+    color: var(--pto-text-primary);
+    margin: 0;
+    font-size: 1rem;
+}
+
+/**
+ * Corpo card.
+ */
+.pto-card-body {
+    padding: var(--pto-spacing-md);
+}
+
+.pto-card-detail {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: var(--pto-spacing-xs);
+}
+
+.pto-card-label {
+    font-weight: 500;
+    color: var(--pto-text-secondary);
+    font-size: 0.875rem;
+}
+
+.pto-card-value {
+    color: var(--pto-text-primary);
+    font-size: 0.875rem;
+}
+
+/**
+ * Footer card con azioni.
+ */
+.pto-card-footer {
+    background-color: var(--pto-bg-light);
+    padding: var(--pto-spacing-sm) var(--pto-spacing-md);
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--pto-spacing-xs);
+}
+
+/* =============================================================================
+   5. RIEPILOGO ORE / BADGE ESITO
+   Pannello riepilogo con totale ore e badge colorati verde/giallo/rosso.
+   ============================================================================= */
+
+/**
+ * Pannello riepilogo ore.
+ */
+.pto-summary {
+    background-color: var(--pto-bg-white);
+    border-radius: var(--pto-radius-lg);
+    box-shadow: var(--pto-shadow-sm);
+    overflow: hidden;
+}
+
+.pto-summary-header {
+    background-color: var(--pto-bg-light);
+    padding: var(--pto-spacing-sm) var(--pto-spacing-md);
+    border-bottom: 1px solid var(--pto-border-color);
+}
+
+.pto-summary-title {
+    font-weight: 600;
+    color: var(--pto-text-primary);
+    margin: 0;
+    font-size: 1rem;
+}
+
+.pto-summary-body {
+    padding: var(--pto-spacing-md);
+}
+
+.pto-summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--pto-spacing-xs) 0;
+    border-bottom: 1px solid var(--pto-border-color);
+}
+
+.pto-summary-row:last-child {
+    border-bottom: none;
+}
+
+.pto-summary-label {
+    font-weight: 500;
+    color: var(--pto-text-secondary);
+    font-size: 0.9rem;
+}
+
+.pto-summary-value {
+    font-weight: 600;
+    color: var(--pto-text-primary);
+    font-size: 0.9rem;
+}
+
+/**
+ * Badge esito con colori verde/giallo/rosso.
+ */
+.pto-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border-radius: var(--pto-radius-md);
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}
+
+.pto-badge-success {
+    background-color: var(--pto-success-color);
+    color: #ffffff;
+}
+
+.pto-badge-warning {
+    background-color: var(--pto-warning-color);
+    color: #212529;
+}
+
+.pto-badge-danger {
+    background-color: var(--pto-danger-color);
+    color: #ffffff;
+}
+
+.pto-badge-info {
+    background-color: var(--pto-info-color);
+    color: #ffffff;
+}
+
+/* =============================================================================
+   6. SLOT ORARI
+   Stili per la gestione degli slot orari nel form calendario.
+   ============================================================================= */
+
+/**
+ * Container principale slot.
+ */
+.pto-slots-container {
+    border: 1px solid var(--pto-border-color);
+    border-radius: var(--pto-radius-md);
+    padding: var(--pto-spacing-sm);
+    background-color: var(--pto-bg-white);
+}
+
+/**
+ * Singola riga slot.
+ */
+.pto-slot-row,
+.slot-row {
+    padding: var(--pto-spacing-xs) 0;
+    border-bottom: 1px solid var(--pto-border-color);
+    transition: var(--pto-transition);
+}
+
+.pto-slot-row:last-child,
+.slot-row:last-child {
+    border-bottom: none;
+}
+
+.pto-slot-row:hover,
+.slot-row:hover {
+    background-color: var(--pto-bg-light);
+}
+
+/**
+ * Select per giorno e orari.
+ */
+.pto-slot-select,
+.slot-day,
+.slot-hour-from,
+.slot-hour-to {
+    border-radius: var(--pto-radius-sm);
+    border: 1px solid var(--pto-border-color);
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+    transition: var(--pto-transition);
+}
+
+.pto-slot-select:focus,
+.slot-day:focus,
+.slot-hour-from:focus,
+.slot-hour-to:focus {
+    border-color: var(--pto-secondary-color);
+    box-shadow: 0 0 0 0.15rem rgba(102, 126, 234, 0.25);
+    outline: none;
+}
+
+/**
+ * Pulsante rimuovi slot.
+ */
+.pto-remove-slot-btn,
+.remove-slot-btn {
+    transition: var(--pto-transition);
+}
+
+.pto-remove-slot-btn:hover,
+.remove-slot-btn:hover {
+    transform: scale(1.05);
+}
+
+/**
+ * Pulsante aggiungi slot.
+ */
+.pto-add-slot-btn,
+#add_slot_btn,
+#add_slot_btn_mobile,
+#inline_add_slot_btn {
+    transition: var(--pto-transition);
+}
+
+.pto-add-slot-btn:hover,
+#add_slot_btn:hover,
+#add_slot_btn_mobile:hover,
+#inline_add_slot_btn:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--pto-shadow-sm);
+}
+
+/**
+ * Messaggio nessuno slot.
+ */
+.pto-no-slots-message,
+#no_slots_message,
+#inline_no_slots_message {
+    text-align: center;
+    padding: var(--pto-spacing-md);
+    color: var(--pto-text-secondary);
+}
+
+/* =============================================================================
+   7. STILI RESPONSIVE (MOBILE-FIRST, BREAKPOINT 768px)
+   Adattamento layout per dispositivi mobili.
+   ============================================================================= */
+
+@media (max-width: 767.98px) {
+    .pto-calendar-container {
+        padding: var(--pto-spacing-xs);
+    }
+    
+    .pto-calendar-form {
+        padding: var(--pto-spacing-sm);
+    }
+    
+    .pto-card-body {
+        padding: var(--pto-spacing-sm);
+    }
+    
+    .pto-calendar-sidebar {
+        position: static !important;
+    }
+    
+    .pto-form-actions .btn {
+        width: 100%;
+    }
+    
+    .pto-card-footer {
+        flex-direction: column;
+    }
+    
+    .pto-summary-row {
+        flex-wrap: wrap;
+    }
+
+    /**
+     * Slot row responsive.
+     */
+    .pto-slot-row .col-sm-4,
+    .pto-slot-row .col-sm-3,
+    .slot-row .col-sm-4,
+    .slot-row .col-sm-3 {
+        margin-bottom: 0.5rem;
+    }
+}
+
+/**
+ * Tablet e schermi piccoli (768px - 991px).
+ */
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .pto-calendar-main {
+        flex: 0 0 60%;
+        max-width: 60%;
+    }
+    
+    .pto-calendar-sidebar {
+        flex: 0 0 40%;
+        max-width: 40%;
+    }
+}
+
+/**
+ * Desktop grandi (>= 1200px).
+ */
+@media (min-width: 1200px) {
+    .pto-calendar-main {
+        flex: 0 0 70%;
+        max-width: 70%;
+    }
+    
+    .pto-calendar-sidebar {
+        flex: 0 0 30%;
+        max-width: 30%;
+    }
+}
+
+/* =============================================================================
+   8. UTILITY E HELPER CLASSES
+   Classi di utility per spacing, visibilità e altro.
+   ============================================================================= */
+
+/**
+ * Spacing utilities.
+ */
+.pto-mt-sm { margin-top: var(--pto-spacing-sm) !important; }
+.pto-mt-md { margin-top: var(--pto-spacing-md) !important; }
+.pto-mb-sm { margin-bottom: var(--pto-spacing-sm) !important; }
+.pto-mb-md { margin-bottom: var(--pto-spacing-md) !important; }
+.pto-p-sm { padding: var(--pto-spacing-sm) !important; }
+.pto-p-md { padding: var(--pto-spacing-md) !important; }
+
+/**
+ * Visibilità responsive.
+ */
+.pto-hide-mobile {
+    display: block;
+}
+
+.pto-hide-desktop {
+    display: none;
+}
+
+@media (max-width: 767.98px) {
+    .pto-hide-mobile {
+        display: none !important;
+    }
+    
+    .pto-hide-desktop {
+        display: block !important;
+    }
+}
+
+/**
+ * Testo utilities.
+ */
+.pto-text-muted {
+    color: var(--pto-text-secondary) !important;
+}
+
+.pto-text-success {
+    color: var(--pto-success-color) !important;
+}
+
+.pto-text-warning {
+    color: var(--pto-warning-color) !important;
+}
+
+.pto-text-danger {
+    color: var(--pto-danger-color) !important;
+}
+
+.pto-text-center {
+    text-align: center !important;
+}
+
+/**
+ * Shadow utilities.
+ */
+.pto-shadow-none {
+    box-shadow: none !important;
+}
+
+.pto-shadow-sm {
+    box-shadow: var(--pto-shadow-sm) !important;
+}
+
+.pto-shadow-md {
+    box-shadow: var(--pto-shadow-md) !important;
+}
+
+/**
+ * Border utilities.
+ */
+.pto-border-0 {
+    border: none !important;
+}
+
+.pto-rounded {
+    border-radius: var(--pto-radius-md) !important;
+}
+
+.pto-rounded-lg {
+    border-radius: var(--pto-radius-lg) !important;
+}
+
+/* =============================================================================
+   FINE PORTAL TIME OFF CALENDAR FORM STYLES
+   ============================================================================= */

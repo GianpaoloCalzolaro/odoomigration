@@ -1,0 +1,1094 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="clinical_sheet_portal" name="Clinical Sheet Portal">
+        <t t-call="portal.portal_layout">
+            <div class="container-fluid clinical-portal">
+                
+                <!-- Patient Header -->
+                <div class="patient-header">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h2 t-field="contact.name"/>
+                            <div class="patient-info">
+                                <span t-field="contact.email"/>
+                                <span t-if="contact.phone"> - <span t-field="contact.phone"/></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="risk-indicators text-end">
+                                <div t-if="clinical_sheet.risk_assessment == 'high'" 
+                                     class="alert alert-danger mb-2">
+                                    🔴 Rischio Alto
+                                </div>
+                                <div t-elif="clinical_sheet.risk_assessment == 'medium'" 
+                                     class="alert alert-warning mb-2">
+                                    🟡 Rischio Medio
+                                </div>
+                                <div t-elif="clinical_sheet.risk_assessment == 'low'" 
+                                     class="alert alert-success mb-2">
+                                    🟢 Rischio Basso
+                                </div>
+                                <div class="completion-info">
+                                    <strong>Completamento: </strong>
+                                    <span t-field="clinical_sheet.overall_completion"/>%
+                                    <div class="progress mt-1">
+                                        <div class="progress-bar" 
+                                             t-att-style="'width: ' + str(clinical_sheet.overall_completion or 0) + '%'">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Layout -->
+                <div class="row">
+                    <!-- Content Area -->
+                    <div class="col-md-9">
+                        <form method="post" class="clinical-form" 
+                              t-attf-action="/my/patient/#{contact.id}/clinical-sheet/save">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <t t-if="error_message">
+                                <div class="alert alert-danger" role="alert">
+                                    <t t-esc="error_message"/>
+                                </div>
+                            </t>
+                            
+                            <!-- Sezione 1: Consultazione -->
+                            <div class="clinical-card collapsed" id="section-1" data-section="consultation">
+                                <div class="card">
+                                    <div class="card-header" style="cursor: pointer;">
+                                        <h5>
+                                            <i class="fa fa-clipboard"></i>
+                                            1. Motivo della Consultazione
+                                            <i class="fa fa-chevron-down collapse-icon float-end"></i>
+                                        </h5>
+                                    </div>
+                                    <div class="card-body collapsible-content" style="display: none;">
+                                        <div class="form-group mb-3">
+                                            <label>Motivo principale riferito dal paziente:</label>
+                                            <textarea name="reason_for_consultation" 
+                                                      class="form-control" 
+                                                      rows="4" 
+                                                      placeholder="Descrivi il motivo della consulenza..."
+                                                      t-raw="clinical_sheet.reason_for_consultation or ''"></textarea>
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <label>Durata sintomatologia attuale:</label>
+                                            <input type="text" name="symptoms_duration" 
+                                                   class="form-control"
+                                                   placeholder="Es: 3 mesi, 2 settimane..."
+                                                   t-att-value="clinical_sheet.symptoms_duration or ''"/>
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <label>Fattori scatenanti percepiti:</label>
+                                            <textarea name="triggering_factors" 
+                                                      class="form-control" 
+                                                      rows="3" 
+                                                      placeholder="Eventi o situazioni che potrebbero aver scatenato i sintomi..."
+                                                      t-raw="clinical_sheet.triggering_factors or ''"></textarea>
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <label>Impatto sulla vita quotidiana:</label>
+                                            <textarea name="daily_life_impact" 
+                                                      class="form-control" 
+                                                      rows="3" 
+                                                      placeholder="Come i sintomi influenzano le attività quotidiane..."
+                                                      t-raw="clinical_sheet.daily_life_impact or ''"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Sezione 2: Anamnesi Psichiatrica -->
+                            <div class="clinical-card collapsed" id="section-2" data-section="psychiatric">
+                                <div class="card">
+                                    <div class="card-header" style="cursor: pointer;">
+                                        <h5>
+                                            <i class="fa fa-user-md"></i>
+                                            2. Anamnesi Psichiatrica
+                                            <i class="fa fa-chevron-down collapse-icon float-end"></i>
+                                        </h5>
+                                    </div>
+                                    <div class="card-body collapsible-content" style="display: none;">
+                                        <!-- Diagnosi e Trattamenti -->
+                                        <h6 class="text-muted mb-3">Diagnosi e Trattamenti Pregressi</h6>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group mb-3">
+                                                    <label>Diagnosi psichiatriche pregresse:</label>
+                                                    <textarea name="previous_psychiatric_diagnoses" 
+                                                              class="form-control" 
+                                                              rows="3" 
+                                                              placeholder="Eventuali diagnosi psichiatriche precedenti..."
+                                                              t-raw="clinical_sheet.previous_psychiatric_diagnoses or ''"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group mb-3">
+                                                    <label>Psicoterapie precedenti:</label>
+                                                    <textarea name="previous_psychotherapies" 
+                                                              class="form-control" 
+                                                              rows="3" 
+                                                              placeholder="Trattamenti psicoterapeutici precedenti..."
+                                                              t-raw="clinical_sheet.previous_psychotherapies or ''"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group mb-3">
+                                                    <label>Farmaci precedenti:</label>
+                                                    <textarea name="previous_medications" 
+                                                              class="form-control" 
+                                                              rows="3" 
+                                                              placeholder="Farmaci psichiatrici assunti in passato..."
+                                                              t-raw="clinical_sheet.previous_medications or ''"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group mb-3">
+                                                    <label>Ricoveri psichiatrici:</label>
+                                                    <textarea name="psychiatric_hospitalizations" 
+                                                              class="form-control" 
+                                                              rows="3" 
+                                                              placeholder="Eventuali ricoveri psichiatrici..."
+                                                              t-raw="clinical_sheet.psychiatric_hospitalizations or ''"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Comportamenti a Rischio -->
+                                        <h6 class="text-muted mt-4 mb-3">Comportamenti a Rischio</h6>
+                                        <div class="form-check mb-2">
+                                            <input type="checkbox" name="previous_suicide_attempts" 
+                                                   class="form-check-input" value="1"
+                                                   t-att-checked="'checked' if clinical_sheet.previous_suicide_attempts else None"/>
+                                            <label class="form-check-label">Tentativi di suicidio pregressi</label>
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <textarea name="suicide_attempts_details" 
+                                                      class="form-control" 
+                                                      rows="2" 
+                                                      placeholder="Dettagli sui tentativi di suicidio..."
+                                                      t-raw="clinical_sheet.suicide_attempts_details or ''"></textarea>
+                                        </div>
+                                        
+                                        <div class="form-check mb-2">
+                                            <input type="checkbox" name="self_harm_behaviors" 
+                                                   class="form-check-input" value="1"
+                                                   t-att-checked="'checked' if clinical_sheet.self_harm_behaviors else None"/>
+                                            <label class="form-check-label">Comportamenti autolesivi</label>
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <textarea name="self_harm_details" 
+                                                      class="form-control" 
+                                                      rows="2" 
+                                                      placeholder="Dettagli sui comportamenti autolesivi..."
+                                                      t-raw="clinical_sheet.self_harm_details or ''"></textarea>
+                                        </div>
+
+                                        <div class="form-check mb-2">
+                                            <input type="checkbox" name="aggressive_behaviors" 
+                                                   class="form-check-input" value="1"
+                                                   t-att-checked="'checked' if clinical_sheet.aggressive_behaviors else None"/>
+                                            <label class="form-check-label">Comportamenti aggressivi pregressi</label>
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <textarea name="aggressive_details" 
+                                                      class="form-control" 
+                                                      rows="2" 
+                                                      placeholder="Dettagli sui comportamenti aggressivi..."
+                                                      t-raw="clinical_sheet.aggressive_details or ''"></textarea>
+                                        </div>
+
+                                        <!-- Storia Familiare -->
+                                        <h6 class="text-muted mt-4 mb-3">Storia Familiare</h6>
+                                        <div class="form-check mb-2">
+                                            <input type="checkbox" name="family_psychiatric_history" 
+                                                   class="form-check-input" value="1"
+                                                   t-att-checked="'checked' if clinical_sheet.family_psychiatric_history else None"/>
+                                            <label class="form-check-label">Storia familiare psichiatrica</label>
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <textarea name="family_history_details" 
+                                                      class="form-control" 
+                                                      rows="3" 
+                                                      placeholder="Dettagli sulla storia familiare psichiatrica..."
+                                                      t-raw="clinical_sheet.family_history_details or ''"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Sezione 3: Anamnesi Medica -->
+                            <div class="clinical-card collapsed" id="section-3" data-section="medical">
+                                <div class="card">
+                                    <div class="card-header" style="cursor: pointer;">
+                                        <h5>
+                                            <i class="fa fa-heartbeat"></i>
+                                            3. Anamnesi Medica Generale
+                                            <i class="fa fa-chevron-down collapse-icon float-end"></i>
+                                        </h5>
+                                    </div>
+                                    <div class="card-body collapsible-content" style="display: none;">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-check mb-2">
+                                                    <input type="checkbox" name="chronic_diseases" 
+                                                           class="form-check-input" value="1"
+                                                           t-att-checked="'checked' if clinical_sheet.chronic_diseases else None"/>
+                                                    <label class="form-check-label">Malattie croniche attuali</label>
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <textarea name="chronic_diseases_details" 
+                                                              class="form-control" 
+                                                              rows="3" 
+                                                              placeholder="Dettagli sulle malattie croniche..."
+                                                              t-raw="clinical_sheet.chronic_diseases_details or ''"></textarea>
+                                                </div>
+                                                <div class="form-check mb-2">
+                                                    <input type="checkbox" name="previous_surgeries" 
+                                                           class="form-check-input" value="1"
+                                                           t-att-checked="'checked' if clinical_sheet.previous_surgeries else None"/>
+                                                    <label class="form-check-label">Interventi chirurgici pregressi</label>
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <textarea name="surgeries_details" 
+                                                              class="form-control" 
+                                                              rows="3" 
+                                                              placeholder="Dettagli sugli interventi..."
+                                                              t-raw="clinical_sheet.surgeries_details or ''"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group mb-3">
+                                                    <label>Farmaci attuali:</label>
+                                                    <textarea name="current_medications" 
+                                                              class="form-control" 
+                                                              rows="3" 
+                                                              placeholder="Farmaci attualmente in uso..."
+                                                              t-raw="clinical_sheet.current_medications or ''"></textarea>
+                                                </div>
+                                                <div class="form-check mb-2">
+                                                    <input type="checkbox" name="allergies" 
+                                                           class="form-check-input" value="1"
+                                                           t-att-checked="'checked' if clinical_sheet.allergies else None"/>
+                                                    <label class="form-check-label">Allergie</label>
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <textarea name="allergies_details" 
+                                                              class="form-control" 
+                                                              rows="3" 
+                                                              placeholder="Dettagli sulle allergie..."
+                                                              t-raw="clinical_sheet.allergies_details or ''"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group mb-3">
+                                                    <label>Gravidanza/Allattamento:</label>
+                                                    <select name="pregnancy_breastfeeding" class="form-control">
+                                                        <option value="">Seleziona...</option>
+                                                        <option value="not_applicable" t-att-selected="'selected' if clinical_sheet.pregnancy_breastfeeding == 'not_applicable' else None">Non applicabile</option>
+                                                        <option value="pregnant" t-att-selected="'selected' if clinical_sheet.pregnancy_breastfeeding == 'pregnant' else None">Gravidanza</option>
+                                                        <option value="breastfeeding" t-att-selected="'selected' if clinical_sheet.pregnancy_breastfeeding == 'breastfeeding' else None">Allattamento</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group mb-3">
+                                                    <label>Settimane/Mesi:</label>
+                                                    <input type="text" name="pregnancy_weeks" 
+                                                           class="form-control"
+                                                           placeholder="Es: 20 settimane, 6 mesi..."
+                                                           t-att-value="clinical_sheet.pregnancy_weeks or ''"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Sezione 4: Sostanze -->
+                            <div class="clinical-card collapsed" id="section-4" data-section="substances">
+                                <div class="card">
+                                    <div class="card-header" style="cursor: pointer;">
+                                        <h5>
+                                            <i class="fa fa-flask"></i>
+                                            4. Uso di Sostanze
+                                            <i class="fa fa-chevron-down collapse-icon float-end"></i>
+                                        </h5>
+                                    </div>
+                                    <div class="card-body collapsible-content" style="display: none;">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-check mb-2">
+                                                    <input type="checkbox" name="smoking" 
+                                                           class="form-check-input" value="1"
+                                                           t-att-checked="'checked' if clinical_sheet.smoking else None"/>
+                                                    <label class="form-check-label">Fumo</label>
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <textarea name="smoking_details" 
+                                                              class="form-control" 
+                                                              rows="2" 
+                                                              placeholder="Dettagli sul fumo..."
+                                                              t-raw="clinical_sheet.smoking_details or ''"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-check mb-2">
+                                                    <input type="checkbox" name="alcohol" 
+                                                           class="form-check-input" value="1"
+                                                           t-att-checked="'checked' if clinical_sheet.alcohol else None"/>
+                                                    <label class="form-check-label">Alcol</label>
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <textarea name="alcohol_details" 
+                                                              class="form-control" 
+                                                              rows="2" 
+                                                              placeholder="Dettagli sul consumo di alcol..."
+                                                              t-raw="clinical_sheet.alcohol_details or ''"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-check mb-2">
+                                                    <input type="checkbox" name="illegal_drugs" 
+                                                           class="form-check-input" value="1"
+                                                           t-att-checked="'checked' if clinical_sheet.illegal_drugs else None"/>
+                                                    <label class="form-check-label">Sostanze</label>
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <textarea name="drugs_details" 
+                                                              class="form-control" 
+                                                              rows="2" 
+                                                              placeholder="Dettagli sull'uso di sostanze..."
+                                                              t-raw="clinical_sheet.drugs_details or ''"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Sezione 5: Contesto Sociale/Familiare -->
+                            <div class="clinical-card collapsed" id="section-5" data-section="social">
+                                <div class="card">
+                                    <div class="card-header" style="cursor: pointer;">
+                                        <h5>
+                                            <i class="fa fa-users"></i>
+                                            5. Contesto Sociale e Familiare
+                                            <i class="fa fa-chevron-down collapse-icon float-end"></i>
+                                        </h5>
+                                    </div>
+                                    <div class="card-body collapsible-content" style="display: none;">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group mb-3">
+                                                    <label>Situazione abitativa:</label>
+                                                    <select name="living_situation" class="form-control">
+                                                        <option value="">Seleziona...</option>
+                                                        <option value="alone" t-att-selected="'selected' if clinical_sheet.living_situation == 'alone' else None">Vive da solo/a</option>
+                                                        <option value="family" t-att-selected="'selected' if clinical_sheet.living_situation == 'family' else None">Con famiglia d'origine</option>
+                                                        <option value="partner" t-att-selected="'selected' if clinical_sheet.living_situation == 'partner' else None">Con partner</option>
+                                                        <option value="children" t-att-selected="'selected' if clinical_sheet.living_situation == 'children' else None">Con figli</option>
+                                                        <option value="facility" t-att-selected="'selected' if clinical_sheet.living_situation == 'facility' else None">Struttura protetta</option>
+                                                        <option value="other" t-att-selected="'selected' if clinical_sheet.living_situation == 'other' else None">Altro</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <label>Supporto sociale:</label>
+                                                    <select name="social_support" class="form-control">
+                                                        <option value="">Seleziona...</option>
+                                                        <option value="adequate" t-att-selected="'selected' if clinical_sheet.social_support == 'adequate' else None">Adeguato</option>
+                                                        <option value="poor" t-att-selected="'selected' if clinical_sheet.social_support == 'poor' else None">Scarso</option>
+                                                        <option value="absent" t-att-selected="'selected' if clinical_sheet.social_support == 'absent' else None">Assente</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group mb-3">
+                                                    <label>Descrizione supporto sociale:</label>
+                                                    <textarea name="social_support_description" 
+                                                              class="form-control" 
+                                                              rows="3" 
+                                                              placeholder="Descrivi il supporto sociale disponibile..."
+                                                              t-raw="clinical_sheet.social_support_description or ''"></textarea>
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <label>Relazioni significative:</label>
+                                                    <textarea name="significant_relationships" 
+                                                              class="form-control" 
+                                                              rows="3" 
+                                                              placeholder="Relazioni importanti nella vita del paziente..."
+                                                              t-raw="clinical_sheet.significant_relationships or ''"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <label>Contesto familiare rilevante:</label>
+                                            <textarea name="family_context" 
+                                                      class="form-control" 
+                                                      rows="3" 
+                                                      placeholder="Informazioni sul contesto familiare..."
+                                                      t-raw="clinical_sheet.family_context or ''"></textarea>
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <label>Storia evolutiva:</label>
+                                            <textarea name="developmental_history" 
+                                                      class="form-control" 
+                                                      rows="3" 
+                                                      placeholder="Storia dello sviluppo del paziente..."
+                                                      t-raw="clinical_sheet.developmental_history or ''"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Sezione 6: Sintomi Attuali -->
+                            <div class="clinical-card collapsed" id="section-6" data-section="symptoms">
+                                <div class="card">
+                                    <div class="card-header" style="cursor: pointer;">
+                                        <h5>
+                                            <i class="fa fa-thermometer-half"></i>
+                                            6. Sintomi Attuali
+                                            <i class="fa fa-chevron-down collapse-icon float-end"></i>
+                                        </h5>
+                                    </div>
+                                    <div class="card-body collapsible-content" style="display: none;">
+                                        <div class="form-group mb-3">
+                                            <label>Descrizione del problema presentato:</label>
+                                            <textarea name="problem_description" 
+                                                      class="form-control" 
+                                                      rows="4" 
+                                                      placeholder="Descrizione dettagliata del problema attuale..."
+                                                      t-raw="clinical_sheet.problem_description or ''"></textarea>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group mb-3">
+                                                    <label>Data di inizio sintomi:</label>
+                                                    <input type="date" name="symptoms_onset" 
+                                                           class="form-control"
+                                                           t-att-value="clinical_sheet.symptoms_onset or ''"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group mb-3">
+                                                    <label>Problematiche attuali:</label>
+                                                    <textarea name="current_issues" 
+                                                              class="form-control" 
+                                                              rows="3" 
+                                                              placeholder="Problemi attuali riferiti dal paziente..."
+                                                              t-raw="clinical_sheet.current_issues or ''"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Sintomi dell'Umore -->
+                                        <h6 class="text-muted mt-4 mb-3">Sintomi dell'Umore</h6>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group mb-3">
+                                                    <label>Tristezza/Depressione:</label>
+                                                    <textarea name="sadness_depression" 
+                                                              class="form-control" 
+                                                              rows="2" 
+                                                              placeholder="Presenza e caratteristiche della tristezza..."
+                                                              t-raw="clinical_sheet.sadness_depression or ''"></textarea>
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <label>Perdita interesse/piacere:</label>
+                                                    <textarea name="anhedonia" 
+                                                              class="form-control" 
+                                                              rows="2" 
+                                                              placeholder="Anedonia, perdita di interesse..."
+                                                              t-raw="clinical_sheet.anhedonia or ''"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group mb-3">
+                                                    <label>Irritabilità/rabbia:</label>
+                                                    <textarea name="irritability_anger" 
+                                                              class="form-control" 
+                                                              rows="2" 
+                                                              placeholder="Episodi di irritabilità o rabbia..."
+                                                              t-raw="clinical_sheet.irritability_anger or ''"></textarea>
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <label>Labilità emotiva:</label>
+                                                    <textarea name="emotional_lability" 
+                                                              class="form-control" 
+                                                              rows="2" 
+                                                              placeholder="Cambiamenti rapidi dell'umore..."
+                                                              t-raw="clinical_sheet.emotional_lability or ''"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Sintomi d'Ansia -->
+                                        <h6 class="text-muted mt-4 mb-3">Sintomi d'Ansia</h6>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group mb-3">
+                                                    <label>Ansia generalizzata:</label>
+                                                    <textarea name="generalized_anxiety" 
+                                                              class="form-control" 
+                                                              rows="2" 
+                                                              placeholder="Presenza di ansia generalizzata..."
+                                                              t-raw="clinical_sheet.generalized_anxiety or ''"></textarea>
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <label>Attacchi di panico:</label>
+                                                    <textarea name="panic_attacks" 
+                                                              class="form-control" 
+                                                              rows="2" 
+                                                              placeholder="Episodi di panico..."
+                                                              t-raw="clinical_sheet.panic_attacks or ''"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group mb-3">
+                                                    <label>Fobie:</label>
+                                                    <textarea name="phobias" 
+                                                              class="form-control" 
+                                                              rows="2" 
+                                                              placeholder="Fobie specifiche..."
+                                                              t-raw="clinical_sheet.phobias or ''"></textarea>
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <label>Sintomi ossessivo-compulsivi:</label>
+                                                    <textarea name="ocd_symptoms" 
+                                                              class="form-control" 
+                                                              rows="2" 
+                                                              placeholder="Ossessioni e compulsioni..."
+                                                              t-raw="clinical_sheet.ocd_symptoms or ''"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Sezione 7: Esame Psichico -->
+                            <div class="clinical-card collapsed" id="section-7" data-section="exam">
+                                <div class="card">
+                                    <div class="card-header" style="cursor: pointer;">
+                                        <h5>
+                                            <i class="fa fa-search"></i>
+                                            7. Esame Obiettivo Psichico
+                                            <i class="fa fa-chevron-down collapse-icon float-end"></i>
+                                        </h5>
+                                    </div>
+                                    <div class="card-body collapsible-content" style="display: none;">
+                                        <!-- Aspetto e Comportamento -->
+                                        <h6 class="text-muted mb-3">Aspetto e Comportamento</h6>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group mb-3">
+                                                    <label>Abbigliamento e igiene:</label>
+                                                    <textarea name="appearance_hygiene" 
+                                                              class="form-control" 
+                                                              rows="2" 
+                                                              placeholder="Cura della persona, abbigliamento..."
+                                                              t-raw="clinical_sheet.appearance_hygiene or ''"></textarea>
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <label>Atteggiamento:</label>
+                                                    <textarea name="attitude" 
+                                                              class="form-control" 
+                                                              rows="2" 
+                                                              placeholder="Atteggiamento durante il colloquio..."
+                                                              t-raw="clinical_sheet.attitude or ''"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group mb-3">
+                                                    <label>Mimica e gestualità:</label>
+                                                    <textarea name="mimics_gestures" 
+                                                              class="form-control" 
+                                                              rows="2" 
+                                                              placeholder="Espressioni facciali, gesti..."
+                                                              t-raw="clinical_sheet.mimics_gestures or ''"></textarea>
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <label>Attività psicomotoria:</label>
+                                                    <textarea name="psychomotor_activity" 
+                                                              class="form-control" 
+                                                              rows="2" 
+                                                              placeholder="Agitazione, rallentamento..."
+                                                              t-raw="clinical_sheet.psychomotor_activity or ''"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Cognizione -->
+                                        <h6 class="text-muted mt-4 mb-3">Cognizione</h6>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group mb-3">
+                                                    <label>Orientamento:</label>
+                                                    <textarea name="orientation" 
+                                                              class="form-control" 
+                                                              rows="2" 
+                                                              placeholder="Orientamento spazio-temporale..."
+                                                              t-raw="clinical_sheet.orientation or ''"></textarea>
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <label>Insight:</label>
+                                                    <select name="insight" class="form-control">
+                                                        <option value="">Seleziona...</option>
+                                                        <option value="good" t-att-selected="'selected' if clinical_sheet.insight == 'good' else None">Buono</option>
+                                                        <option value="partial" t-att-selected="'selected' if clinical_sheet.insight == 'partial' else None">Parziale</option>
+                                                        <option value="absent" t-att-selected="'selected' if clinical_sheet.insight == 'absent' else None">Assente</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group mb-3">
+                                                    <label>Memoria:</label>
+                                                    <textarea name="memory_exam" 
+                                                              class="form-control" 
+                                                              rows="2" 
+                                                              placeholder="Memoria a breve e lungo termine..."
+                                                              t-raw="clinical_sheet.memory_exam or ''"></textarea>
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <label>Giudizio:</label>
+                                                    <select name="judgment" class="form-control">
+                                                        <option value="">Seleziona...</option>
+                                                        <option value="good" t-att-selected="'selected' if clinical_sheet.judgment == 'good' else None">Buono</option>
+                                                        <option value="partial" t-att-selected="'selected' if clinical_sheet.judgment == 'partial' else None">Parziale</option>
+                                                        <option value="compromised" t-att-selected="'selected' if clinical_sheet.judgment == 'compromised' else None">Compromesso</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Sezione 8: Valutazione Rischio -->
+                            <div class="clinical-card collapsed" id="section-8" data-section="risk">
+                                <div class="card">
+                                    <div class="card-header" style="cursor: pointer;">
+                                        <h5>
+                                            <i class="fa fa-exclamation-triangle"></i>
+                                            8. Valutazione del Rischio
+                                            <i class="fa fa-chevron-down collapse-icon float-end"></i>
+                                        </h5>
+                                    </div>
+                                    <div class="card-body collapsible-content" style="display: none;">
+                                        <div class="form-group mb-3">
+                                            <label>Valutazione generale del rischio:</label>
+                                            <select name="risk_assessment" class="form-control">
+                                                <option value="">Seleziona livello di rischio...</option>
+                                                <option value="low" t-att-selected="'selected' if clinical_sheet.risk_assessment == 'low' else None">Basso</option>
+                                                <option value="medium" t-att-selected="'selected' if clinical_sheet.risk_assessment == 'medium' else None">Medio</option>
+                                                <option value="high" t-att-selected="'selected' if clinical_sheet.risk_assessment == 'high' else None">Alto</option>
+                                            </select>
+                                        </div>
+
+                                        <!-- Rischio Suicidario -->
+                                        <h6 class="text-muted mt-4 mb-3">Rischio Suicidario</h6>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group mb-3">
+                                                    <label>Ideazione suicidaria:</label>
+                                                    <select name="suicidal_ideation" class="form-control">
+                                                        <option value="">Seleziona...</option>
+                                                        <option value="absent" t-att-selected="'selected' if clinical_sheet.suicidal_ideation == 'absent' else None">Assente</option>
+                                                        <option value="mild" t-att-selected="'selected' if clinical_sheet.suicidal_ideation == 'mild' else None">Lieve</option>
+                                                        <option value="moderate" t-att-selected="'selected' if clinical_sheet.suicidal_ideation == 'moderate' else None">Moderata</option>
+                                                        <option value="severe" t-att-selected="'selected' if clinical_sheet.suicidal_ideation == 'severe' else None">Grave</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-check mb-2">
+                                                    <input type="checkbox" name="suicide_means_available" 
+                                                           class="form-check-input" value="1"
+                                                           t-att-checked="'checked' if clinical_sheet.suicide_means_available else None"/>
+                                                    <label class="form-check-label">Mezzi disponibili</label>
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <textarea name="suicide_means_details" 
+                                                              class="form-control" 
+                                                              rows="2" 
+                                                              placeholder="Dettagli sui mezzi disponibili..."
+                                                              t-raw="clinical_sheet.suicide_means_details or ''"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group mb-3">
+                                                    <label>Fattori di rischio aggiuntivi:</label>
+                                                    <textarea name="suicide_risk_factors" 
+                                                              class="form-control" 
+                                                              rows="3" 
+                                                              placeholder="Altri fattori che aumentano il rischio..."
+                                                              t-raw="clinical_sheet.suicide_risk_factors or ''"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Rischio Eterolesivo -->
+                                        <h6 class="text-muted mt-4 mb-3">Rischio Eterolesivo</h6>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group mb-3">
+                                                    <label>Ideazione aggressiva:</label>
+                                                    <select name="aggressive_ideation" class="form-control">
+                                                        <option value="">Seleziona...</option>
+                                                        <option value="absent" t-att-selected="'selected' if clinical_sheet.aggressive_ideation == 'absent' else None">Assente</option>
+                                                        <option value="mild" t-att-selected="'selected' if clinical_sheet.aggressive_ideation == 'mild' else None">Lieve</option>
+                                                        <option value="moderate" t-att-selected="'selected' if clinical_sheet.aggressive_ideation == 'moderate' else None">Moderata</option>
+                                                        <option value="severe" t-att-selected="'selected' if clinical_sheet.aggressive_ideation == 'severe' else None">Grave</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group mb-3">
+                                                    <label>Verso chi (se presente):</label>
+                                                    <textarea name="aggression_target" 
+                                                              class="form-control" 
+                                                              rows="2" 
+                                                              placeholder="Target dell'aggressività..."
+                                                              t-raw="clinical_sheet.aggression_target or ''"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Sezione 9: Fattori Protettivi -->
+                            <div class="clinical-card collapsed" id="section-9" data-section="protective">
+                                <div class="card">
+                                    <div class="card-header" style="cursor: pointer;">
+                                        <h5>
+                                            <i class="fa fa-shield"></i>
+                                            9. Fattori Protettivi
+                                            <i class="fa fa-chevron-down collapse-icon float-end"></i>
+                                        </h5>
+                                    </div>
+                                    <div class="card-body collapsible-content" style="display: none;">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group mb-3">
+                                                    <label>Fattori protettivi individuali:</label>
+                                                    <textarea name="individual_protective_factors" 
+                                                              class="form-control" 
+                                                              rows="4" 
+                                                              placeholder="Risorse personali, resilienza, strategie di coping..."
+                                                              t-raw="clinical_sheet.individual_protective_factors or ''"></textarea>
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <label>Supporto sociale:</label>
+                                                    <textarea name="social_protective_factors" 
+                                                              class="form-control" 
+                                                              rows="4" 
+                                                              placeholder="Rete di supporto, relazioni positive..."
+                                                              t-raw="clinical_sheet.social_protective_factors or ''"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group mb-3">
+                                                    <label>Coinvolgimento nel trattamento:</label>
+                                                    <textarea name="treatment_engagement" 
+                                                              class="form-control" 
+                                                              rows="4" 
+                                                              placeholder="Motivazione, compliance, alleanza terapeutica..."
+                                                              t-raw="clinical_sheet.treatment_engagement or ''"></textarea>
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <label>Fattori di stabilità:</label>
+                                                    <textarea name="stability_factors" 
+                                                              class="form-control" 
+                                                              rows="4" 
+                                                              placeholder="Stabilità lavorativa, abitativa, economica..."
+                                                              t-raw="clinical_sheet.stability_factors or ''"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Sezione 10: Conclusioni -->
+                            <div class="clinical-card collapsed" id="section-10" data-section="conclusions">
+                                <div class="card">
+                                    <div class="card-header" style="cursor: pointer;">
+                                        <h5>
+                                            <i class="fa fa-clipboard"></i>
+                                            10. Conclusioni e Piano di Trattamento
+                                            <i class="fa fa-chevron-down collapse-icon float-end"></i>
+                                        </h5>
+                                    </div>
+                                    <div class="card-body collapsible-content" style="display: none;">
+                                        <!-- Diagnosi -->
+                                        <h6 class="text-muted mb-3">Diagnosi</h6>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group mb-3">
+                                                    <label>Diagnosi primaria:</label>
+                                                    <input type="text" name="primary_diagnosis" 
+                                                           class="form-control"
+                                                           placeholder="Diagnosi principale..."
+                                                           t-att-value="clinical_sheet.primary_diagnosis or ''"/>
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <label>Diagnosi secondaria:</label>
+                                                    <input type="text" name="secondary_diagnosis" 
+                                                           class="form-control"
+                                                           placeholder="Diagnosi secondaria..."
+                                                           t-att-value="clinical_sheet.secondary_diagnosis or ''"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group mb-3">
+                                                    <label>Codice diagnosi (DSM-5/ICD-10):</label>
+                                                    <input type="text" name="diagnosis_code" 
+                                                           class="form-control"
+                                                           placeholder="Es: F32.1, 296.22..."
+                                                           t-att-value="clinical_sheet.diagnosis_code or ''"/>
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <label>Comorbilità:</label>
+                                                    <textarea name="comorbidity" 
+                                                              class="form-control" 
+                                                              rows="3" 
+                                                              placeholder="Disturbi in comorbilità..."
+                                                              t-raw="clinical_sheet.comorbidity or ''"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Sintesi Clinica -->
+                                        <h6 class="text-muted mt-4 mb-3">Sintesi Clinica</h6>
+                                        <div class="form-group mb-3">
+                                            <label>Sintesi dei dati principali:</label>
+                                            <textarea name="clinical_summary" 
+                                                      class="form-control" 
+                                                      rows="4" 
+                                                      placeholder="Riassunto dei punti salienti dell'assessment..."
+                                                      t-raw="clinical_sheet.clinical_summary or ''"></textarea>
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <label>Ipotesi diagnostiche:</label>
+                                            <textarea name="diagnostic_hypotheses" 
+                                                      class="form-control" 
+                                                      rows="3" 
+                                                      placeholder="Ipotesi diagnostiche formulate..."
+                                                      t-raw="clinical_sheet.diagnostic_hypotheses or ''"></textarea>
+                                        </div>
+
+                                        <!-- Piano di Trattamento -->
+                                        <h6 class="text-muted mt-4 mb-3">Piano di Trattamento</h6>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group mb-3">
+                                                    <label>Obiettivi del trattamento:</label>
+                                                    <textarea name="treatment_goals" 
+                                                              class="form-control" 
+                                                              rows="4" 
+                                                              placeholder="Obiettivi specifici del trattamento..."
+                                                              t-raw="clinical_sheet.treatment_goals or ''"></textarea>
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <label>Aspettative del paziente:</label>
+                                                    <textarea name="patient_expectations" 
+                                                              class="form-control" 
+                                                              rows="3" 
+                                                              placeholder="Cosa si aspetta il paziente dal trattamento..."
+                                                              t-raw="clinical_sheet.patient_expectations or ''"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group mb-3">
+                                                    <label>Piano di trattamento proposto:</label>
+                                                    <textarea name="treatment_plan" 
+                                                              class="form-control" 
+                                                              rows="4" 
+                                                              placeholder="Strategia terapeutica, frequenza, modalità..."
+                                                              t-raw="clinical_sheet.treatment_plan or ''"></textarea>
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <label>Fattori di rischio e protezione rilevanti:</label>
+                                                    <textarea name="relevant_risk_protective_factors" 
+                                                              class="form-control" 
+                                                              rows="3" 
+                                                              placeholder="Sintesi dei fattori più rilevanti..."
+                                                              t-raw="clinical_sheet.relevant_risk_protective_factors or ''"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Form Actions -->
+                            <div class="form-actions mt-4">
+                                <div class="d-flex justify-content-between">
+                                    <a t-attf-href="/my/assigned_contacts/#{contact.id}" 
+                                       class="btn btn-secondary">
+                                        <i class="fa fa-arrow-left"></i> Torna al Contatto
+                                    </a>
+                                    <button type="submit" class="btn btn-primary btn-lg">
+                                        <i class="fa fa-save"></i> Salva Cartella Clinica
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Summary Panel -->
+                    <div class="col-md-3">
+                        <div class="summary-panel">
+                            <!-- Indicatori di Rischio -->
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <h6 class="mb-0">Indicatori di Rischio</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div t-if="clinical_sheet.suicidal_ideation and clinical_sheet.suicidal_ideation != 'absent'" 
+                                         t-att-class="'alert alert-danger' if clinical_sheet.suicidal_ideation == 'severe' else 'alert alert-warning'">
+                                        <strong>Rischio Suicidario:</strong><br/>
+                                        <span t-field="clinical_sheet.suicidal_ideation"/>
+                                    </div>
+                                    
+                                    <div t-if="clinical_sheet.aggressive_ideation and clinical_sheet.aggressive_ideation != 'absent'" 
+                                         t-att-class="'alert alert-danger' if clinical_sheet.aggressive_ideation == 'severe' else 'alert alert-warning'">
+                                        <strong>Rischio Aggressivo:</strong><br/>
+                                        <span t-field="clinical_sheet.aggressive_ideation"/>
+                                    </div>
+                                    
+                                    <div t-if="clinical_sheet.risk_assessment == 'high'" 
+                                         class="alert alert-danger">
+                                        <strong>Valutazione Generale:</strong><br/>
+                                        Rischio Alto
+                                    </div>
+                                    
+                                    <div t-if="not clinical_sheet.suicidal_ideation and not clinical_sheet.aggressive_ideation and clinical_sheet.risk_assessment != 'high'" 
+                                         class="text-muted">
+                                        Nessun rischio particolare segnalato
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Progresso Completamento -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6 class="mb-0">Progresso Completamento</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="progress-item mb-2">
+                                        <small>1. Consultazione</small>
+                                        <div class="progress">
+                                            <div class="progress-bar" 
+                                                 t-att-style="'width: ' + str(clinical_sheet.section_1_completion or 0) + '%'">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="progress-item mb-2">
+                                        <small>2. Anamnesi Psichiatrica</small>
+                                        <div class="progress">
+                                            <div class="progress-bar" 
+                                                 t-att-style="'width: ' + str(clinical_sheet.section_2_completion or 0) + '%'">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="progress-item mb-2">
+                                        <small>3. Anamnesi Medica</small>
+                                        <div class="progress">
+                                            <div class="progress-bar" 
+                                                 t-att-style="'width: ' + str(clinical_sheet.section_3_completion or 0) + '%'">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="progress-item mb-2">
+                                        <small>4. Sostanze</small>
+                                        <div class="progress">
+                                            <div class="progress-bar" 
+                                                 t-att-style="'width: ' + str(clinical_sheet.section_4_completion or 0) + '%'">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="progress-item mb-2">
+                                        <small>5. Sociale/Familiare</small>
+                                        <div class="progress">
+                                            <div class="progress-bar" 
+                                                 t-att-style="'width: ' + str(clinical_sheet.section_5_completion or 0) + '%'">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="progress-item mb-2">
+                                        <small>6. Sintomi Attuali</small>
+                                        <div class="progress">
+                                            <div class="progress-bar" 
+                                                 t-att-style="'width: ' + str(clinical_sheet.section_6_completion or 0) + '%'">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="progress-item mb-2">
+                                        <small>7. Esame Psichico</small>
+                                        <div class="progress">
+                                            <div class="progress-bar" 
+                                                 t-att-style="'width: ' + str(clinical_sheet.section_7_completion or 0) + '%'">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="progress-item mb-2">
+                                        <small>8. Valutazione Rischio</small>
+                                        <div class="progress">
+                                            <div class="progress-bar" 
+                                                 t-att-style="'width: ' + str(clinical_sheet.section_8_completion or 0) + '%'">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="progress-item mb-2">
+                                        <small>9. Fattori Protettivi</small>
+                                        <div class="progress">
+                                            <div class="progress-bar" 
+                                                 t-att-style="'width: ' + str(clinical_sheet.section_9_completion or 0) + '%'">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="progress-item mb-2">
+                                        <small>10. Conclusioni</small>
+                                        <div class="progress">
+                                            <div class="progress-bar" 
+                                                 t-att-style="'width: ' + str(clinical_sheet.section_10_completion or 0) + '%'">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <hr/>
+                                    <div class="text-center">
+                                        <strong>Completamento Generale</strong>
+                                        <div class="progress mt-2">
+                                            <div class="progress-bar progress-bar-success" 
+                                                 t-att-style="'width: ' + str(clinical_sheet.overall_completion or 0) + '%'">
+                                                <span t-field="clinical_sheet.overall_completion"/>%
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </t>
+    </template>
+</odoo>

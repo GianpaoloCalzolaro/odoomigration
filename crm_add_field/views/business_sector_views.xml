@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Business Sector Form View -->
+    <record id="view_business_sector_form" model="ir.ui.view">
+        <field name="name">business.sector.form</field>
+        <field name="model">business.sector</field>
+        <field name="arch" type="xml">
+            <form string="Business Sector">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_leads" 
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-star"
+                                modifiers='{"invisible": [["lead_count", "=", 0]]}'>
+                            <field name="lead_count" widget="statinfo" string="Leads"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1><field name="name" placeholder="e.g. Manufacturing"/></h1>
+                    </div>
+                    <group>
+                        <field name="active"/>
+                    </group>
+                    <notebook>
+                        <page string="Description" name="description">
+                            <field name="description" placeholder="Enter description here..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Business Sector Tree View -->
+    <record id="view_business_sector_tree" model="ir.ui.view">
+        <field name="name">business.sector.tree</field>
+        <field name="model">business.sector</field>
+        <field name="arch" type="xml">
+            <list string="Business Sectors">
+                <field name="name"/>
+                <field name="lead_count"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Business Sector Search View -->
+    <record id="view_business_sector_search" model="ir.ui.view">
+        <field name="name">business.sector.search</field>
+        <field name="model">business.sector</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search string="Search Business Sectors">
+                <field name="name" string="Business Sector"/>
+                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Business Sector Action -->
+    <record id="action_business_sector" model="ir.actions.act_window">
+        <field name="name">Business Sectors</field>
+        <field name="res_model">business.sector</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create the first business sector
+            </p>
+            <p>
+                Business sectors are used to categorize leads and opportunities.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu item for Business Sectors -->
+    <menuitem id="menu_business_sector"
+        name="Business Sectors"
+        parent="crm.crm_menu_config"
+        action="action_business_sector"
+        sequence="15"/>
+</odoo>

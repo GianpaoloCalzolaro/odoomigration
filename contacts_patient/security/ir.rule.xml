@@ -1,0 +1,96 @@
+<odoo> 
+    <!-- Rule to restrict tutors and professionals to only see their assigned patients -->
+    <record id="rule_contacts_patient_tutor" model="ir.rule">
+        <field name="name">Patient: portal tutors and professionals see only their patients</field>
+        <field name="model_id" ref="base.model_res_partner"/>
+        <field name="domain_force">[('is_patient', '=', True), '|', ('tutor.user_id', '=', user.id), ('professional.user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+
+
+    <record id="rule_clinical_sheet_tutor_access" model="ir.rule">
+        <field name="name">Clinical Sheet: portal tutors and professionals access</field>
+        <field name="model_id" ref="model_clinical_sheet"/>
+        <field name="domain_force">['|', ('partner_id.tutor.user_id', '=', user.id), ('partner_id.professional.user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="rule_clinical_observation_portal_access" model="ir.rule">
+        <field name="name">Clinical Observation: portal tutors and professionals access</field>
+        <field name="model_id" ref="model_clinical_observation"/>
+        <field name="domain_force">['|', ('clinical_sheet_id.partner_id.tutor.user_id', '=', user.id), ('clinical_sheet_id.partner_id.professional.user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <!-- Survey access rules for portal tutors and professionals -->
+    <record id="rule_survey_user_input_portal" model="ir.rule">
+        <field name="name">Survey User Input: portal tutors and professionals access</field>
+        <field name="model_id" ref="survey.model_survey_user_input"/>
+        <field name="domain_force">['|', ('partner_id.tutor.user_id', '=', user.id), ('partner_id.professional.user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="rule_survey_user_input_line_portal" model="ir.rule">
+        <field name="name">Survey User Input Line: portal tutors and professionals access</field>
+        <field name="model_id" ref="survey.model_survey_user_input_line"/>
+        <field name="domain_force">['|', ('user_input_id.partner_id.tutor.user_id', '=', user.id), ('user_input_id.partner_id.professional.user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="rule_survey_portal" model="ir.rule">
+        <field name="name">Survey: portal tutors read</field>
+        <field name="model_id" ref="survey.model_survey_survey"/>
+        <field name="domain_force">[(1,'=',1)]</field>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="rule_survey_question_portal" model="ir.rule">
+        <field name="name">Survey Question: portal tutors read</field>
+        <field name="model_id" ref="survey.model_survey_question"/>
+        <field name="domain_force">[(1,'=',1)]</field>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+
+    <!-- Rule for internal users to access clinical sheets -->
+
+    <record id="rule_clinical_sheet_internal_access" model="ir.rule">
+        <field name="name">Clinical Sheet: internal users full access</field>
+        <field name="model_id" ref="model_clinical_sheet"/>
+        <field name="domain_force">[(1,'=',1)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+</odoo>

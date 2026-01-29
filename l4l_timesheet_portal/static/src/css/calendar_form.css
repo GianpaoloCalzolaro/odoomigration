@@ -1,0 +1,798 @@
+/**
+ * =============================================================================
+ * CALENDAR FORM STYLES
+ * =============================================================================
+ * Stili CSS responsive per la gestione del calendario personalizzato.
+ * Include layout a 2 colonne su desktop, verticale su mobile.
+ * Compatibile con Bootstrap 5.x.
+ * 
+ * Struttura:
+ * 1. Variabili CSS / CSS Custom Properties
+ * 2. Layout principale - Container e Grid
+ * 3. Form gestione calendario
+ * 4. Lista card calendario
+ * 5. Riepilogo ore / Badge esito
+ * 6. Stili responsive (mobile-first, breakpoint 768px)
+ * 7. Utility e helper classes
+ * =============================================================================
+ */
+
+/* =============================================================================
+   1. VARIABILI CSS / CSS CUSTOM PROPERTIES
+   Colori personalizzati per badge esito e temi coerenti con Bootstrap.
+   ============================================================================= */
+:root {
+    /* Colori esito badge (verde/giallo/rosso) */
+    --calendar-success-color: #28a745;      /* Verde - esito positivo */
+    --calendar-warning-color: #ffc107;      /* Giallo - esito in sospeso/attenzione */
+    --calendar-danger-color: #dc3545;       /* Rosso - esito negativo */
+    --calendar-info-color: #17a2b8;         /* Blu info */
+    
+    /* Colori principali form */
+    --calendar-primary-color: #56C9F0;
+    --calendar-secondary-color: #667eea;
+    --calendar-border-color: #dee2e6;
+    --calendar-bg-light: #f8f9fa;
+    --calendar-bg-white: #ffffff;
+    --calendar-text-primary: #333333;
+    --calendar-text-secondary: #6c757d;
+    
+    /* Ombre e transizioni */
+    --calendar-shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.05);
+    --calendar-shadow-md: 0 4px 15px rgba(0, 0, 0, 0.1);
+    --calendar-transition: all 0.3s ease;
+    
+    /* Spacing */
+    --calendar-spacing-xs: 0.5rem;
+    --calendar-spacing-sm: 1rem;
+    --calendar-spacing-md: 1.5rem;
+    --calendar-spacing-lg: 2rem;
+    
+    /* Border radius */
+    --calendar-radius-sm: 6px;
+    --calendar-radius-md: 8px;
+    --calendar-radius-lg: 12px;
+}
+
+/* =============================================================================
+   2. LAYOUT PRINCIPALE - CONTAINER E GRID
+   Layout a 2 colonne su desktop, verticale su mobile.
+   Breakpoint principale: 768px (min-width per desktop).
+   ============================================================================= */
+
+/**
+ * Container principale del calendario.
+ * Applica padding e background coerenti con il design del portale.
+ */
+.calendar-form-container {
+    background-color: var(--calendar-bg-light);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: var(--calendar-spacing-sm);
+}
+
+/**
+ * Layout grid a 2 colonne per desktop.
+ * Su mobile diventa layout verticale (1 colonna).
+ */
+.calendar-layout {
+    display: flex;
+    flex-direction: column;
+    gap: var(--calendar-spacing-md);
+}
+
+/**
+ * Breakpoint min 768px: Layout a 2 colonne su desktop.
+ * Colonna sinistra: form/lista card (60-70% width).
+ * Colonna destra: riepilogo ore (30-40% width).
+ */
+@media (min-width: 768px) {
+    .calendar-layout {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+    
+    /**
+     * Colonna principale (form e lista card).
+     * Occupa circa 65% dello spazio disponibile su desktop.
+     */
+    .calendar-main-column {
+        flex: 0 0 65%;
+        max-width: 65%;
+    }
+    
+    /**
+     * Colonna laterale (riepilogo ore).
+     * Occupa circa 35% dello spazio disponibile su desktop.
+     * Position sticky per rimanere visibile durante lo scroll.
+     */
+    .calendar-sidebar-column {
+        flex: 0 0 35%;
+        max-width: 35%;
+        position: sticky;
+        top: 20px;
+    }
+}
+
+/* =============================================================================
+   3. FORM GESTIONE CALENDARIO
+   Stili per form di creazione/modifica eventi calendario.
+   ============================================================================= */
+
+/**
+ * Container form calendario.
+ * Applica stili card con ombre e bordi arrotondati.
+ */
+.calendar-form {
+    background-color: var(--calendar-bg-white);
+    border-radius: var(--calendar-radius-lg);
+    box-shadow: var(--calendar-shadow-sm);
+    padding: var(--calendar-spacing-md);
+    margin-bottom: var(--calendar-spacing-md);
+}
+
+/**
+ * Header del form con titolo.
+ */
+.calendar-form-header {
+    border-bottom: 1px solid var(--calendar-border-color);
+    margin-bottom: var(--calendar-spacing-md);
+    padding-bottom: var(--calendar-spacing-sm);
+}
+
+.calendar-form-header h3,
+.calendar-form-header .calendar-form-title {
+    color: var(--calendar-text-primary);
+    font-weight: 600;
+    font-size: 1.25rem;
+    margin: 0;
+}
+
+/**
+ * Gruppi di campi del form.
+ * Spacing consistente tra campi.
+ */
+.calendar-form .form-group,
+.calendar-form-group {
+    margin-bottom: var(--calendar-spacing-md);
+}
+
+/**
+ * Label dei campi form.
+ * Stile coerente con Bootstrap ma personalizzato.
+ */
+.calendar-form label,
+.calendar-form-label {
+    font-weight: 500;
+    color: var(--calendar-text-primary);
+    margin-bottom: var(--calendar-spacing-xs);
+    display: block;
+}
+
+/**
+ * Indicatore campo obbligatorio (asterisco rosso).
+ */
+.calendar-form .required-star,
+.required-star {
+    color: var(--calendar-danger-color);
+    margin-left: 2px;
+}
+
+/**
+ * Input, select, textarea del form.
+ * Override stili Bootstrap per coerenza.
+ */
+.calendar-form .form-control,
+.calendar-form-input {
+    border-radius: var(--calendar-radius-sm);
+    border: 1px solid var(--calendar-border-color);
+    padding: 0.625rem 0.875rem;
+    font-size: 0.95rem;
+    transition: var(--calendar-transition);
+}
+
+.calendar-form .form-control:focus,
+.calendar-form-input:focus {
+    border-color: var(--calendar-secondary-color);
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    outline: none;
+}
+
+/**
+ * Griglia interna form per layout campi affiancati.
+ * 2 colonne su desktop, 1 su mobile.
+ */
+.calendar-form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--calendar-spacing-sm);
+}
+
+.calendar-form-col {
+    flex: 1 1 100%;
+}
+
+@media (min-width: 768px) {
+    .calendar-form-col {
+        flex: 1 1 calc(50% - var(--calendar-spacing-xs));
+    }
+    
+    .calendar-form-col.full-width {
+        flex: 1 1 100%;
+    }
+}
+
+/**
+ * Footer form con pulsanti azione.
+ */
+.calendar-form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--calendar-spacing-sm);
+    margin-top: var(--calendar-spacing-md);
+    padding-top: var(--calendar-spacing-sm);
+    border-top: 1px solid var(--calendar-border-color);
+}
+
+.calendar-form-actions .btn {
+    padding: 0.625rem 1.5rem;
+    font-weight: 500;
+    border-radius: var(--calendar-radius-md);
+    transition: var(--calendar-transition);
+}
+
+.calendar-form-actions .btn-primary {
+    background-color: var(--calendar-primary-color);
+    border-color: var(--calendar-primary-color);
+}
+
+.calendar-form-actions .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--calendar-shadow-md);
+}
+
+/* =============================================================================
+   4. LISTA CARD CALENDARIO
+   Stili per visualizzazione lista eventi/appuntamenti in formato card.
+   ============================================================================= */
+
+/**
+ * Container lista card.
+ */
+.calendar-card-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--calendar-spacing-sm);
+}
+
+/**
+ * Singola card calendario.
+ * Effetto hover per feedback visivo.
+ */
+.calendar-card {
+    background-color: var(--calendar-bg-white);
+    border-radius: var(--calendar-radius-lg);
+    box-shadow: var(--calendar-shadow-sm);
+    overflow: hidden;
+    transition: var(--calendar-transition);
+    border: 1px solid transparent;
+}
+
+.calendar-card:hover {
+    box-shadow: var(--calendar-shadow-md);
+    border-color: var(--calendar-border-color);
+    transform: translateY(-2px);
+}
+
+/**
+ * Header card con titolo e data.
+ */
+.calendar-card-header {
+    background: linear-gradient(45deg, var(--calendar-bg-light), #e9ecef);
+    padding: var(--calendar-spacing-sm) var(--calendar-spacing-md);
+    border-bottom: 1px solid var(--calendar-border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.calendar-card-title {
+    font-weight: 600;
+    color: var(--calendar-text-primary);
+    margin: 0;
+    font-size: 1rem;
+}
+
+.calendar-card-date {
+    font-size: 0.875rem;
+    color: var(--calendar-text-secondary);
+}
+
+/**
+ * Corpo card con dettagli evento.
+ */
+.calendar-card-body {
+    padding: var(--calendar-spacing-md);
+}
+
+.calendar-card-detail {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: var(--calendar-spacing-xs);
+}
+
+.calendar-card-label {
+    font-weight: 500;
+    color: var(--calendar-text-secondary);
+    font-size: 0.875rem;
+}
+
+.calendar-card-value {
+    color: var(--calendar-text-primary);
+    font-size: 0.875rem;
+}
+
+/**
+ * Footer card con azioni.
+ */
+.calendar-card-footer {
+    background-color: var(--calendar-bg-light);
+    padding: var(--calendar-spacing-sm) var(--calendar-spacing-md);
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--calendar-spacing-xs);
+}
+
+.calendar-card-action {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.875rem;
+    border-radius: var(--calendar-radius-sm);
+}
+
+/* =============================================================================
+   5. RIEPILOGO ORE / BADGE ESITO
+   Pannello riepilogo con totale ore e badge colorati verde/giallo/rosso.
+   ============================================================================= */
+
+/**
+ * Pannello riepilogo ore.
+ * Visibile nella sidebar su desktop, sotto le card su mobile.
+ */
+.calendar-summary {
+    background-color: var(--calendar-bg-white);
+    border-radius: var(--calendar-radius-lg);
+    box-shadow: var(--calendar-shadow-sm);
+    overflow: hidden;
+}
+
+/**
+ * Header pannello riepilogo.
+ */
+.calendar-summary-header {
+    background-color: var(--calendar-bg-light);
+    padding: var(--calendar-spacing-sm) var(--calendar-spacing-md);
+    border-bottom: 1px solid var(--calendar-border-color);
+}
+
+.calendar-summary-title {
+    font-weight: 600;
+    color: var(--calendar-text-primary);
+    margin: 0;
+    font-size: 1rem;
+}
+
+/**
+ * Corpo pannello riepilogo.
+ */
+.calendar-summary-body {
+    padding: var(--calendar-spacing-md);
+}
+
+/**
+ * Singola riga riepilogo con label e valore.
+ */
+.calendar-summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--calendar-spacing-xs) 0;
+    border-bottom: 1px solid var(--calendar-border-color);
+}
+
+.calendar-summary-row:last-child {
+    border-bottom: none;
+}
+
+.calendar-summary-label {
+    font-weight: 500;
+    color: var(--calendar-text-secondary);
+    font-size: 0.9rem;
+}
+
+.calendar-summary-value {
+    font-weight: 600;
+    color: var(--calendar-text-primary);
+    font-size: 0.9rem;
+}
+
+/**
+ * Riga totale evidenziata.
+ */
+.calendar-summary-total {
+    background-color: var(--calendar-bg-light);
+    margin: var(--calendar-spacing-sm) calc(var(--calendar-spacing-md) * -1);
+    margin-bottom: calc(var(--calendar-spacing-md) * -1);
+    padding: var(--calendar-spacing-sm) var(--calendar-spacing-md);
+}
+
+.calendar-summary-total .calendar-summary-label,
+.calendar-summary-total .calendar-summary-value {
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+/* -----------------------------------------------------------------------------
+   Badge esito con colori verde/giallo/rosso.
+   Usati per indicare stato/esito delle ore (ok, attenzione, problema).
+   ----------------------------------------------------------------------------- */
+
+/**
+ * Badge base per esito.
+ * Bordi arrotondati, padding consistente.
+ */
+.calendar-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border-radius: var(--calendar-radius-md);
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}
+
+/**
+ * Badge verde - Esito positivo (ore complete, ok).
+ */
+.calendar-badge-success,
+.calendar-badge--success {
+    background-color: var(--calendar-success-color);
+    color: #ffffff;
+}
+
+/**
+ * Badge giallo - Esito in sospeso/attenzione (ore parziali).
+ */
+.calendar-badge-warning,
+.calendar-badge--warning {
+    background-color: var(--calendar-warning-color);
+    color: #212529;
+}
+
+/**
+ * Badge rosso - Esito negativo (ore mancanti, problema).
+ */
+.calendar-badge-danger,
+.calendar-badge--danger {
+    background-color: var(--calendar-danger-color);
+    color: #ffffff;
+}
+
+/**
+ * Badge info - Informazione neutra.
+ */
+.calendar-badge-info,
+.calendar-badge--info {
+    background-color: var(--calendar-info-color);
+    color: #ffffff;
+}
+
+/**
+ * Varianti outline per badge meno invasivi.
+ */
+.calendar-badge-outline-success {
+    background-color: transparent;
+    border: 2px solid var(--calendar-success-color);
+    color: var(--calendar-success-color);
+}
+
+.calendar-badge-outline-warning {
+    background-color: transparent;
+    border: 2px solid var(--calendar-warning-color);
+    color: #856404;
+}
+
+.calendar-badge-outline-danger {
+    background-color: transparent;
+    border: 2px solid var(--calendar-danger-color);
+    color: var(--calendar-danger-color);
+}
+
+/**
+ * Badge piccolo per uso inline.
+ */
+.calendar-badge-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+}
+
+/**
+ * Badge grande per enfasi.
+ */
+.calendar-badge-lg {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+}
+
+/* -----------------------------------------------------------------------------
+   Progress bar per ore.
+   Visualizza percentuale completamento ore.
+   ----------------------------------------------------------------------------- */
+
+/**
+ * Container progress bar ore.
+ */
+.calendar-hours-progress {
+    margin-top: var(--calendar-spacing-sm);
+}
+
+.calendar-hours-progress-bar {
+    height: 8px;
+    border-radius: 4px;
+    background-color: #e9ecef;
+    overflow: hidden;
+}
+
+.calendar-hours-progress-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+/**
+ * Colori progress bar basati su percentuale.
+ */
+.calendar-hours-progress-fill.progress-success {
+    background: linear-gradient(45deg, #28a745, #20c997);
+}
+
+.calendar-hours-progress-fill.progress-warning {
+    background: linear-gradient(45deg, #ffc107, #fd7e14);
+}
+
+.calendar-hours-progress-fill.progress-danger {
+    background: linear-gradient(45deg, #dc3545, #e83e8c);
+}
+
+/**
+ * Label percentuale sotto progress bar.
+ */
+.calendar-hours-label {
+    display: flex;
+    justify-content: space-between;
+    margin-top: var(--calendar-spacing-xs);
+    font-size: 0.8rem;
+    color: var(--calendar-text-secondary);
+}
+
+/* =============================================================================
+   6. STILI RESPONSIVE (MOBILE-FIRST, BREAKPOINT 768px)
+   Adattamento layout per dispositivi mobili.
+   ============================================================================= */
+
+/**
+ * Mobile (< 768px): Layout verticale, singola colonna.
+ */
+@media (max-width: 767.98px) {
+    /**
+     * Container principale: padding ridotto su mobile.
+     */
+    .calendar-form-container {
+        padding: var(--calendar-spacing-xs);
+    }
+    
+    /**
+     * Form: padding ridotto.
+     */
+    .calendar-form {
+        padding: var(--calendar-spacing-sm);
+    }
+    
+    /**
+     * Card: padding ridotto.
+     */
+    .calendar-card-body {
+        padding: var(--calendar-spacing-sm);
+    }
+    
+    /**
+     * Sidebar riepilogo: diventa full-width, non sticky.
+     * !important necessario per override della regola desktop sticky.
+     */
+    .calendar-sidebar-column {
+        position: static !important;
+    }
+    
+    /**
+     * Pulsanti azioni form: full-width su mobile.
+     */
+    .calendar-form-actions .btn {
+        width: 100%;
+    }
+    
+    /**
+     * Card footer: stack verticale.
+     */
+    .calendar-card-footer {
+        flex-direction: column;
+    }
+    
+    .calendar-card-action {
+        width: 100%;
+        text-align: center;
+    }
+    
+    /**
+     * Summary rows: stack su mobile se necessario.
+     */
+    .calendar-summary-row {
+        flex-wrap: wrap;
+    }
+}
+
+/**
+ * Tablet e schermi piccoli (768px - 991px).
+ */
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .calendar-main-column {
+        flex: 0 0 60%;
+        max-width: 60%;
+    }
+    
+    .calendar-sidebar-column {
+        flex: 0 0 40%;
+        max-width: 40%;
+    }
+}
+
+/**
+ * Desktop grandi (>= 1200px): più spazio per form.
+ */
+@media (min-width: 1200px) {
+    .calendar-main-column {
+        flex: 0 0 70%;
+        max-width: 70%;
+    }
+    
+    .calendar-sidebar-column {
+        flex: 0 0 30%;
+        max-width: 30%;
+    }
+}
+
+/* =============================================================================
+   7. UTILITY E HELPER CLASSES
+   Classi di utility per spacing, visibilità e altro.
+   ============================================================================= */
+
+/**
+ * Spacing utilities.
+ */
+.calendar-mt-sm { margin-top: var(--calendar-spacing-sm) !important; }
+.calendar-mt-md { margin-top: var(--calendar-spacing-md) !important; }
+.calendar-mb-sm { margin-bottom: var(--calendar-spacing-sm) !important; }
+.calendar-mb-md { margin-bottom: var(--calendar-spacing-md) !important; }
+.calendar-p-sm { padding: var(--calendar-spacing-sm) !important; }
+.calendar-p-md { padding: var(--calendar-spacing-md) !important; }
+
+/**
+ * Visibilità responsive.
+ */
+.calendar-hide-mobile {
+    display: block;
+}
+
+.calendar-hide-desktop {
+    display: none;
+}
+
+@media (max-width: 767.98px) {
+    .calendar-hide-mobile {
+        display: none !important;
+    }
+    
+    .calendar-hide-desktop {
+        display: block !important;
+    }
+}
+
+/**
+ * Testo utilities.
+ */
+.calendar-text-muted {
+    color: var(--calendar-text-secondary) !important;
+}
+
+.calendar-text-success {
+    color: var(--calendar-success-color) !important;
+}
+
+.calendar-text-warning {
+    color: var(--calendar-warning-color) !important;
+}
+
+.calendar-text-danger {
+    color: var(--calendar-danger-color) !important;
+}
+
+.calendar-text-center {
+    text-align: center !important;
+}
+
+/**
+ * text-end: Bootstrap 5 naming convention (replaces deprecated text-right).
+ */
+.calendar-text-end {
+    text-align: right !important;
+}
+
+/**
+ * Flex utilities.
+ */
+.calendar-d-flex {
+    display: flex !important;
+}
+
+.calendar-flex-column {
+    flex-direction: column !important;
+}
+
+.calendar-justify-between {
+    justify-content: space-between !important;
+}
+
+.calendar-align-center {
+    align-items: center !important;
+}
+
+.calendar-flex-wrap {
+    flex-wrap: wrap !important;
+}
+
+.calendar-gap-sm {
+    gap: var(--calendar-spacing-sm) !important;
+}
+
+/**
+ * Shadow utilities.
+ */
+.calendar-shadow-none {
+    box-shadow: none !important;
+}
+
+.calendar-shadow-sm {
+    box-shadow: var(--calendar-shadow-sm) !important;
+}
+
+.calendar-shadow-md {
+    box-shadow: var(--calendar-shadow-md) !important;
+}
+
+/**
+ * Border utilities.
+ */
+.calendar-border-0 {
+    border: none !important;
+}
+
+.calendar-rounded {
+    border-radius: var(--calendar-radius-md) !important;
+}
+
+.calendar-rounded-lg {
+    border-radius: var(--calendar-radius-lg) !important;
+}
+
+/* =============================================================================
+   FINE CALENDAR FORM STYLES
+   ============================================================================= */

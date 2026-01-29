@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Common business sectors pre-loaded in the system -->
+        <record id="sector_manufacturing" model="business.sector">
+            <field name="name">Manifatturiero</field>
+            <field name="description">Industria manifatturiera e produzione</field>
+        </record>
+        
+        <record id="sector_it" model="business.sector">
+            <field name="name">Informatica e Tecnologia</field>
+            <field name="description">Servizi IT, sviluppo software, hardware e consulenza tecnologica</field>
+        </record>
+        
+        <record id="sector_finance" model="business.sector">
+            <field name="name">Finanza e Assicurazioni</field>
+            <field name="description">Servizi bancari, assicurativi e finanziari</field>
+        </record>
+        
+        <record id="sector_healthcare" model="business.sector">
+            <field name="name">Sanità</field>
+            <field name="description">Servizi sanitari, ospedali, cliniche e prodotti farmaceutici</field>
+        </record>
+        
+        <record id="sector_education" model="business.sector">
+            <field name="name">Istruzione</field>
+            <field name="description">Scuole, università, formazione professionale</field>
+        </record>
+        
+        <record id="sector_retail" model="business.sector">
+            <field name="name">Commercio al dettaglio</field>
+            <field name="description">Negozi, distribuzione e vendita al dettaglio</field>
+        </record>
+        
+        <record id="sector_agriculture" model="business.sector">
+            <field name="name">Agricoltura</field>
+            <field name="description">Agricoltura, allevamento e pesca</field>
+        </record>
+        
+        <record id="sector_construction" model="business.sector">
+            <field name="name">Edilizia e Costruzioni</field>
+            <field name="description">Costruzioni, edilizia residenziale e industriale</field>
+        </record>
+        
+        <record id="sector_transportation" model="business.sector">
+            <field name="name">Trasporti e Logistica</field>
+            <field name="description">Servizi di trasporto, spedizione e logistica</field>
+        </record>
+        
+        <record id="sector_energy" model="business.sector">
+            <field name="name">Energia</field>
+            <field name="description">Produzione di energia, energia rinnovabile, servizi energetici</field>
+        </record>
+        
+        <record id="sector_tourism" model="business.sector">
+            <field name="name">Turismo e Ospitalità</field>
+            <field name="description">Hotel, ristoranti, viaggi e turismo</field>
+        </record>
+        
+        <record id="sector_public" model="business.sector">
+            <field name="name">Pubblica Amministrazione</field>
+            <field name="description">Enti governativi, amministrazioni locali e servizi pubblici</field>
+        </record>
+    </data>
+</odoo>

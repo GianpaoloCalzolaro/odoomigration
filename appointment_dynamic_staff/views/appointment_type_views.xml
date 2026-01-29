@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Appointment Type Form View Extension -->
+        <record id="appointment_type_view_form_inherit_dynamic" model="ir.ui.view">
+            <field name="name">appointment.type.view.form.inherit.dynamic</field>
+            <field name="model">appointment.type</field>
+            <field name="inherit_id" ref="appointment.appointment_type_view_form"/>
+            <field name="arch" type="xml">
+                <!-- Replace manual staff field with a 2-tab UX: Staff (totale) + Manuali -->
+                <xpath expr="//field[@name='staff_user_ids']" position="replace">
+                    <notebook invisible="schedule_based_on != 'users'">
+                        <page string="Staff">
+                            <group string="Selezione dinamica staff" col="4">
+                                <group col="4">
+                                    <button
+                                        name="action_open_dynamic_staff_wizard"
+                                        type="object"
+                                        string="Configura regola dinamica"
+                                        class="oe_highlight"
+                                    />
+                                    <button
+                                        name="action_recompute_dynamic_staff"
+                                        type="object"
+                                        string="Ricalcola"
+                                        invisible="not staff_user_domain or staff_user_domain == '[]'"
+                                    />
+
+                                    <field name="manual_staff_count" readonly="1"/>
+                                    <field name="dynamic_staff_count" readonly="1"/>
+                                </group>
+
+                                <group col="2">
+                                    <field name="staff_user_domain" readonly="1" invisible="not staff_user_domain or staff_user_domain == '[]'"/>
+                                    <div class="text-muted" invisible="staff_user_domain and staff_user_domain != '[]'">
+                                        Nessuna regola dinamica impostata.
+                                    </div>
+                                </group>
+                            </group>
+
+                            <separator string="Utenti selezionati (Totale)"/>
+
+                            <field name="staff_user_ids" readonly="1" nolabel="1">
+                                <list string="Utenti" create="0" edit="0" delete="0">
+                                    <field name="name"/>
+                                </list>
+                            </field>
+                        </page>
+
+                        <page string="Manuali">
+                            <div class="text-muted">
+                                Questi utenti sono selezionati manualmente e vengono sempre inclusi.
+                            </div>
+                            <field name="staff_user_ids"/>
+                        </page>
+                    </notebook>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Wizard: Configure dynamic staff domain with preview (count + first 10 users) -->
+        <record id="view_appointment_dynamic_staff_wizard_form" model="ir.ui.view">
+            <field name="name">appointment.dynamic.staff.wizard.form</field>
+            <field name="model">appointment.dynamic.staff.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Configura regola dinamica">
+                    <group>
+                        <field name="appointment_type_id" invisible="1"/>
+                        <field name="staff_user_domain" widget="domain" options="{'model': 'res.users'}"/>
+                        <div class="text-muted">
+                            Anteprima: mostra i primi 10 utenti e il totale trovato.
+                        </div>
+                    </group>
+
+                    <group>
+                        <field name="preview_count" readonly="1"/>
+                        <field name="preview_user_ids" readonly="1" nolabel="1">
+                            <list string="Primi 10" create="0" edit="0" delete="0">
+                                <field name="name"/>
+                            </list>
+                        </field>
+                    </group>
+
+                    <footer>
+                        <button name="action_preview" type="object" string="Anteprima" class="btn-secondary"/>
+                        <button name="action_apply" type="object" string="Applica" class="oe_highlight"/>
+                        <button string="Annulla" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,317 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* crm_add_field
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-04-04 12:00+0000\n"
+"PO-Revision-Date: 2025-04-04 12:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: crm_add_field
+#: model:ir.model.fields.selection,name:crm_add_field.selection__crm_lead__employee_count__1_50
+msgid "1-50"
+msgstr "1-50"
+
+#. module: crm_add_field
+#: model:ir.model.fields.selection,name:crm_add_field.selection__crm_lead__employee_count__100_300
+msgid "100-300"
+msgstr "100-300"
+
+#. module: crm_add_field
+#: model:ir.model.fields.selection,name:crm_add_field.selection__crm_lead__employee_count__300_500
+msgid "300-500"
+msgstr "300-500"
+
+#. module: crm_add_field
+#: model:ir.model.fields.selection,name:crm_add_field.selection__crm_lead__employee_count__50_100
+msgid "50-100"
+msgstr "50-100"
+
+#. module: crm_add_field
+#: model:ir.model.fields.selection,name:crm_add_field.selection__crm_lead__employee_count__500_1000
+msgid "500-1000"
+msgstr "500-1000"
+
+#. module: crm_add_field
+#: model:ir.model.fields.selection,name:crm_add_field.selection__crm_lead__region__abruzzo
+msgid "Abruzzo"
+msgstr "Abruzzo"
+
+#. module: crm_add_field
+#: model:ir.model.fields,field_description:crm_add_field.field_business_sector__active
+msgid "Active"
+msgstr "Attivo"
+
+#. module: crm_add_field
+#: model:ir.model.fields,field_description:crm_add_field.field_crm_lead__annual_volume
+msgid "Annual Volume"
+msgstr "Volume Annuale"
+
+#. module: crm_add_field
+#: model:ir.model.fields,help:crm_add_field.field_crm_lead__annual_volume
+msgid "Annual business volume in Euro"
+msgstr "Volume d'affari annuale in Euro"
+
+#. module: crm_add_field
+#: model:ir.model.fields.selection,name:crm_add_field.selection__crm_lead__company_type__professional_association
+msgid "Associazione Professionale"
+msgstr "Associazione Professionale"
+
+#. module: crm_add_field
+#: model:ir.model.fields.selection,name:crm_add_field.selection__crm_lead__region__basilicata
+msgid "Basilicata"
+msgstr "Basilicata"
+
+#. module: crm_add_field
+#: model_terms:ir.ui.view,arch_db:crm_add_field.crm_lead_view_form_inherit
+msgid "Business Information"
+msgstr "Informazioni Aziendali"
+
+#. module: crm_add_field
+#: model:ir.model,name:crm_add_field.model_business_sector
+#: model:ir.model.fields,field_description:crm_add_field.field_crm_lead__business_sector_id
+msgid "Business Sector"
+msgstr "Settore di Business"
+
+#. module: crm_add_field
+#: model:ir.actions.act_window,name:crm_add_field.action_business_sector
+#: model:ir.ui.menu,name:crm_add_field.menu_business_sector
+msgid "Business Sectors"
+msgstr "Settori di Business"
+
+#. module: crm_add_field
+#: model:ir.model.fields,help:crm_add_field.field_crm_lead__business_sector_id
+msgid "Business sector the company operates in"
+msgstr "Settore di business in cui opera l'azienda"
+
+#. module: crm_add_field
+#: model_terms:ir.actions.act_window,help:crm_add_field.action_business_sector
+msgid "Business sectors are used to categorize leads and opportunities."
+msgstr "I settori di riferimento sono utilizzati per categorizzare lead e opportunità."
+
+#. module: crm_add_field
+#: model:ir.model.fields.selection,name:crm_add_field.selection__crm_lead__region__calabria
+msgid "Calabria"
+msgstr "Calabria"
+
+#. module: crm_add_field
+#: model:ir.model.fields.selection,name:crm_add_field.selection__crm_lead__region__campania
+msgid "Campania"
+msgstr "Campania"
+
+#. module: crm_add_field
+#: model:ir.model.fields,field_description:crm_add_field.field_crm_lead__company_size
+msgid "Company Size"
+msgstr "Dimensione Azienda"
+
+#. module: crm_add_field
+#: model:ir.model.fields,field_description:crm_add_field.field_crm_lead__company_type
+msgid "Company Type"
+msgstr "Tipo Azienda"
+
+#. module: crm_add_field
+#: model_terms:ir.actions.act_window,help:crm_add_field.action_business_sector
+msgid "Create the first business sector"
+msgstr "Crea il primo settore di riferimento"
+
+#. module: crm_add_field
+#: model:ir.model.fields,field_description:crm_add_field.field_business_sector__description
+msgid "Description"
+msgstr "Descrizione"
+
+#. module: crm_add_field
+#: model:ir.model.fields.selection,name:crm_add_field.selection__crm_lead__company_type__individual
+msgid "Ditta Individuale"
+msgstr "Ditta Individuale"
+
+#. module: crm_add_field
+#: model:ir.model.fields,field_description:crm_add_field.field_crm_lead__employee_count
+msgid "Employee Count"
+msgstr "Numero Dipendenti"
+
+#. module: crm_add_field
+#: model:ir.model.fields.selection,name:crm_add_field.selection__crm_lead__region__emilia
+msgid "Emilia-Romagna"
+msgstr "Emilia-Romagna"
+
+#. module: crm_add_field
+#: model_terms:ir.ui.view,arch_db:crm_add_field.view_business_sector_form
+msgid "Enter description here..."
+msgstr "Inserisci qui la descrizione..."
+
+#. module: crm_add_field
+#: model:ir.model.fields.selection,name:crm_add_field.selection__crm_lead__region__friuli
+msgid "Friuli-Venezia Giulia"
+msgstr "Friuli-Venezia Giulia"
+
+#. module: crm_add_field
+#: model:ir.model.fields,help:crm_add_field.field_crm_lead__region
+msgid "Geographical region in Italy"
+msgstr "Regione geografica in Italia"
+
+#. module: crm_add_field
+#: model:ir.model.fields.selection,name:crm_add_field.selection__crm_lead__company_size__large
+msgid "Grande"
+msgstr "Grande"
+
+#. module: crm_add_field
+#: model:ir.model.fields,help:crm_add_field.field_business_sector__active
+msgid "If unchecked, it will allow you to hide the business sector without removing it."
+msgstr "Se deselezionato, consente di nascondere il settore di business senza rimuoverlo."
+
+#. module: crm_add_field
+#: model:ir.model.fields.selection,name:crm_add_field.selection__crm_lead__region__lazio
+msgid "Lazio"
+msgstr "Lazio"
+
+#. module: crm_add_field
+#: model:ir.model,name:crm_add_field.model_crm_lead
+msgid "Lead/Opportunity"
+msgstr "Lead/Opportunità"
+
+#. module: crm_add_field
+#: model:ir.model.fields,field_description:crm_add_field.field_business_sector__lead_count
+msgid "Lead Count"
+msgstr "Numero di Lead"
+
+#. module: crm_add_field
+#: code:addons/crm_add_field/models/business_sector.py:0
+#, python-format
+msgid "Leads for %s"
+msgstr "Lead per %s"
+
+#. module: crm_add_field
+#: model:ir.model.fields.selection,name:crm_add_field.selection__crm_lead__company_type__freelancer
+msgid "Libero Professionista"
+msgstr "Libero Professionista"
+
+#. module: crm_add_field
+#: model:ir.model.fields.selection,name:crm_add_field.selection__crm_lead__region__liguria
+msgid "Liguria"
+msgstr "Liguria"
+
+#. module: crm_add_field
+#: model:ir.model.fields.selection,name:crm_add_field.selection__crm_lead__region__lombardia
+msgid "Lombardia"
+msgstr "Lombardia"
+
+#. module: crm_add_field
+#: model:ir.model.fields.selection,name:crm_add_field.selection__crm_lead__region__marche
+msgid "Marche"
+msgstr "Marche"
+
+#. module: crm_add_field
+#: model:ir.model.fields.selection,name:crm_add_field.selection__crm_lead__company_size__medium
+msgid "Media"
+msgstr "Media"
+
+#. module: crm_add_field
+#: model:ir.model.fields.selection,name:crm_add_field.selection__crm_lead__company_size__micro
+msgid "Micro impresa"
+msgstr "Micro impresa"
+
+#. module: crm_add_field
+#: model:ir.model.fields.selection,name:crm_add_field.selection__crm_lead__region__molise
+msgid "Molise"
+msgstr "Molise"
+
+#. module: crm_add_field
+#: model:ir.model.fields,field_description:crm_add_field.field_business_sector__name
+msgid "Name"
+msgstr "Nome"
+
+#. module: crm_add_field
+#: model:ir.model.fields,help:crm_add_field.field_business_sector__name
+msgid "Name of the business sector"
+msgstr "Nome del settore di business"
+
+#. module: crm_add_field
+#: model:ir.model.fields,help:crm_add_field.field_business_sector__lead_count
+msgid "Number of leads/opportunities associated with this business sector"
+msgstr "Numero di lead/opportunità associate a questo settore di business"
+
+#. module: crm_add_field
+#: model:ir.model.fields,help:crm_add_field.field_crm_lead__employee_count
+msgid "Number of employees in the company"
+msgstr "Numero di dipendenti nell'azienda"
+
+#. module: crm_add_field
+#: model:ir.model.fields,help:crm_add_field.field_business_sector__description
+msgid "Optional description of the business sector"
+msgstr "Descrizione opzionale del settore di business"
+
+#. module: crm_add_field
+#: model:ir.model.fields.selection,name:crm_add_field.selection__crm_lead__company_size__small
+msgid "Piccola"
+msgstr "Piccola"
+
+#. module: crm_add_field
+#: model:ir.model.fields.selection,name:crm_add_field.selection__crm_lead__region__piemonte
+msgid "Piemonte"
+msgstr "Piemonte"
+
+#. module: crm_add_field
+#: model:ir.model.fields.selection,name:crm_add_field.selection__crm_lead__region__puglia
+msgid "Puglia"
+msgstr "Puglia"
+
+#. module: crm_add_field
+#: model:ir.model.fields,field_description:crm_add_field.field_crm_lead__region
+msgid "Region"
+msgstr "Regione"
+
+#. module: crm_add_field
+#: model:ir.model.fields.selection,name:crm_add_field.selection__crm_lead__region__sardegna
+msgid "Sardegna"
+msgstr "Sardegna"
+
+#. module: crm_add_field
+#: model:ir.model.fields.selection,name:crm_add_field.selection__crm_lead__region__sicilia
+msgid "Sicilia"
+msgstr "Sicilia"
+
+#. module: crm_add_field
+#: model:ir.model.fields,help:crm_add_field.field_crm_lead__company_size
+msgid "Size of the company"
+msgstr "Dimensione dell'azienda"
+
+#. module: crm_add_field
+#: model:ir.model.fields.selection,name:crm_add_field.selection__crm_lead__company_type__company
+msgid "Società/Ente"
+msgstr "Società/Ente"
+
+#. module: crm_add_field
+#: model:ir.model.fields.selection,name:crm_add_field.selection__crm_lead__region__toscana
+msgid "Toscana"
+msgstr "Toscana"
+
+#. module: crm_add_field
+#: model:ir.model.fields.selection,name:crm_add_field.selection__crm_lead__region__trentino
+msgid "Trentino-Alto Adige"
+msgstr "Trentino-Alto Adige"
+
+#. module: crm_add_field
+#: model:ir.model.fields,help:crm_add_field.field_crm_lead__company_type
+msgid "Type of company organization"
+msgstr "Tipo di organizzazione aziendale"
+
+#. module: crm_add_field
+#: model:ir.model.fields.selection,name:crm_add_field.selection__crm_lead__region__umbria
+msgid "Umbria"
+msgstr "Umbria"
+
+#. module: crm_add_field
+#: model:ir.model.fields.selection,name:crm_add_field.selection__crm_lead__region__valle
+msgid "Valle d'Aosta"
+msgstr "Valle d'Aosta"
+
+#. module: crm_add_field
+#: model:ir.model.fields.selection,name:crm_add_field.selection__cr

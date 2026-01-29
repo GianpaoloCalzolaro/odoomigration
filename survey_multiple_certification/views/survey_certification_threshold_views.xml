@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<odoo>
+    <!-- Vista Tree per Survey Certification Threshold -->
+    <record id="view_survey_cert_threshold_tree" model="ir.ui.view">
+        <field name="name">survey.certification.threshold.tree</field>
+        <field name="model">survey.certification.threshold</field>
+        <field name="arch" type="xml">
+            <list  default_order="sequence">
+                <field name="sequence" widget="handle"/>
+                <field name="survey_id" readonly="1"/>
+                <field name="name"/>
+                <field name="percentage_min" readonly="1"/>
+                <field name="percentage_max"/>
+                <field name="badge_id"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Vista Form per Survey Certification Threshold -->
+    <record id="view_survey_cert_threshold_form" model="ir.ui.view">
+        <field name="name">survey.certification.threshold.form</field>
+        <field name="model">survey.certification.threshold</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="survey_id" readonly="1"/>
+                        <field name="name"/>
+                        <field name="description_html"/>
+                        <field name="percentage_min" readonly="1"/>
+                        <field name="percentage_max"/>
+                        <field name="badge_id"/>
+                        <field name="active"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action Window per Survey Certification Threshold -->
+    <record id="action_survey_certification_threshold" model="ir.actions.act_window">
+        <field name="name">Certification Thresholds</field>
+        <field name="res_model">survey.certification.threshold</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="view_survey_cert_threshold_tree"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first certification threshold!
+            </p>
+            <p>
+                Define multiple certification thresholds based on survey scores to provide different levels of certification.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu Item per accesso diretto alle soglie di certificazione -->
+    <menuitem id="menu_survey_certification_thresholds"
+              name="Certification Thresholds" 
+              parent="survey.menu_surveys"
+              action="action_survey_certification_threshold"
+              sequence="20"/>
+</odoo>

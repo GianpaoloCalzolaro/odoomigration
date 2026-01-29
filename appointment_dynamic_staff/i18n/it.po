@@ -1,0 +1,47 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * appointment_dynamic_staff
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-12-20 08:58:00\n"
+"PO-Revision-Date: 2025-12-20 08:58:00\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: appointment_dynamic_staff
+#: model:ir.model,name:appointment_dynamic_staff.model_appointment_type
+msgid "Appointment Type"
+msgstr "Tipo di Appuntamento"
+
+#. module: appointment_dynamic_staff
+#: model:ir.model.fields,field_description:appointment_dynamic_staff.field_appointment_type__staff_user_domain
+msgid "Dynamic Staff Rule"
+msgstr "Regola Dinamica Staff"
+
+#. module: appointment_dynamic_staff
+#: model:ir.model.fields,help:appointment_dynamic_staff.field_appointment_type__staff_user_domain
+msgid "Define a rule to automatically select users (e.g., by department or tags)."
+msgstr "Definisci una regola per selezionare automaticamente gli utenti (es. per dipartimento o tag)."
+
+#. module: appointment_dynamic_staff
+#: model:ir.ui.view,arch_db:appointment_dynamic_staff.appointment_type_view_form_inherit_dynamic
+msgid "Dynamic Staff Selection"
+msgstr "Selezione Dinamica Staff"
+
+#. module: appointment_dynamic_staff
+#: model:ir.ui.view,arch_db:appointment_dynamic_staff.appointment_type_view_form_inherit_dynamic
+msgid "Selected Users (Manual + Dynamic)"
+msgstr "Utenti Selezionati (Manuali + Dinamici)"
+
+#. module: appointment_dynamic_staff
+#: model:ir.ui.view,arch_db:appointment_dynamic_staff.appointment_type_view_form_inherit_dynamic
+msgid "Users who meet the following rule are automatically added to the list."
+msgstr "Gli utenti che soddisfano la regola seguente vengono aggiunti automaticamente alla lista."

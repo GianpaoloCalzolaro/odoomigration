@@ -1,0 +1,1 @@
+from . import hr_applicant_add, hr_employee_add, hr_specialization, hr_volunteer_activity

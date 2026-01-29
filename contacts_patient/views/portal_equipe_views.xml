@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Estensione della vista portal.side_content per aggiungere informazioni équipe -->
+    <template id="portal_side_content_patient_extend" name="Portal Side Content Patient Extension" inherit_id="portal.side_content">
+        <!-- Aggiungi le informazioni dell'équipe dopo i dettagli del contatto -->
+        <xpath expr="//div[@name='portal_contact']" position="after">
+            <!-- Sezione Équipe - visibile se l'utente è un paziente O un dipendente -->
+            <!-- Pulsante Ticket sempre visibile -->
+            <t t-set="support_url" t-value="'/helpdesk'"/>
+            <div class="text-center my-4">
+                <a t-att-href="support_url" 
+                   target="_blank"
+                   class="btn btn-outline-secondary px-4 py-2 fs-6">
+                    <i class="fa fa-ticket me-2"></i>Ticket
+                </a>
+            </div>
+            <div name="portal_patient_equipe" class="o_my_equipe mt-5" t-if="user_id.partner_id.is_patient or user_id.employee_ids">
+                <h6 class="mb-3 text-muted" t-if="user_id.partner_id.is_patient">La mia Équipe</h6>
+                <!-- Tutor -->
+                <div class="mb-2" t-if="user_id.partner_id.tutor">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="small">
+                            <strong>Tutor:</strong> <span t-field="user_id.partner_id.tutor.name"/>
+                        </span>
+                        <div class="d-flex gap-1">
+                            <a t-if="user_id.partner_id.tutor.link" 
+                               t-att-href="user_id.partner_id.tutor.link" 
+                               target="_blank"
+                               class="btn btn-sm btn-outline-primary">
+                                <i class="fa fa-calendar"/> Prenota
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Professionista -->
+                <div class="mb-2" t-if="user_id.partner_id.professional">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="small">
+                            <strong>Professionista:</strong> <span t-field="user_id.partner_id.professional.name"/>
+                        </span>
+                        <div class="d-flex gap-1">
+                            <a t-if="user_id.partner_id.professional.link" 
+                               t-att-href="user_id.partner_id.professional.link" 
+                               target="_blank"
+                               class="btn btn-sm btn-outline-primary">
+                                <i class="fa fa-calendar"/> Prenota
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+    <!-- Aggiungi card nella homepage del portale - MODIFICATO per includere icona pazienti -->
+<template id="portal_my_home_equipe" inherit_id="portal.portal_my_home">
+    <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+        <t t-if="equipe_count">
+        <t t-call="portal.portal_docs_entry">
+            <t t-set="icon" t-value="'/contacts_patient/static/src/img/equipe.svg'"/>
+            <t t-set="title" t-value="'La mia Équipe'"/>
+            <t t-set="url" t-value="'/my/equipe_info'"/>
+            <t t-set="text" t-value="'Visualizza informazioni sul tuo tutor e professionista assegnati'"/>
+            <t t-set="config_card" t-value="True"/>
+        </t>
+        </t>
+    </xpath>
+</template>
+
+    <!-- Template per la pagina dedicata all'équipe - MODIFICATO per includere nuovi campi e immagini -->
+    <template id="portal_my_equipe" name="My Équipe">
+        <t t-call="portal.portal_layout">
+            <t t-set="support_url" t-value="'/helpdesk'"/>
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="col-12">
+                        <h2>La mia Équipe</h2>
+                        <hr/>
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <!-- Tutor -->
+                    <div class="col-md-6">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h4 class="mb-0">Tutor Angel</h4>
+                            </div>
+                            <div class="card-body">
+                                <t t-set="tutor" t-value="equipe.get('tutor', {})"/>
+                                <t t-if="tutor and tutor.get('name')">
+                                    <!-- NUOVO: Sezione immagine e nome -->
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="me-3">
+                                            <t t-if="tutor.get('has_image')">
+                                                <img t-att-src="'/web/image/hr.employee/' + str(tutor['employee_id']) + '/image_1920'" 
+                                                    class="rounded-circle" 
+                                                    style="width: 80px; height: 80px; object-fit: cover;" 
+                                                    alt="Foto tutor"/>
+                                            </t>
+                                            <t t-else="">
+                                                <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center text-white" 
+                                                     style="width: 80px; height: 80px;">
+                                                    <i class="fa fa-user fa-2x"/>
+                                                </div>
+                                            </t>
+                                        </div>
+                                        <div>
+                                            <h5 t-esc="tutor['name']" class="mb-1"/>
+                                            <span class="text-muted" t-esc="tutor.get('job_title', '-')"/>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- MODIFICATO: Aggiornati i campi mostrati -->
+                                    <div class="row">
+                                        <div class="col-5 text-end"><strong>Numero iscrizione ordine/associazione:</strong></div>
+                                        <div class="col-7" t-esc="tutor.get('professional_id', '-')"/>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col-5 text-end"><strong>Ordine/associazione:</strong></div>
+                                        <div class="col-7" t-esc="tutor.get('professional_type', '-')"/>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col-5 text-end"><strong>Regione:</strong></div>
+                                        <div class="col-7" t-esc="tutor.get('region', '-')"/>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col-5 text-end"><strong>Data di registrazione:</strong></div>
+                                        <div class="col-7">
+                                            <t t-if="tutor.get('registration_date')">
+                                                <t t-esc="tutor['registration_date'].strftime('%d/%m/%Y')"/>
+                                            </t>
+                                            <t t-else="">-</t>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- NUOVO: Bottoni d'azione -->
+                                    <div class="mt-3 text-center">
+                                        <div class="btn-group d-flex" role="group">
+                                            <a t-if="user_id.partner_id.tutor.link"  t-att-href="user_id.partner_id.tutor.link" 
+                                               target="_blank"
+                                               class="btn btn-sm btn-outline-primary">
+                                                <i class="fa fa-calendar"/> Prenota
+                                            </a>
+                                            <a t-att-href="support_url" 
+                                               target="_blank" 
+                                               class="btn btn-outline-secondary btn-sm flex-fill">
+                                                <i class="fa fa-ticket"/> Ticket
+                                            </a>
+                                        </div>
+                                    </div>
+                                </t>
+                                <t t-else="">
+                                    <div class="text-center py-4">
+                                        <span class="text-muted">Nessun tutor assegnato</span>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Professionista (visibile solo se assegnato) -->
+                    <t t-set="professional" t-value="equipe.get('professional', {})"/>
+                    <t t-if="professional and professional.get('name')">
+                        <div class="col-md-6">
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <h4 class="mb-0">Professionista</h4>
+                                </div>
+                                <div class="card-body">
+                                    <!-- NUOVO: Sezione immagine e nome -->
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="me-3">
+                                            <t t-if="tutor.get('has_image')">
+                                                <img t-att-src="'/web/image/hr.employee/' + str(professional['employee_id']) + '/image_1920'" 
+                                                    class="rounded-circle" 
+                                                    style="width: 80px; height: 80px; object-fit: cover;" 
+                                                    alt="Foto tutor"/>
+                                            </t>
+                                            <t t-else="">
+                                                <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center text-white" 
+                                                     style="width: 80px; height: 80px;">
+                                                    <i class="fa fa-user fa-2x"/>
+                                                </div>
+                                            </t>
+                                        </div>
+                                        <div>
+                                            <h5 t-esc="professional['name']" class="mb-1"/>
+                                            <span class="text-muted" t-esc="professional.get('job_title', '-')"/>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- MODIFICATO: Aggiornati i campi mostrati -->
+                                    <div class="row">
+                                        <div class="col-5 text-end"><strong>Numero iscrizione ordine/associazione:</strong></div>
+                                        <div class="col-7" t-esc="professional.get('professional_id', '-')"/>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col-5 text-end"><strong>Ordine/associazione:</strong></div>
+                                        <div class="col-7" t-esc="professional.get('professional_type', '-')"/>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col-5 text-end"><strong>Regione:</strong></div>
+                                        <div class="col-7" t-esc="professional.get('region', '-')"/>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col-5 text-end"><strong>Data di registrazione:</strong></div>
+                                        <div class="col-7">
+                                            <t t-if="professional.get('registration_date')">
+                                                <t t-esc="professional['registration_date'].strftime('%d/%m/%Y')"/>
+                                            </t>
+                                            <t t-else="">-</t>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- NUOVO: Bottoni d'azione -->
+                                    <div class="mt-3 text-center">
+                                        <div class="btn-group d-flex" role="group">
+                                            <a t-if="user_id.partner_id.professional.link" t-att-href="user_id.partner_id.professional.link"
+                                               target="_blank"
+                                               class="btn btn-sm btn-outline-primary">
+                                                <i class="fa fa-calendar"/> Prenota
+                                            </a>
+                                            <a t-att-href="support_url"
+                                               target="_blank"
+                                               class="btn btn-outline-secondary btn-sm flex-fill">
+                                                <i class="fa fa-ticket"/> Ticket
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

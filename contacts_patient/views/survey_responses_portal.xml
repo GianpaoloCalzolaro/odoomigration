@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="survey_responses_portal" name="Survey Responses Portal">
+        <t t-call="portal.portal_layout">
+            <div class="container">
+                <t t-set="breadcrumbs_searchbar" t-value="False"/>
+                <h3 class="mb-3"><t t-esc="survey.survey_id.title"/></h3>
+                <div class="mt-4">
+                    <t t-foreach="lines" t-as="line">
+                        <div class="mb-4">
+                            <p><strong><t t-esc="line.question_id.title"/></strong></p>
+                            <div t-if="line.answer_type == 'char' or line.answer_type == 'text'">
+                                <p><t t-esc="line.value_char"/></p>
+                            </div>
+                            <div t-elif="line.answer_type == 'suggestion'">
+                                <p><t t-esc="line.suggested_answer_id.value"/></p>
+                            </div>
+                            <div t-elif="line.answer_type == 'number'">
+                                <p><t t-esc="line.value_number"/></p>
+                            </div>
+                            <div t-elif="line.answer_type == 'date'">
+                                <p><t t-esc="line.value_date"/></p>
+                            </div>
+                            <div t-elif="line.answer_type == 'datetime'">
+                                <p><t t-esc="line.value_datetime"/></p>
+                            </div>
+                            <div t-elif="line.answer_type == 'free_text'">
+                                <p><t t-esc="line.value_text"/></p>
+                            </div>
+                            <div t-elif="line.answer_type == 'matrix'">
+                                <p><t t-esc="line.matrix_row_label"/> - <t t-esc="line.matrix_col_label"/></p>
+                            </div>
+                        </div>
+                    </t>
+                    <t t-if="not lines">
+                        <p>No answers recorded.</p>
+                    </t>
+                </div>
+                <a t-attf-href="/my/assigned_contacts/#{contact.id}" class="btn btn-secondary mt-3">
+                    <i class="fa fa-arrow-left"/> Back to Contact
+                </a>
+            </div>
+        </t>
+    </template>
+</odoo>

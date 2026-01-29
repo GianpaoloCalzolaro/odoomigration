@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="contact_edit_form" name="Edit Contact Form">
+        <t t-call="portal.portal_layout">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3 class="page-header">Edit Contact: <span t-field="contact.name"/></h3>
+                        <form id="edit_contact_form" method="post" t-attf-action="/my/assigned_contacts/#{contact.id}/edit">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <t t-if="error_message">
+                                <div class="alert alert-danger" role="alert">
+                                    <t t-esc="error_message"/>
+                                </div>
+                            </t>
+
+                            <div class="patient-notebook-custom">
+                                <ul class="nav nav-tabs" id="editTabs" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link active" id="anagrafica-tab" data-bs-toggle="tab" href="#anagrafica" role="tab">Informazioni Anagrafiche</a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link" id="team-tab" data-bs-toggle="tab" href="#team" role="tab">Team Information</a>
+                                    </li>
+                                    <!-- <li class="nav-item" role="presentation">
+                                        <a class="nav-link" id="clinical-tab" data-bs-toggle="tab" href="#clinical" role="tab">Clinical Information</a>
+                                    </li>
+                                     <li class="nav-item" role="presentation">
+                                        <a class="nav-link" id="diagnosis-tab" data-bs-toggle="tab" href="#diagnosis" role="tab">Diagnosis Information</a>
+                                    </li> -->
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link" id="consent-tab" data-bs-toggle="tab" href="#consent" role="tab">Consents</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content pt-3">
+                                    <div class="tab-pane fade show active" id="anagrafica" role="tabpanel">
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label" for="birth_date">Birth Date</label>
+                                                <input type="date" name="birth_date" class="form-control" t-att-value="contact.birth_date or ''"/>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label" for="age">Age</label>
+                                                <input type="number" name="age" id="age_input" class="form-control" readonly="readonly" t-att-value="contact.age"/>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label" for="biological_sex">Biological Sex</label>
+                                                <select name="biological_sex" class="form-control">
+                                                <option value="">Select...</option>
+                                                <option value="m" t-att-selected="'selected' if contact.biological_sex == 'm' else None">M</option>
+                                                <option value="f" t-att-selected="'selected' if contact.biological_sex == 'f' else None">F</option>
+                                                <option value="other" t-att-selected="'selected' if contact.biological_sex == 'other' else None">Other</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label" for="gender_identity">Gender Identity</label>
+                                            <input type="text" name="gender_identity" class="form-control" t-att-value="contact.gender_identity or ''"/>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label" for="birthplace">Birthplace</label>
+                                            <input type="text" name="birthplace" class="form-control" t-att-value="contact.birthplace or ''"/>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label" for="nationality">Nationality</label>
+                                            <input type="text" name="nationality" class="form-control" t-att-value="contact.nationality or ''"/>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label" for="marital_status">Marital Status</label>
+                                            <select name="marital_status" class="form-control">
+                                                <option value="">Select...</option>
+                                                <option value="single" t-att-selected="'selected' if contact.marital_status == 'single' else None">Single</option>
+                                                <option value="married" t-att-selected="'selected' if contact.marital_status == 'married' else None">Married</option>
+                                                <option value="divorced" t-att-selected="'selected' if contact.marital_status == 'divorced' else None">Divorced</option>
+                                                <option value="widowed" t-att-selected="'selected' if contact.marital_status == 'widowed' else None">Widowed</option>
+                                                <option value="separated" t-att-selected="'selected' if contact.marital_status == 'separated' else None">Separated</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label" for="profession">Profession/Occupation</label>
+                                            <input type="text" name="profession" class="form-control" t-att-value="contact.profession or ''"/>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 mb-3">
+                                            <label class="form-label" for="education_level">Education Level</label>
+                                            <select name="education_level" class="form-control">
+                                                <option value="">Select...</option>
+                                                <option value="elementary" t-att-selected="'selected' if contact.education_level == 'elementary' else None">Elementary</option>
+                                                <option value="middle" t-att-selected="'selected' if contact.education_level == 'middle' else None">Middle</option>
+                                                <option value="high" t-att-selected="'selected' if contact.education_level == 'high' else None">High</option>
+                                                <option value="bachelor" t-att-selected="'selected' if contact.education_level == 'bachelor' else None">Bachelor</option>
+                                                <option value="master" t-att-selected="'selected' if contact.education_level == 'master' else None">Master</option>
+                                                <option value="phd" t-att-selected="'selected' if contact.education_level == 'phd' else None">Phd</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane fade" id="team" role="tabpanel">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label class="col-form-label" for="tutor">Tutor</label>
+
+                                        <select name="tutor" class="form-control">
+                                            <option value="">Select Tutor</option>
+                                            <t t-foreach="available_professionals" t-as="emp">
+                                            <option t-att-value="emp.id" t-att-selected="'selected' if contact.tutor and contact.tutor.id == emp.id else None">
+                                                <t t-esc="'%s %s' % (emp.name, '🔴' if emp.limite_incarichi_raggiunto else '🟢')"/>
+                                            </option>
+                                            </t>
+                                        </select>
+                                    </div>
+                                    <div class="form-check mb-3">
+                                        <input type="checkbox" class="form-check-input" name="tutor_non_attivo" id="tutor_non_attivo" t-att-checked="'checked' if contact.tutor_non_attivo else None"/>
+                                        <label class="form-check-label" for="tutor_non_attivo">Tutor non attivo</label>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="col-form-label" for="date_tutor_assignment">Tutor Assignment Date</label>
+                                        <input type="date" name="date_tutor_assignment" class="form-control" t-att-value="contact.date_tutor_assignment"/>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="col-form-label" for="date_taken_charge">Date Taken Charge</label>
+                                        <input type="date" name="date_taken_charge" class="form-control" t-att-value="contact.date_taken_charge"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="col-form-label" for="typeProfessionalName">Professional Type</label>
+                                        <input type="text" id="typeProfessionalName" class="form-control" readonly="readonly" t-att-value="contact.type_professional.name if contact.type_professional else ''"/>
+                                        <input type="hidden" name="type_professional" id="typeProfessionalId" t-att-value="contact.type_professional.id if contact.type_professional else ''"/>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="col-form-label" for="professionalName">Professional</label>
+                                        <div class="professional-selector d-flex">
+                                            <input type="text" id="professionalName" class="form-control" readonly="readonly" t-att-value="contact.professional.name or ''"/>
+                                            <input type="hidden" name="professional" id="professionalId" t-att-value="contact.professional.id if contact.professional else ''"/>
+                                            <button type="button" id="selectProfessionalBtn" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#professionalModal">Seleziona Professionista</button>
+                                        </div>
+                                    </div>
+                                    <div class="form-check mb-3">
+                                        <input type="checkbox" class="form-check-input" name="professionista_non_attivo" id="professionista_non_attivo" t-att-checked="'checked' if contact.professionista_non_attivo else None"/>
+                                        <label class="form-check-label" for="professionista_non_attivo">Professionista non attivo</label>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="col-form-label" for="date_professional_assignment">Professional Assignment Date</label>
+                                        <input type="date" name="date_professional_assignment" class="form-control" t-att-value="contact.date_professional_assignment"/>
+                                    </div>
+                                </div>
+                            </div>
+                                </div>
+                                <!-- <div class="tab-pane fade" id="clinical" role="tabpanel">
+                                    <div class="mb-3">
+                                        <label class="form-label" for="reason_for_consultation">Consultation Reason</label>
+                                        <textarea name="reason_for_consultation" class="form-control" rows="2"><t t-esc="contact.clinical_sheet_id.reason_for_consultation or ''"/></textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label" for="problem_description">Problem Description</label>
+                                        <textarea name="problem_description" class="form-control" rows="2"><t t-esc="contact.clinical_sheet_id.problem_description or ''"/></textarea>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label" for="symptoms_onset">Symptoms Onset</label>
+                                            <input type="date" name="symptoms_onset" class="form-control" t-att-value="contact.clinical_sheet_id.symptoms_onset"/>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label" for="symptoms_duration">Symptoms Duration</label>
+                                            <input type="text" name="symptoms_duration" class="form-control" t-att-value="contact.clinical_sheet_id.symptoms_duration or ''"/>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label" for="previous_psychotherapies">Previous Treatments</label>
+                                        <textarea name="previous_psychotherapies" class="form-control" rows="2"><t t-esc="contact.clinical_sheet_id.previous_psychotherapies or ''"/></textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label" for="current_issues">Current Issues</label>
+                                        <textarea name="current_issues" class="form-control" rows="2"><t t-esc="contact.clinical_sheet_id.current_issues or ''"/></textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label" for="family_context">Family Context</label>
+                                        <textarea name="family_context" class="form-control" rows="2"><t t-esc="contact.clinical_sheet_id.family_context or ''"/></textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label" for="social_context">Social Context</label>
+                                        <textarea name="social_context" class="form-control" rows="2"><t t-esc="contact.clinical_sheet_id.social_context or ''"/></textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label" for="work_context">Work Context</label>
+                                        <textarea name="work_context" class="form-control" rows="2"><t t-esc="contact.clinical_sheet_id.work_context or ''"/></textarea>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="diagnosis" role="tabpanel">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label" for="primary_diagnosis">Primary Diagnosis</label>
+                                            <input type="text" name="primary_diagnosis" class="form-control" t-att-value="contact.clinical_sheet_id.primary_diagnosis or ''"/>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label" for="secondary_diagnosis">Secondary Diagnosis</label>
+                                            <input type="text" name="secondary_diagnosis" class="form-control" t-att-value="contact.clinical_sheet_id.secondary_diagnosis or ''"/>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label" for="diagnosis_code">Diagnosis Code</label>
+                                            <input type="text" name="diagnosis_code" class="form-control" t-att-value="contact.clinical_sheet_id.diagnosis_code or ''"/>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label" for="risk_assessment">Risk Assessment</label>
+                                            <select name="risk_assessment" class="form-control">
+                                                <option value="">Select...</option>
+                                                <option value="low" t-att-selected="'selected' if contact.clinical_sheet_id.risk_assessment == 'low' else None">Low</option>
+                                                <option value="medium" t-att-selected="'selected' if contact.clinical_sheet_id.risk_assessment == 'medium' else None">Medium</option>
+                                                <option value="high" t-att-selected="'selected' if contact.clinical_sheet_id.risk_assessment == 'high' else None">High</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label" for="diagnostic_criteria">Diagnostic Criteria</label>
+                                        <textarea name="diagnostic_criteria" class="form-control" rows="2"><t t-esc="contact.clinical_sheet_id.diagnostic_criteria or ''"/></textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label" for="differential_diagnosis">Differential Diagnosis</label>
+                                        <textarea name="differential_diagnosis" class="form-control" rows="2"><t t-esc="contact.clinical_sheet_id.differential_diagnosis or ''"/></textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label" for="comorbidity">Comorbidity</label>
+                                        <textarea name="comorbidity" class="form-control" rows="2"><t t-esc="contact.clinical_sheet_id.comorbidity or ''"/></textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label" for="treatment_plan">Treatment Goals</label>
+                                        <textarea name="treatment_plan" class="form-control" rows="2"><t t-esc="contact.clinical_sheet_id.treatment_plan or ''"/></textarea>
+                                    </div>
+                                </div> -->
+                                <div class="tab-pane fade" id="consent" role="tabpanel">
+                                    <div class="form-check mb-3">
+                                        <input type="checkbox" class="form-check-input" name="informativa_privacy" t-att-checked="'checked' if contact.informativa_privacy else None"/>
+                                        <label class="form-check-label" for="informativa_privacy">Informativa Privacy</label>
+                                    </div>
+                                    <div class="form-check mb-3">
+                                        <input type="checkbox" class="form-check-input" name="consenso_prestazione_mod_unico" t-att-checked="'checked' if contact.consenso_prestazione_mod_unico else None"/>
+                                        <label class="form-check-label" for="consenso_prestazione_mod_unico">Consenso Prestazione Mod. Unico</label>
+                                    </div>
+                                    <div class="form-check mb-3">
+                                        <input type="checkbox" class="form-check-input" name="consenso_informato_ac_valproico" t-att-checked="'checked' if contact.consenso_informato_ac_valproico else None"/>
+                                        <label class="form-check-label" for="consenso_informato_ac_valproico">Consenso Informato AC Valproico</label>
+                                    </div>
+                                    <div class="form-check mb-3">
+                                        <input type="checkbox" class="form-check-input" name="consenso_al_trattamento_offlabel" t-att-checked="'checked' if contact.consenso_al_trattamento_offlabel else None"/>
+                                        <label class="form-check-label" for="consenso_al_trattamento_offlabel">Consenso al Trattamento Off-Label</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                            <div class="d-flex justify-content-between mt-4">
+                                <a t-attf-href="/my/assigned_contacts/#{contact.id}" class="btn btn-secondary">
+                                    <i class="fa fa-arrow-left"/> Cancel
+                                </a>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fa fa-save"/> Save Changes
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="professionalModal" tabindex="-1" aria-labelledby="professionalModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="professionalModalLabel">Seleziona Professionista</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row mb-3">
+                                    <div class="col-md-4 mb-2">
+                                        <label class="form-label" for="departmentFilter">Dipartimento</label>
+                                        <select id="departmentFilter" class="form-select" aria-label="Filtro dipartimento">
+                                            <option value="">Seleziona dipartimento</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4 mb-2">
+                                        <label class="form-label" for="jobFilter">Tipo Professionista</label>
+                                        <select id="jobFilter" class="form-select" aria-label="Filtro posizione">
+                                            <option value="">Seleziona tipo professionista</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4 mb-2">
+                                        <label class="form-label" for="regionFilter">Regione</label>
+                                        <select id="regionFilter" class="form-select" aria-label="Filtro regione">
+                                            <option value="">Tutte le regioni</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-12 mb-2">
+                                        <label class="form-label" for="tagsFilter">Specializzazioni</label>
+                                        <select id="tagsFilter" class="form-select" multiple="multiple" aria-label="Filtro specializzazioni"></select>
+                                        <div id="tagsLoading" class="loading-indicator d-none text-center my-2">
+                                            <div class="spinner-border" role="status"></div>
+                                        </div>
+                                        <div id="selectedTags" class="mt-2"></div>
+                                        </div>
+                                </div>
+                                <div class="text-end mb-3">
+                                    <button type="button" id="searchButton" class="btn btn-primary">Cerca</button>
+                                </div>
+                                <div id="professionalLoading" class="loading-indicator d-none text-center my-2">
+                                    <div class="spinner-border" role="status"></div>
+                                </div>
+                                <div class="table-responsive professionals-table">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Nome</th>
+                                                <th>Posizione</th>
+                                                <th>Specializzazioni</th>
+                                                <th>Regione</th>
+                                                <th>Telefono</th>
+                                                <th>Email</th>
+                                                <th>limite</th>
+                                                <th>Azioni</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="professionalsTableBody"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </t>
+    </template>
+</odoo>

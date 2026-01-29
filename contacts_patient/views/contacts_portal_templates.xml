@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Portal My Home: Contacts Menu Breadcrumbs -->
+    <template id="portal_my_home_menu_contacts" name="Portal layout : Contacts menu entries" inherit_id="portal.portal_breadcrumbs" priority="20">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'assigned_contacts_list' or contact" t-attf-class="breadcrumb-item #{'active ' if not contact else ''}">
+                 <a t-if="contact" t-attf-href="/my/assigned_contacts?{{ keep_query() }}">Assigned Contacts</a>
+                 <t t-else="">Assigned Contacts</t>
+            </li>
+            <li t-if="contact" class="breadcrumb-item active">
+                <span t-field="contact.name"/>
+            </li>
+            <!-- Breadcrumb per la pagina di modifica -->
+            <li t-if="page_name == 'edit_contact'" class="breadcrumb-item">
+                <a t-attf-href="/my/assigned_contacts">Assigned Contacts</a>
+            </li>
+            <li t-if="page_name == 'edit_contact'" class="breadcrumb-item">
+                <a t-attf-href="/my/assigned_contacts/#{contact.id}"><span t-field="contact.name"/></a>
+            </li>
+            <li t-if="page_name == 'edit_contact'" class="breadcrumb-item active">
+                Edit
+            </li>
+        </xpath>
+</template>
+
+    <!-- Breadcrumb for clinical sheet page -->
+    <template id="portal_my_home_menu_clinical_sheet" name="Portal layout : Clinical sheet entries" inherit_id="portal.portal_breadcrumbs" priority="21">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'clinical_sheet'" class="breadcrumb-item">
+                <a t-attf-href="/my/assigned_contacts">Assigned Contacts</a>
+            </li>
+            <li t-if="page_name == 'clinical_sheet'" class="breadcrumb-item">
+                <a t-attf-href="/my/assigned_contacts/#{contact.id}"><span t-field="contact.name"/></a>
+            </li>
+            <li t-if="page_name == 'clinical_sheet'" class="breadcrumb-item active">
+                Clinical Sheet
+            </li>
+        </xpath>
+    </template>
+
+    <template id="portal_my_home_menu_observations" name="Portal layout : Observations entries" inherit_id="portal.portal_breadcrumbs" priority="22">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'observations_list' or page_name == 'observation_edit'" class="breadcrumb-item">
+                <a t-attf-href="/my/assigned_contacts">Assigned Contacts</a>
+            </li>
+            <li t-if="page_name == 'observations_list' or page_name == 'observation_edit'" class="breadcrumb-item">
+                <a t-attf-href="/my/assigned_contacts/#{contact.id}"><span t-field="contact.name"/></a>
+            </li>
+            <li t-if="page_name == 'observations_list'" class="breadcrumb-item active">Observations</li>
+            <li t-if="page_name == 'observation_edit'" class="breadcrumb-item">
+                <a t-attf-href="/my/patient/#{contact.id}/observations">Observations</a>
+            </li>
+            <li t-if="page_name == 'observation_edit'" class="breadcrumb-item active">Edit</li>
+        </xpath>
+    </template>
+
+    <template id="portal_my_home_menu_survey_responses" name="Portal layout : Survey responses" inherit_id="portal.portal_breadcrumbs" priority="23">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'survey_responses'" class="breadcrumb-item">
+                <a t-attf-href="/my/assigned_contacts">Assigned Contacts</a>
+            </li>
+            <li t-if="page_name == 'survey_responses'" class="breadcrumb-item">
+                <a t-attf-href="/my/assigned_contacts/#{contact.id}"><span t-field="contact.name"/></a>
+            </li>
+            <li t-if="page_name == 'survey_responses'" class="breadcrumb-item active">
+                <span t-field="survey.survey_id.title"/>
+            </li>
+        </xpath>
+    </template>
+
+    <!-- Portal My Home: Contacts Entry - MODIFICATO per aggiungere icona pazienti -->
+    <template id="portal_my_home_contacts" name="Portal My Contacts: Contact entries" inherit_id="portal.portal_my_home" priority="28">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-if="assigned_contacts_count" t-call="portal.portal_docs_entry">
+                <t t-set="icon" t-value="'/contacts_patient/static/src/img/pazienti.svg'"/>
+                <t t-set="title">I miei pazienti</t>
+                <t t-set="url" t-value="'/my/assigned_contacts'"/>
+                <t t-set="text">Visualizza i contatti dei tuoi pazienti assegnati</t>
+                <t t-set="count" t-value="assigned_contacts_count"/>
+                <t t-set="config_card" t-value="True"/>
+            </t>
+        </xpath>
+    </template>
+
+    <!-- Portal My Contacts List -->
+    <template id="portal_my_contacts" name="My Assigned Contacts">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Assigned Contacts</t>
+            </t>
+            
+            <t t-if="not contacts">
+                <p>There are currently no assigned contacts for your account.</p>
+            </t>
+            <t t-if="contacts" t-call="portal.portal_table">
+                <thead>
+                    <tr class="active">
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Data Inizio</th>
+                        <th>Data Fine</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <t t-foreach="contacts" t-as="contact">
+                    <tr>
+                        <td>
+                            <a t-attf-href="/my/assigned_contacts/#{contact.id}?{{ keep_query() }}">
+                                <span t-field="contact.name"/>
+                            </a>
+                        </td>
+                        <td><span t-field="contact.email"/></td>
+                        <td><span t-field="contact.phone"/></td>
+                        <td>
+                            <span t-if="contact.date_tutor_assignment" t-field="contact.date_tutor_assignment"/>
+                            <span t-elif="contact.date_professional_assignment" t-field="contact.date_professional_assignment"/>
+                        </td>
+                        <td>
+                            <span t-if="contact.data_fine_incarico_tutor" t-field="contact.data_fine_incarico_tutor"/>
+                            <span t-elif="contact.data_fine_incarico_professionista" t-field="contact.data_fine_incarico_professionista"/>
+                        </td>
+                        <td class="text-center" style="min-width: 120px;">
+                            <a t-attf-href="/my/assigned_contacts/#{contact.id}" class="btn btn-sm btn-light me-1" title="Visualizza">
+                                <i class="fa fa-eye"/>
+                            </a>
+                            <a t-attf-href="/my/assigned_contacts/#{contact.id}/edit" class="btn btn-sm btn-light me-1" title="Modifica">
+                                <i class="fa fa-edit"/>
+                            </a>
+                            <a t-attf-href="/my/patient/#{contact.id}/clinical-sheet" class="btn btn-sm btn-light" title="Scheda Clinica">
+                                <i class="fa fa-file-o"/>
+                            </a>
+                        </td>
+                    </tr>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

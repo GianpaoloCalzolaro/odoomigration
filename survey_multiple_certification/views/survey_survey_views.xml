@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_survey_form_inherit_multi" model="ir.ui.view">
+        <field name="name">survey.survey.form.multiple.certification</field>
+        <field name="model">survey.survey</field>
+        <field name="inherit_id" ref="survey.survey_survey_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='scoring_success_min']/ancestor::group[1]" position="after">
+                <!-- mostrare sempre il campo per poter cambiare la modalità -->
+                <field name="certification_mode"/>
+
+                <!-- visibile solo se certification_mode == 'multiple' -->
+                <group invisible="certification_mode != 'multiple'">
+                    <label for="threshold_ids" string="Certification Thresholds"/>
+                    <field name="threshold_ids" nolabel="1">
+                        <list default_order="sequence">
+                            <field name="sequence" widget="handle"/>
+                            <field name="name"/>
+                            <field name="percentage_min" readonly="1"/>
+                            <field name="percentage_max"/>
+                            <field name="badge_id"/>
+                            <field name="active"/>
+                        </list>
+                    </field>
+                    <div class="oe_clear">
+                        <button name="action_open_threshold_wizard"
+                                type="object"
+                                string="Configure Thresholds"
+                                class="btn-secondary"/>
+                    </div>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

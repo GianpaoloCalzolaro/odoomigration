@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="survey_question_form" model="ir.ui.view">
+        <field name="model">survey.question</field>
+        <field name="inherit_id" ref="survey.survey_question_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='comments_allowed']/.." position="after">
+                <group name="contact" string="Contact"
+                    invisible="parent.generation_type not in ('contact','applicant')">
+                    <field name="res_partner_field"
+                        options="{'no_create': True, 'no_open': True}"
+                        domain="allowed_field_domain"
+                        invisible="parent.generation_type != 'contact'"/>
+                    <field name="hr_applicant_field"
+                        options="{'no_create': True, 'no_open': True}"
+                        domain="allowed_applicant_field_domain"
+                        invisible="parent.generation_type != 'applicant'"/>
+                    <field name="hr_candidate_field"
+                        options="{'no_create': True, 'no_open': True}"
+                        domain="allowed_candidate_field_domain"
+                        invisible="parent.generation_type != 'applicant'"/>
+                    <!-- Campi nascosti per domini -->
+                    <field name="allowed_field_domain" invisible="True"/>
+                    <field name="allowed_applicant_field_domain" invisible="True"/>
+                    <field name="allowed_candidate_field_domain" invisible="True"/>
+                    <div class="alert alert-info"
+                         invisible="not res_partner_field or question_type != 'simple_choice'">
+                        <strong>Info:</strong> Le scelte verranno generate automaticamente dai valori del campo selection selezionato.
+                    </div>
+                    <div class="alert alert-info"
+                         invisible="not hr_applicant_field or question_type != 'simple_choice' or hr_applicant_field.ttype != 'selection'">
+                        <strong>Info:</strong> Le scelte verranno generate automaticamente dai valori del campo selection selezionato.
+                        <button name="action_regenerate_selection_values" type="object" class="btn btn-secondary btn-sm">
+                            Rigenera valori tecnici
+                        </button>
+                    </div>
+                    <div class="alert alert-info"
+                         invisible="not hr_candidate_field or question_type != 'simple_choice' or hr_candidate_field.ttype != 'selection'">
+                        <strong>Info:</strong> Le scelte verranno generate automaticamente dai valori del campo selection selezionato.
+                        <button name="action_regenerate_selection_values" type="object" class="btn btn-secondary btn-sm">
+                            Rigenera valori tecnici
+                        </button>
+                    </div>
+                    <div class="alert alert-info"
+                         invisible="not res_partner_field or res_partner_field.ttype != 'binary'">
+                        <strong>Info:</strong> Campo binary selezionato per file upload. Assicurarsi che il tipo di domanda sia impostato come "upload_file".
+                    </div>
+                    <div class="alert alert-info"
+                         invisible="not hr_applicant_field or hr_applicant_field.ttype != 'binary'">
+                        <strong>Info:</strong> Campo binary selezionato per file upload. Assicurarsi che il tipo di domanda sia impostato come "upload_file".
+                    </div>
+                    <div class="alert alert-info"
+                         invisible="not hr_candidate_field or hr_candidate_field.ttype != 'binary'">
+                        <strong>Info:</strong> Campo binary selezionato per file upload. Assicurarsi che il tipo di domanda sia impostato come "upload_file".
+                    </div>
+                    <div class="alert alert-warning"
+                         invisible="parent.generation_type != 'applicant'">
+                        <strong>Attenzione:</strong> 
+                        <ul>
+                            <li><strong>Candidate field:</strong> Campo del candidato (hr.candidate)</li>
+                            <li><strong>Applicant field:</strong> Campo della candidatura (hr.applicant)</li>
+                            <li>Non è possibile mappare la stessa domanda su entrambi i tipi di campo.</li>
+                            <li>Assicurarsi di mappare il nome del candidato per la creazione corretta.</li>
+                        </ul>
+                    </div>
+                </group>
+            </xpath>
+
+            <xpath expr="//field[@name='suggested_answer_ids']" position="attributes">
+                <attribute name="context">{'default_question_id': id, 'default_res_partner_field': res_partner_field, 'default_hr_applicant_field': hr_applicant_field, 'default_hr_candidate_field': hr_candidate_field}</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='suggested_answer_ids']//field[@name='value']"
+                position="after"
+            >
+                <field name="res_partner_field" column_invisible="1" />
+                <field name="hr_applicant_field" column_invisible="1" />
+                <field name="hr_candidate_field" column_invisible="1" />
+                <field
+                    name="res_partner_field_resource_ref"
+                    readonly="False"
+                    options="{'hide_model': True, 'no_create': True, 'no_edit': True, 'no_open': True}"
+                    column_invisible="not parent.res_partner_field or parent.question_type == 'upload_file'"
+                />
+                <field
+                    name="hr_applicant_field_resource_ref"
+                    readonly="False"
+                    options="{'hide_model': True, 'no_create': True, 'no_edit': True, 'no_open': True}"
+                    column_invisible="not parent.hr_applicant_field or parent.question_type == 'upload_file'"
+                />
+                <field
+                    name="hr_candidate_field_resource_ref"
+                    readonly="False"
+                    options="{'hide_model': True, 'no_create': True, 'no_edit': True, 'no_open': True}"
+                    column_invisible="not parent.hr_candidate_field or parent.question_type == 'upload_file'"
+                />
+                <field name="selection_value"
+                       invisible="not parent.res_partner_field and not parent.hr_applicant_field and not parent.hr_candidate_field"
+                       readonly="True"
+                       string="Technical Value"/>
+                <field name="file_upload_data"
+                       widget="binary"
+                       invisible="parent.question_type != 'upload_file'"
+                       string="Upload File"/>
+                <field name="file_upload_filename"
+                       invisible="parent.question_type != 'upload_file'"
+                       string="File Name"/>
+                <field name="value" 
+                       invisible="parent.question_type == 'upload_file'"
+                       string="Display Value"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="view_survey_threshold_wizard" model="ir.ui.view">
+        <field name="name">survey.threshold.wizard.form</field>
+        <field name="model">survey.threshold.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Threshold Wizard">
+                <group>
+                    <field name="survey_id" readonly="1"/>
+                    <field name="step" invisible="1"/>
+                </group>
+                <group invisible="step != 'select'">
+                    <field name="threshold_count"/>
+                </group>
+                <group invisible="step != 'config'">
+                    <field name="threshold_line_ids">
+                        <list editable="bottom">
+                            <field name="sequence"/>
+                            <field name="name"/>
+                            <field name="percentage_max"/>
+                            <field name="badge_id"/>
+                        </list>
+                    </field>
+                </group>
+                <footer>
+                    <button string="Apply" type="object" name="action_apply" invisible="step != 'config'" class="btn-primary"/>
+                    <button string="Next" type="object" name="action_next" invisible="step != 'select'" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

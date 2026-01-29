@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="view_survey_user_input_form_inherit_multi" model="ir.ui.view">
+        <field name="name">survey.user.input.form.multi</field>
+        <field name="model">survey.user_input</field>
+        <field name="inherit_id" ref="survey.survey_user_input_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='scoring_percentage']" position="after">
+                <field name="current_certification_name" readonly="1"/>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="Attempts" invisible="not history_ids">
+                    <field name="history_ids" readonly="1">
+                        <list>
+                            <field name="attempt_number"/>
+                            <field name="score_percentage"/>
+                            <field name="certification_name"/>
+                            <field name="completion_date"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

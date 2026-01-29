@@ -1,0 +1,737 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Specializzazioni predefinite -->
+        <record id="specialization_adhd" model="hr.specialization">
+            <field name="name">ADHD</field>
+            <field name="description">Disturbo da deficit di attenzione e iperattività</field>
+            <field name="color">1</field>
+        </record>
+
+        <record id="specialization_adolescenti" model="hr.specialization">
+            <field name="name">Adolescenti</field>
+            <field name="description">Ragazzi in età evolutiva</field>
+            <field name="color">2</field>
+        </record>
+
+        <record id="specialization_adulti" model="hr.specialization">
+            <field name="name">Adulti</field>
+            <field name="description">Persone adulte</field>
+            <field name="color">3</field>
+        </record>
+
+        <record id="specialization_aggressivita" model="hr.specialization">
+            <field name="name">Aggressività</field>
+            <field name="description">Comportamenti impulsivi e ostili</field>
+            <field name="color">4</field>
+        </record>
+
+        <record id="specialization_anoressia" model="hr.specialization">
+            <field name="name">Anoressia</field>
+            <field name="description">Disturbo alimentare da restrizione calorica</field>
+            <field name="color">5</field>
+        </record>
+
+        <record id="specialization_ansia" model="hr.specialization">
+            <field name="name">Ansia</field>
+            <field name="description">Stato d'ansia generalizzata</field>
+            <field name="color">6</field>
+        </record>
+
+        <record id="specialization_anziani" model="hr.specialization">
+            <field name="name">Anziani</field>
+            <field name="description">Adulti in età avanzata</field>
+            <field name="color">7</field>
+        </record>
+
+        <record id="specialization_attacchi_panico" model="hr.specialization">
+            <field name="name">Attacchi di Panico</field>
+            <field name="description">Episodi acuti di intensa paura</field>
+            <field name="color">8</field>
+        </record>
+
+        <record id="specialization_autismo" model="hr.specialization">
+            <field name="name">Autismo</field>
+            <field name="description">Disturbo dello spettro autistico</field>
+            <field name="color">9</field>
+        </record>
+
+        <record id="specialization_autostima" model="hr.specialization">
+            <field name="name">Autostima</field>
+            <field name="description">Percezione del proprio valore</field>
+            <field name="color">10</field>
+        </record>
+
+        <record id="specialization_bambini" model="hr.specialization">
+            <field name="name">Bambini</field>
+            <field name="description">Età prescolare e scolare</field>
+            <field name="color">11</field>
+        </record>
+
+        <record id="specialization_benessere_organizzativo" model="hr.specialization">
+            <field name="name">Benessere Organizzativo</field>
+            <field name="description">Qualità della vita sul lavoro</field>
+            <field name="color">1</field>
+        </record>
+
+        <record id="specialization_binge_eating" model="hr.specialization">
+            <field name="name">Binge Eating</field>
+            <field name="description">Abbuffate incontrollate</field>
+            <field name="color">2</field>
+        </record>
+
+        <record id="specialization_bulimia" model="hr.specialization">
+            <field name="name">Bulimia</field>
+            <field name="description">Disturbo alimentare da purga</field>
+            <field name="color">3</field>
+        </record>
+
+        <record id="specialization_bullismo" model="hr.specialization">
+            <field name="name">Bullismo</field>
+            <field name="description">Violenza tra pari</field>
+            <field name="color">4</field>
+        </record>
+
+        <record id="specialization_burnout" model="hr.specialization">
+            <field name="name">Burnout</field>
+            <field name="description">Esaurimento da stress lavorativo</field>
+            <field name="color">5</field>
+        </record>
+
+        <record id="specialization_business_coaching" model="hr.specialization">
+            <field name="name">Business Coaching</field>
+            <field name="description">Coaching per sviluppo aziendale</field>
+            <field name="color">6</field>
+        </record>
+
+        <record id="specialization_career_coaching" model="hr.specialization">
+            <field name="name">Career Coaching</field>
+            <field name="description">Orientamento e crescita professionale</field>
+            <field name="color">7</field>
+        </record>
+
+        <record id="specialization_coach" model="hr.specialization">
+            <field name="name">Coach</field>
+            <field name="description">Figura di supporto per obiettivi personali</field>
+            <field name="color">8</field>
+        </record>
+
+        <record id="specialization_coach_creativo" model="hr.specialization">
+            <field name="name">Coach Creativo</field>
+            <field name="description">Stimolo alla creatività personale o professionale</field>
+            <field name="color">9</field>
+        </record>
+
+        <record id="specialization_coaching" model="hr.specialization">
+            <field name="name">Coaching</field>
+            <field name="description">Percorso di crescita guidato</field>
+            <field name="color">10</field>
+        </record>
+
+        <record id="specialization_coaching_crisi_adolescenziali" model="hr.specialization">
+            <field name="name">Coaching Crisi Adolescenziali</field>
+            <field name="description">Supporto in conflitti adolescenziali</field>
+            <field name="color">11</field>
+        </record>
+
+        <record id="specialization_coaching_famiglie" model="hr.specialization">
+            <field name="name">Coaching per Famiglie</field>
+            <field name="description">Miglioramento delle dinamiche familiari</field>
+            <field name="color">1</field>
+        </record>
+
+        <record id="specialization_condotte_antisociali" model="hr.specialization">
+            <field name="name">Condotte Antisociali</field>
+            <field name="description">Comportamenti devianti</field>
+            <field name="color">2</field>
+        </record>
+
+        <record id="specialization_coppie" model="hr.specialization">
+            <field name="name">Coppie</field>
+            <field name="description">Sostegno alla relazione coniugale</field>
+            <field name="color">3</field>
+        </record>
+
+        <record id="specialization_counseling" model="hr.specialization">
+            <field name="name">Counseling</field>
+            <field name="description">Ascolto e supporto psicologico breve</field>
+            <field name="color">4</field>
+        </record>
+
+        <record id="specialization_counselor" model="hr.specialization">
+            <field name="name">Counselor</field>
+            <field name="description">Professionista per il supporto emotivo</field>
+            <field name="color">5</field>
+        </record>
+
+        <record id="specialization_da_disturbi_ansia" model="hr.specialization">
+            <field name="name">DA: Disturbi d'Ansia</field>
+            <field name="description">Indirizzate a disturbi ansiosi</field>
+            <field name="color">6</field>
+        </record>
+
+        <record id="specialization_das_abuso_sostanze" model="hr.specialization">
+            <field name="name">DAS: Disturbo da Abuso di Sostanze</field>
+            <field name="description">Dipendenza da sostanze</field>
+            <field name="color">7</field>
+        </record>
+
+        <record id="specialization_dbt" model="hr.specialization">
+            <field name="name">DBT</field>
+            <field name="description">Terapia dialettico-comportamentale</field>
+            <field name="color">8</field>
+        </record>
+
+        <record id="specialization_dca" model="hr.specialization">
+            <field name="name">DCA</field>
+            <field name="description">Disturbi del comportamento alimentare</field>
+            <field name="color">9</field>
+        </record>
+
+        <record id="specialization_ddm" model="hr.specialization">
+            <field name="name">DDM</field>
+            <field name="description">Disturbi da deficit multiplo</field>
+            <field name="color">10</field>
+        </record>
+
+        <record id="specialization_deficit_cognitivi" model="hr.specialization">
+            <field name="name">Deficit Cognitivi</field>
+            <field name="description">Ridotta capacità intellettiva</field>
+            <field name="color">11</field>
+        </record>
+
+        <record id="specialization_demenze" model="hr.specialization">
+            <field name="name">Demenze</field>
+            <field name="description">Declino cognitivo avanzato</field>
+            <field name="color">1</field>
+        </record>
+
+        <record id="specialization_depressione" model="hr.specialization">
+            <field name="name">Depressione</field>
+            <field name="description">Disturbo dell'umore depressivo</field>
+            <field name="color">2</field>
+        </record>
+
+        <record id="specialization_difficolta_familiari" model="hr.specialization">
+            <field name="name">Difficoltà Familiari</field>
+            <field name="description">Conflitti intrafamiliari</field>
+            <field name="color">3</field>
+        </record>
+
+        <record id="specialization_difficolta_relazionali" model="hr.specialization">
+            <field name="name">Difficoltà Relazionali</field>
+            <field name="description">Problemi nelle relazioni interpersonali</field>
+            <field name="color">4</field>
+        </record>
+
+        <record id="specialization_dipendenza_affettiva" model="hr.specialization">
+            <field name="name">Dipendenza Affettiva</field>
+            <field name="description">Attaccamento emotivo eccessivo</field>
+            <field name="color">5</field>
+        </record>
+
+        <record id="specialization_dipendenze" model="hr.specialization">
+            <field name="name">Dipendenze</field>
+            <field name="description">Uso problematico di sostanze o comportamenti</field>
+            <field name="color">6</field>
+        </record>
+
+        <record id="specialization_disfunzioni_sessuali_femminili" model="hr.specialization">
+            <field name="name">Disfunzioni Sessuali Femminili</field>
+            <field name="description">Problemi sessuali nella donna</field>
+            <field name="color">7</field>
+        </record>
+
+        <record id="specialization_disfunzioni_sessuali_maschili" model="hr.specialization">
+            <field name="name">Disfunzioni Sessuali Maschili</field>
+            <field name="description">Problemi sessuali nell'uomo</field>
+            <field name="color">8</field>
+        </record>
+
+        <record id="specialization_disfunzioni_sessuali_coppia" model="hr.specialization">
+            <field name="name">Disfunzioni Sessuali nella Coppia</field>
+            <field name="description">Difficoltà erotiche coniugali</field>
+            <field name="color">9</field>
+        </record>
+
+        <record id="specialization_distimia" model="hr.specialization">
+            <field name="name">Distimia</field>
+            <field name="description">Umore cronicamente depresso</field>
+            <field name="color">10</field>
+        </record>
+
+        <record id="specialization_disturbi_sonno" model="hr.specialization">
+            <field name="name">Disturbi del Sonno</field>
+            <field name="description">Insonnia o ipersonnia</field>
+            <field name="color">11</field>
+        </record>
+
+        <record id="specialization_disturbi_umore" model="hr.specialization">
+            <field name="name">Disturbi dell'Umore</field>
+            <field name="description">Variazioni patologiche dell'umore</field>
+            <field name="color">1</field>
+        </record>
+
+        <record id="specialization_disturbi_personalita" model="hr.specialization">
+            <field name="name">DP: Disturbi di Personalità</field>
+            <field name="description">Tratti rigidi e duraturi della personalità</field>
+            <field name="color">2</field>
+        </record>
+
+        <record id="specialization_disturbo_bipolare" model="hr.specialization">
+            <field name="name">Disturbo Bipolare</field>
+            <field name="description">Oscillazioni estreme dell'umore</field>
+            <field name="color">3</field>
+        </record>
+
+        <record id="specialization_disturbo_dissociativo" model="hr.specialization">
+            <field name="name">Disturbo Dissociativo</field>
+            <field name="description">Scissione dell'identità o memoria</field>
+            <field name="color">4</field>
+        </record>
+
+        <record id="specialization_doc" model="hr.specialization">
+            <field name="name">DOC</field>
+            <field name="description">Disturbo ossessivo-compulsivo</field>
+            <field name="color">5</field>
+        </record>
+
+        <record id="specialization_dsa" model="hr.specialization">
+            <field name="name">DSA</field>
+            <field name="description">Disturbi specifici dell'apprendimento</field>
+            <field name="color">6</field>
+        </record>
+
+        <record id="specialization_emdr" model="hr.specialization">
+            <field name="name">EMDR</field>
+            <field name="description">Terapia per il trauma</field>
+            <field name="color">7</field>
+        </record>
+
+        <record id="specialization_fobie" model="hr.specialization">
+            <field name="name">Fobie</field>
+            <field name="description">Paure specifiche patologiche</field>
+            <field name="color">8</field>
+        </record>
+
+        <record id="specialization_formazione_lego" model="hr.specialization">
+            <field name="name">Form. LEGO</field>
+            <field name="description">Formazione basata su metodologia LEGO® SERIOUS PLAY®</field>
+            <field name="color">9</field>
+        </record>
+
+        <record id="specialization_formazione_aziendale" model="hr.specialization">
+            <field name="name">Formazione Aziendale</field>
+            <field name="description">Corsi per sviluppo aziendale</field>
+            <field name="color">10</field>
+        </record>
+
+        <record id="specialization_gelosia" model="hr.specialization">
+            <field name="name">Gelosia</field>
+            <field name="description">Sospetto relazionale patologico</field>
+            <field name="color">11</field>
+        </record>
+
+        <record id="specialization_gruppi" model="hr.specialization">
+            <field name="name">Gruppi</field>
+            <field name="description">Percorsi terapeutici collettivi</field>
+            <field name="color">1</field>
+        </record>
+
+        <record id="specialization_insonnia" model="hr.specialization">
+            <field name="name">Insonnia</field>
+            <field name="description">Difficoltà a dormire</field>
+            <field name="color">2</field>
+        </record>
+
+        <record id="specialization_ipnosi" model="hr.specialization">
+            <field name="name">Ipnosi</field>
+            <field name="description">Terapia attraverso trance</field>
+            <field name="color">3</field>
+        </record>
+
+        <record id="specialization_ipocondria" model="hr.specialization">
+            <field name="name">Ipocondria</field>
+            <field name="description">Paura eccessiva di malattie</field>
+            <field name="color">4</field>
+        </record>
+
+        <record id="specialization_life_coaching" model="hr.specialization">
+            <field name="name">Life Coaching</field>
+            <field name="description">Coaching per migliorare la vita personale</field>
+            <field name="color">5</field>
+        </record>
+
+        <record id="specialization_ludopatia" model="hr.specialization">
+            <field name="name">Ludopatia</field>
+            <field name="description">Dipendenza dal gioco d'azzardo</field>
+            <field name="color">6</field>
+        </record>
+
+        <record id="specialization_lutto" model="hr.specialization">
+            <field name="name">Lutto</field>
+            <field name="description">Elaborazione della perdita</field>
+            <field name="color">7</field>
+        </record>
+
+        <record id="specialization_mental_coach" model="hr.specialization">
+            <field name="name">Mental Coach</field>
+            <field name="description">Supporto mentale nello sport o carriera</field>
+            <field name="color">8</field>
+        </record>
+
+        <record id="specialization_mindfulness" model="hr.specialization">
+            <field name="name">Mindfulness</field>
+            <field name="description">Pratica di consapevolezza</field>
+            <field name="color">9</field>
+        </record>
+
+        <record id="specialization_mmpi" model="hr.specialization">
+            <field name="name">MMPI</field>
+            <field name="description">Inventario psicologico multiplo Minnesota</field>
+            <field name="color">10</field>
+        </record>
+
+        <record id="specialization_mobbing" model="hr.specialization">
+            <field name="name">Mobbing</field>
+            <field name="description">Molestie sul luogo di lavoro</field>
+            <field name="color">11</field>
+        </record>
+
+        <record id="specialization_neuropsicologia" model="hr.specialization">
+            <field name="name">Neuropsicologia</field>
+            <field name="description">Studio delle funzioni cerebrali</field>
+            <field name="color">1</field>
+        </record>
+
+        <record id="specialization_orientamento_lavorativo" model="hr.specialization">
+            <field name="name">Orientamento Lavorativo</field>
+            <field name="description">Scelte professionali</field>
+            <field name="color">2</field>
+        </record>
+
+        <record id="specialization_orientamento_professionale" model="hr.specialization">
+            <field name="name">Orientamento Professionale</field>
+            <field name="description">Sviluppo carriera</field>
+            <field name="color">3</field>
+        </record>
+
+        <record id="specialization_orientamento_scolastico" model="hr.specialization">
+            <field name="name">Orientamento Scolastico</field>
+            <field name="description">Guida alla scelta formativa</field>
+            <field name="color">4</field>
+        </record>
+
+        <record id="specialization_orientamento_sessuale" model="hr.specialization">
+            <field name="name">Orientamento Sessuale</field>
+            <field name="description">Supporto identità e orientamento</field>
+            <field name="color">5</field>
+        </record>
+
+        <record id="specialization_panico" model="hr.specialization">
+            <field name="name">Panico</field>
+            <field name="description">Sensazioni acute di ansia intensa</field>
+            <field name="color">6</field>
+        </record>
+
+        <record id="specialization_parent_training" model="hr.specialization">
+            <field name="name">Parent Training</field>
+            <field name="description">Formazione per genitori</field>
+            <field name="color">7</field>
+        </record>
+
+        <record id="specialization_pnl" model="hr.specialization">
+            <field name="name">PNL Programmazione Neuro-Linguistica</field>
+            <field name="description">Approccio comunicativo e mentale</field>
+            <field name="color">8</field>
+        </record>
+
+        <record id="specialization_preparazione_chirurgia_bariatrica" model="hr.specialization">
+            <field name="name">Preparazione Chirurgia Bariatrica</field>
+            <field name="description">Supporto pre-operatorio</field>
+            <field name="color">9</field>
+        </record>
+
+        <record id="specialization_problemi_coppia" model="hr.specialization">
+            <field name="name">Problemi di Coppia</field>
+            <field name="description">Conflitti relazionali coniugali</field>
+            <field name="color">10</field>
+        </record>
+
+        <record id="specialization_problematiche_lavorative" model="hr.specialization">
+            <field name="name">Problematiche Lavorative</field>
+            <field name="description">Difficoltà sul lavoro</field>
+            <field name="color">11</field>
+        </record>
+
+        <record id="specialization_psicologia_sport" model="hr.specialization">
+            <field name="name">Psicologia dello Sport</field>
+            <field name="description">Psicologia applicata allo sport</field>
+            <field name="color">1</field>
+        </record>
+
+        <record id="specialization_psicologia_forense" model="hr.specialization">
+            <field name="name">Psicologia Forense</field>
+            <field name="description">Psicologia in ambito giuridico</field>
+            <field name="color">2</field>
+        </record>
+
+        <record id="specialization_psicologo" model="hr.specialization">
+            <field name="name">Psicologo</field>
+            <field name="description">Professionista della psicologia</field>
+            <field name="color">3</field>
+        </record>
+
+        <record id="specialization_psicologo_lavoro" model="hr.specialization">
+            <field name="name">Psicologo del Lavoro</field>
+            <field name="description">Psicologo specializzato in contesti lavorativi</field>
+            <field name="color">4</field>
+        </record>
+
+        <record id="specialization_psicosi" model="hr.specialization">
+            <field name="name">Psicosi</field>
+            <field name="description">Disturbo grave della realtà</field>
+            <field name="color">5</field>
+        </record>
+
+        <record id="specialization_psicosomatica" model="hr.specialization">
+            <field name="name">Psicosomatica</field>
+            <field name="description">Interazione mente-corpo nel disturbo</field>
+            <field name="color">6</field>
+        </record>
+
+        <record id="specialization_psicosomatizzazione" model="hr.specialization">
+            <field name="name">Psicosomatizzazione</field>
+            <field name="description">Manifestazione fisica dello stress</field>
+            <field name="color">7</field>
+        </record>
+
+        <record id="specialization_psicoterapeuta" model="hr.specialization">
+            <field name="name">Psicoterapeuta</field>
+            <field name="description">Professionista della psicoterapia</field>
+            <field name="color">8</field>
+        </record>
+
+        <record id="specialization_psicoterapia_breve" model="hr.specialization">
+            <field name="name">Psicoterapia Breve</field>
+            <field name="description">Intervento terapeutico a breve termine</field>
+            <field name="color">9</field>
+        </record>
+
+        <record id="specialization_psicoterapia_cognitiva_costruttivista" model="hr.specialization">
+            <field name="name">Psicoterapia Cognitiva Costruttivista</field>
+            <field name="description">Approccio che unisce cognizione e costruttivismo</field>
+            <field name="color">10</field>
+        </record>
+
+        <record id="specialization_psicoterapia_cognitiva_interpersonale" model="hr.specialization">
+            <field name="name">Psicoterapia Cognitiva Interpersonale</field>
+            <field name="description">Terapia focalizzata interazioni e pensieri</field>
+            <field name="color">11</field>
+        </record>
+
+        <record id="specialization_psicoterapia_cognitivo_comportamentale" model="hr.specialization">
+            <field name="name">Psicoterapia Cognitivo-Comportamentale</field>
+            <field name="description">Terapia CBT</field>
+            <field name="color">1</field>
+        </record>
+
+        <record id="specialization_psicoterapia_costruttivista_relazionale" model="hr.specialization">
+            <field name="name">Psicoterapia Costruttivista-Relazionale</field>
+            <field name="description">Integra approccio costruttivista e relazionale</field>
+            <field name="color">2</field>
+        </record>
+
+        <record id="specialization_psicoterapia_dinamica" model="hr.specialization">
+            <field name="name">Psicoterapia Dinamica</field>
+            <field name="description">Indaga i processi inconsci</field>
+            <field name="color">3</field>
+        </record>
+
+        <record id="specialization_psicoterapia_gestalt" model="hr.specialization">
+            <field name="name">Psicoterapia Gestalt</field>
+            <field name="description">Focalizzata su consapevolezza e esperienza</field>
+            <field name="color">4</field>
+        </record>
+
+        <record id="specialization_psicoterapia_psicoanalitica" model="hr.specialization">
+            <field name="name">Psicoterapia Psicoanalitica</field>
+            <field name="description">Secondo Freud e successori</field>
+            <field name="color">5</field>
+        </record>
+
+        <record id="specialization_psicoterapia_psicodinamica" model="hr.specialization">
+            <field name="name">Psicoterapia Psicodinamica</field>
+            <field name="description">Variante dinamica generica</field>
+            <field name="color">6</field>
+        </record>
+
+        <record id="specialization_psicoterapia_relazionale_integrata" model="hr.specialization">
+            <field name="name">Psicoterapia Relazionale Integrata</field>
+            <field name="description">Approccio relazionale composito</field>
+            <field name="color">7</field>
+        </record>
+
+        <record id="specialization_psicoterapia_sistemico_relazionale" model="hr.specialization">
+            <field name="name">Psicoterapia Sistemico-Relazionale</field>
+            <field name="description">Terapia familiare e di sistema</field>
+            <field name="color">8</field>
+        </record>
+
+        <record id="specialization_ptsd" model="hr.specialization">
+            <field name="name">PTSD</field>
+            <field name="description">Disturbo da stress post-traumatico</field>
+            <field name="color">9</field>
+        </record>
+
+        <record id="specialization_ptsd_complesso" model="hr.specialization">
+            <field name="name">PTSD-Complesso</field>
+            <field name="description">Forma cronica del PTSD</field>
+            <field name="color">10</field>
+        </record>
+
+        <record id="specialization_relazioni_sociali" model="hr.specialization">
+            <field name="name">Relazioni Sociali</field>
+            <field name="description">Difficoltà nell'interazione sociale</field>
+            <field name="color">11</field>
+        </record>
+
+        <record id="specialization_schizofrenia" model="hr.specialization">
+            <field name="name">Schizofrenia</field>
+            <field name="description">Disturbo mentale cronico</field>
+            <field name="color">1</field>
+        </record>
+
+        <record id="specialization_sessuologa" model="hr.specialization">
+            <field name="name">Sessuologa</field>
+            <field name="description">Professionista sessuologia femminile</field>
+            <field name="color">2</field>
+        </record>
+
+        <record id="specialization_sessuologo" model="hr.specialization">
+            <field name="name">Sessuologo</field>
+            <field name="description">Professionista sessuologia maschile</field>
+            <field name="color">3</field>
+        </record>
+
+        <record id="specialization_sostegno_disabilita" model="hr.specialization">
+            <field name="name">Sostegno alla Disabilità</field>
+            <field name="description">Supporto per persone con disabilità</field>
+            <field name="color">4</field>
+        </record>
+
+        <record id="specialization_sportello_psicologico_aziendale" model="hr.specialization">
+            <field name="name">Sportello Psicologico Aziendale</field>
+            <field name="description">Servizio interno di supporto mentale</field>
+            <field name="color">5</field>
+        </record>
+
+        <record id="specialization_stress" model="hr.specialization">
+            <field name="name">Stress</field>
+            <field name="description">Reazione fisica o mentale a pressioni</field>
+            <field name="color">6</field>
+        </record>
+
+        <record id="specialization_stress_ansia_lievi" model="hr.specialization">
+            <field name="name">Stress e Ansia Lievi</field>
+            <field name="description">Stadio iniziale di stress o ansia</field>
+            <field name="color">7</field>
+        </record>
+
+        <record id="specialization_supporto_psicologico" model="hr.specialization">
+            <field name="name">Supporto Psicologico</field>
+            <field name="description">Aiuto emotivo non terapeutico</field>
+            <field name="color">8</field>
+        </record>
+
+        <record id="specialization_tecniche_rilassamento" model="hr.specialization">
+            <field name="name">Tecniche di Rilassamento</field>
+            <field name="description">Pratiche per ridurre la tensione</field>
+            <field name="color">9</field>
+        </record>
+
+        <record id="specialization_tecniche_psico_corporee" model="hr.specialization">
+            <field name="name">Tecniche Psico-Corporee</field>
+            <field name="description">Integrazione mente-corpo</field>
+            <field name="color">10</field>
+        </record>
+
+        <record id="specialization_terapia_immaginativa" model="hr.specialization">
+            <field name="name">Terapia Immaginativa</field>
+            <field name="description">Uso di immagini guidate terapeutiche</field>
+            <field name="color">11</field>
+        </record>
+
+        <record id="specialization_terapia_sistemico_relazionale" model="hr.specialization">
+            <field name="name">Terapia Sistemico Relazionale</field>
+            <field name="description">Terapia familiare di sistema</field>
+            <field name="color">1</field>
+        </record>
+
+        <record id="specialization_terapia_strategica" model="hr.specialization">
+            <field name="name">Terapia Strategica</field>
+            <field name="description">Intervento breve focalizzato su obiettivi</field>
+            <field name="color">2</field>
+        </record>
+
+        <record id="specialization_terza_eta" model="hr.specialization">
+            <field name="name">Terza Età</field>
+            <field name="description">Anziani avanzati</field>
+            <field name="color">3</field>
+        </record>
+
+        <record id="specialization_tossicodipendenza" model="hr.specialization">
+            <field name="name">Tossicodipendenza</field>
+            <field name="description">Dipendenza da sostanze tossiche</field>
+            <field name="color">4</field>
+        </record>
+
+        <record id="specialization_training_autogeno" model="hr.specialization">
+            <field name="name">Training Autogeno</field>
+            <field name="description">Tecnica di rilassamento psico-fisico</field>
+            <field name="color">5</field>
+        </record>
+
+        <record id="specialization_traumi" model="hr.specialization">
+            <field name="name">Traumi</field>
+            <field name="description">Esperienze emotivamente dolorose</field>
+            <field name="color">6</field>
+        </record>
+
+        <record id="specialization_valutazione_aziendale" model="hr.specialization">
+            <field name="name">Valutazione Aziendale</field>
+            <field name="description">Analisi delle performance organizzative</field>
+            <field name="color">7</field>
+        </record>
+
+        <record id="specialization_valutazione_clima_aziendale" model="hr.specialization">
+            <field name="name">Valutazione Clima Aziendale</field>
+            <field name="description">Rilevazione del benessere sul lavoro</field>
+            <field name="color">8</field>
+        </record>
+
+        <record id="specialization_valutazione_competenze" model="hr.specialization">
+            <field name="name">Valutazione delle Competenze</field>
+            <field name="description">Analisi delle abilità professionali</field>
+            <field name="color">9</field>
+        </record>
+
+        <record id="specialization_violenza_genere" model="hr.specialization">
+            <field name="name">Violenza di Genere</field>
+            <field name="description">Violenza basata sul genere</field>
+            <field name="color">10</field>
+        </record>
+
+        <record id="specialization_wais" model="hr.specialization">
+            <field name="name">WAIS</field>
+            <field name="description">Scala di intelligenza per adulti</field>
+            <field name="color">11</field>
+        </record>
+
+        <record id="specialization_wisc" model="hr.specialization">
+            <field name="name">WISC</field>
+            <field name="description">Scala di intelligenza per bambini</field>
+            <field name="color">1</field>
+        </record>
+    </data>
+</odoo>
