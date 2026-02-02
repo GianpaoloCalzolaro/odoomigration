@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Distribution / packaging
+.eggs/
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Odoo
+*.pyc
+*.pyo
+.*.swp
+.~lock.*
+
+# IDEs
+.vscode/
+.idea/
+*.sublime-*
+.project
+.pydevproject
+.settings/
+
+# OS
+.DS_Store
+Thumbs.db
