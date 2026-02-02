@@ -8,7 +8,7 @@
             <xpath expr="//sheet/notebook/page[@name='recruitment_page']/group" position="after">
                 <group string="Configurazione Incarichi">
                     <field name="limite_incarichi"/>
-                    <filed name="tipo_incarico" string="Tipo Incarico"
+                    <field name="tipo_incarico" string="Tipo Incarico"
                            help="Tipo di incarico per questo ruolo. Seleziona 'Tutor' per incarichi di tutoraggio, 'Professionista' per incarichi professionali."/>
                 </group>
             </xpath>

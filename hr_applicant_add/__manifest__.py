@@ -1,6 +1,6 @@
 {
     'name': 'HR Applicant Extension',
-    'version': '18.0.9.0.0',
+    'version': '19.0.1.0.0',
     'category': 'Human Resources/Recruitment',
     'summary': 'Adds personal and professional fields to HR applicants',
     'description': """
