@@ -8,7 +8,13 @@ from odoo.addons.mail.controllers.webclient import WebclientController
 from odoo.osv import expression
 
 class DiscussChannelWebclientController(WebclientController):
+    @http.route()
+    def mail_data(self, **kwargs):
+        """Override to customize process_request_for_all behavior."""
+        return super().mail_data(**kwargs)
+    
     def _process_request_for_all(self, store, **kwargs):
+        """Override to add custom init_messaging logic."""
         if "init_messaging" in kwargs:
             if not request.env.user._is_public():
                 user = request.env.user.sudo(False)
@@ -26,8 +32,6 @@ class DiscussChannelWebclientController(WebclientController):
                     [channels_domain, [("channel_type", "in", channel_types)]]
                 )
             store.add(request.env["discuss.channel"].search(channels_domain))
-
-WebclientController._process_request_for_all = DiscussChannelWebclientController._process_request_for_all
 
 class WebsitePortalChatController(http.Controller):
 

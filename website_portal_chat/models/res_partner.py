@@ -22,7 +22,7 @@ class Partner(models.Model):
             res = Store(users.partner_id).get_result()
             return res
         else:
-            return super(Partner, self).im_search(name, limit, excluded_ids)
+            return super().im_search(name, limit, excluded_ids)
 
 class ResUsers(models.Model):
     _inherit = 'res.users'
