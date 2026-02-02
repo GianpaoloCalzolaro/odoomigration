@@ -34,10 +34,11 @@ class BusinessSector(models.Model):
         help="Number of leads/opportunities associated with this business sector"
     )
     
-    @api.depends('business_sector_id')
+    @api.depends()
     def _compute_lead_count(self):
         """
-        Compute the number of leads/opportunities associated with this business sector
+        Compute the number of leads/opportunities associated with this business sector.
+        Uses on-demand calculation as it queries data from the crm.lead model.
         """
         lead_data = self.env['crm.lead']._read_group(
             [('business_sector_id', 'in', self.ids)],
