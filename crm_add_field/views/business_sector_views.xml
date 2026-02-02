@@ -12,7 +12,7 @@
                                 type="object"
                                 class="oe_stat_button"
                                 icon="fa-star"
-                                modifiers='{"invisible": [["lead_count", "=", 0]]}'>
+                                invisible="lead_count == 0">
                             <field name="lead_count" widget="statinfo" string="Leads"/>
                         </button>
                     </div>
@@ -50,7 +50,6 @@
     <record id="view_business_sector_search" model="ir.ui.view">
         <field name="name">business.sector.search</field>
         <field name="model">business.sector</field>
-        <field name="type">search</field>
         <field name="arch" type="xml">
             <search string="Search Business Sectors">
                 <field name="name" string="Business Sector"/>

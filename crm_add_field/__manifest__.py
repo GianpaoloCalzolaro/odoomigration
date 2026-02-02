@@ -16,7 +16,7 @@
     'author': "Gian Paolo Calzolaro",
     'website': "https://www.infologis.biz",
     'category': 'Sales/CRM',
-    'version': '18.0.1.0.0',
+    'version': '19.0.1.0.0',
     'depends': ['base', 'crm'],
     'data': [
         'security/ir.model.access.csv',
