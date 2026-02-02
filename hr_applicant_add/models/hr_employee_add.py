@@ -191,6 +191,13 @@ class HrEmployee(models.Model):
 
     @api.depends('job_id.limite_incarichi')
     def _compute_limite_incarichi_raggiunto(self):
+        """Compute limite incarichi fields.
+        
+        Note: This compute depends on external data (res.partner records) that cannot
+        be expressed in @api.depends. Fields are stored for performance, but may become
+        stale until the cron job recalculates them. Consider removing store=True if
+        real-time accuracy is more important than performance.
+        """
         partner_obj = self.env['res.partner']
         for employee in self:
             limit = employee.job_id.limite_incarichi if employee.job_id else 0
@@ -210,11 +217,20 @@ class HrEmployee(models.Model):
 
     @api.model
     def _cron_recalc_limite_incarichi(self, batch_size=100):
+        """Recalculate limite_incarichi for all employees in batches.
+        
+        Uses proper cache invalidation instead of direct compute method calls.
+        """
         all_ids = self.search([]).ids
         for start in range(0, len(all_ids), batch_size):
             try:
                 batch = self.browse(all_ids[start:start + batch_size])
-                batch._compute_limite_incarichi_raggiunto()
+                # Invalidate cache to force recompute
+                batch.invalidate_recordset(['limite_incarichi_raggiunto', 'numero_incarichi', 'percentuale_incarichi'])
+                # Trigger recompute by accessing the fields
+                batch.mapped('limite_incarichi_raggiunto')
+                batch.mapped('numero_incarichi')
+                batch.mapped('percentuale_incarichi')
             except Exception as exc:
                 _logger.exception("Errore ricalcolo limite incarichi: %s", exc)
         return True

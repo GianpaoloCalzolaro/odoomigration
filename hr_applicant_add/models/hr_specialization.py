@@ -42,12 +42,16 @@ class HrSpecialization(models.Model):
         ('name_uniq', 'unique(name)', 'Specialization name already exists!')
     ]
 
-    def name_get(self):
+    display_name = fields.Char(
+        compute='_compute_display_name',
+        store=False
+    )
+
+    @api.depends('name', 'description')
+    def _compute_display_name(self):
         """Return name with description for better readability"""
-        result = []
         for record in self:
             name = record.name
             if record.description:
                 name = f"{name} - {record.description[:50]}{'...' if len(record.description) > 50 else ''}"
-            result.append((record.id, name))
-        return result
+            record.display_name = name

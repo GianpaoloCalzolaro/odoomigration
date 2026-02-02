@@ -167,7 +167,7 @@ class HrApplicant(models.Model):
         'insurance_expiry_date': 'insurance_expiry_date',
         'category_ids': 'category_ids',
         'specializzazioni': 'specializzazioni',
-        'x_avatar_image': 'image_1920',
+        # 'x_avatar_image': 'image_1920',  # Commented out: x_avatar_image not defined in this module
         }
 
         values = {}
