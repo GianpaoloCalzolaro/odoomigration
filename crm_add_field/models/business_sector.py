@@ -34,20 +34,20 @@ class BusinessSector(models.Model):
         help="Number of leads/opportunities associated with this business sector"
     )
     
-    @api.depends()
+    @api.depends('business_sector_id')
     def _compute_lead_count(self):
         """
         Compute the number of leads/opportunities associated with this business sector
         """
-        lead_data = self.env['crm.lead'].read_group(
+        lead_data = self.env['crm.lead']._read_group(
             [('business_sector_id', 'in', self.ids)],
             ['business_sector_id'], 
-            ['business_sector_id']
+            ['__count']
         )
         
         # Create a dictionary with sector_id as key and count as value
-        sector_count_map = {data['business_sector_id'][0]: data['business_sector_id_count'] 
-                          for data in lead_data if data['business_sector_id']}
+        sector_count_map = {business_sector.id: count 
+                          for business_sector, count in lead_data}
         
         # Set the count for each record or 0 if not found
         for sector in self:
