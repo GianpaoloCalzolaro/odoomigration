@@ -3,7 +3,7 @@
 {
     'name': 'Portal User Chatter',
     'category': 'Services',
-    'version': '18.0.0.1',
+    'version': '19.0.0.1',
     'author': 'TechUltra Solutions Private Limited',
     'company': 'TechUltra Solutions Private Limited',
     'website': "https://www.techultrasolutions.com/",
@@ -43,10 +43,8 @@
     Real-time messaging Odoo portal
     Odoo communication tools portal
     """,
-    'category': 'tool',
-    'license': 'LGPL-3',
+    'license': 'OPL-1',
     'depends': ['website', 'web', 'mail', 'im_livechat'],
-    # 'depends': ['website', 'web', 'mail'],
     'data': [
         'security/ir.model.access.csv',
         'security/security.xml',
