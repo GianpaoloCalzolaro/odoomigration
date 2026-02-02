@@ -5,18 +5,26 @@ __pycache__/
 *.so
 .Python
 
+# Distribution / packaging
+.eggs/
+*.egg-info/
+dist/
+build/
+*.egg
+
 # Odoo
 *.pyc
 *.pyo
-*.swp
-*.bak
-*~
+.*.swp
+.~lock.*
 
-# IDE
+# IDEs
 .vscode/
 .idea/
-*.sublime-project
-*.sublime-workspace
+*.sublime-*
+.project
+.pydevproject
+.settings/
 
 # OS
 .DS_Store
