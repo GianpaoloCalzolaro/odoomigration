@@ -93,4 +93,16 @@
         <field name="perm_create" eval="True"/>
         <field name="perm_unlink" eval="True"/>
     </record>
+
+    <!-- Rule for internal users to access clinical observations -->
+    <record id="rule_clinical_observation_internal_access" model="ir.rule">
+        <field name="name">Clinical Observation: internal users full access</field>
+        <field name="model_id" ref="model_clinical_observation"/>
+        <field name="domain_force">[(1,'=',1)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
 </odoo>

@@ -9,15 +9,14 @@ from datetime import datetime
 import logging
 from odoo import http, _
 from odoo.http import request
-from odoo import models, registry, SUPERUSER_ID
 from odoo.exceptions import AccessError, MissingError, ValidationError
-from odoo.addons.portal.controllers.portal import CustomerPortal, pager as portal_pager, get_records_pager
+from odoo.addons.portal.controllers.portal import CustomerPortal, pager as portal_pager
 
 from odoo.osv.expression import OR
 
 _logger = logging.getLogger(__name__)
 
-class CustomerPortal(CustomerPortal):
+class ContactsPatientPortal(CustomerPortal):
     _items_per_page = 10
 
     def _employee_has_access_to_contact(self, employee, contact):
@@ -75,7 +74,7 @@ class CustomerPortal(CustomerPortal):
         if not employee:
             return request.redirect('/my')
         
-        contact_obj = http.request.env['res.partner']
+        contact_obj = request.env['res.partner']
         domain = [
             ('is_patient', '=', True),
             '|',
@@ -352,15 +351,7 @@ class CustomerPortal(CustomerPortal):
             contact.write(vals)
             return request.redirect(f'/my/patient/{contact_id}/clinical-sheet')
         except Exception as e:
-            request.env['ir.logging'].sudo().create({
-                'name': 'Contact Save Error',
-                'type': 'server',
-                'level': 'ERROR',
-                'message': f'Error updating contact {contact_id}: {str(e)}',
-                'path': 'contacts_patient.portal',
-                'line': '0',
-                'func': 'portal_contact_edit_submit'
-            })
+            _logger.error('Error updating contact %s: %s', contact_id, str(e), exc_info=True)
 
             values = self._prepare_portal_layout_values()
             available_professionals = request.env['hr.employee'].sudo().search([
@@ -545,15 +536,7 @@ class CustomerPortal(CustomerPortal):
             try:
                 clinical_sheet.sudo().write(update_vals)
             except Exception as e:
-                request.env['ir.logging'].sudo().create({
-                    'name': 'Clinical Sheet Save Error',
-                    'type': 'server',
-                    'level': 'ERROR',
-                    'message': f'Error saving clinical sheet for patient {patient_id}: {str(e)}',
-                    'path': 'contacts_patient.portal',
-                    'line': '0',
-                    'func': 'clinical_sheet_save'
-                })
+                _logger.error('Error saving clinical sheet for patient %s: %s', patient_id, str(e), exc_info=True)
                 values = self._prepare_portal_layout_values()
                 values.update({
                     'page_name': 'clinical_sheet',
@@ -747,10 +730,10 @@ class CustomerPortal(CustomerPortal):
                 'tags': [{'id': t.id, 'name': t.name} for t in e.specializzazioni],
             } for e in employees]
 
-            region_groups = request.env['hr.employee'].sudo().read_group(
+            region_groups = request.env['hr.employee'].sudo()._read_group(
                 [('job_id.department_id', 'child_of', dep_filter)], ['region'], ['region']
             )
-            regions = sorted([g['region'] for g in region_groups if g['region']])
+            regions = sorted([g['region'] for g in region_groups if g.get('region')])
 
             data = {
                 'professionals': professionals,

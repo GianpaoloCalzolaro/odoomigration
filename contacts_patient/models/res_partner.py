@@ -73,23 +73,29 @@ class ResPartner(models.Model):
                 partner.age = 0
 
     @api.model
-    def create(self, vals):
-        # Se il booleano viene impostato in fase di create, gestiamo la data di fine incarico
-        if vals.get('tutor_non_attivo') is True:
-            vals['data_fine_incarico_tutor'] = fields.Date.context_today(self)
-        if vals.get('tutor_non_attivo') is False:
-            vals['data_fine_incarico_tutor'] = False
-        if vals.get('professionista_non_attivo') is True:
-            vals['data_fine_incarico_professionista'] = fields.Date.context_today(self)
-        if vals.get('professionista_non_attivo') is False:
-            vals['data_fine_incarico_professionista'] = False
-        return super(ResPartner, self).create(vals)
+    def create(self, vals_list):
+        # Support batch create in Odoo 19
+        if not isinstance(vals_list, list):
+            vals_list = [vals_list]
+        
+        for vals in vals_list:
+            # Se il booleano viene impostato in fase di create, gestiamo la data di fine incarico
+            if vals.get('tutor_non_attivo') is True:
+                vals['data_fine_incarico_tutor'] = fields.Date.context_today(self)
+            if vals.get('tutor_non_attivo') is False:
+                vals['data_fine_incarico_tutor'] = False
+            if vals.get('professionista_non_attivo') is True:
+                vals['data_fine_incarico_professionista'] = fields.Date.context_today(self)
+            if vals.get('professionista_non_attivo') is False:
+                vals['data_fine_incarico_professionista'] = False
+        
+        return super().create(vals_list)
 
     def write(self, vals):
         # Applichiamo la logica record-per-record quando i booleani vengono aggiornati
         boolean_keys = set(vals.keys()) & {'tutor_non_attivo', 'professionista_non_attivo'}
         if not boolean_keys or len(self) == 0:
-            return super(ResPartner, self).write(vals)
+            return super().write(vals)
         res = True
         for rec in self:
             rec_vals = dict(vals)

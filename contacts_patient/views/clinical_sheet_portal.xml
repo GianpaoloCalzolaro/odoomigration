@@ -72,7 +72,7 @@
                                                       class="form-control" 
                                                       rows="4" 
                                                       placeholder="Descrivi il motivo della consulenza..."
-                                                      t-raw="clinical_sheet.reason_for_consultation or ''"></textarea>
+                                                      t-out="clinical_sheet.reason_for_consultation or ''"></textarea>
                                         </div>
                                         <div class="form-group mb-3">
                                             <label>Durata sintomatologia attuale:</label>
@@ -87,7 +87,7 @@
                                                       class="form-control" 
                                                       rows="3" 
                                                       placeholder="Eventi o situazioni che potrebbero aver scatenato i sintomi..."
-                                                      t-raw="clinical_sheet.triggering_factors or ''"></textarea>
+                                                      t-out="clinical_sheet.triggering_factors or ''"></textarea>
                                         </div>
                                         <div class="form-group mb-3">
                                             <label>Impatto sulla vita quotidiana:</label>
@@ -95,7 +95,7 @@
                                                       class="form-control" 
                                                       rows="3" 
                                                       placeholder="Come i sintomi influenzano le attività quotidiane..."
-                                                      t-raw="clinical_sheet.daily_life_impact or ''"></textarea>
+                                                      t-out="clinical_sheet.daily_life_impact or ''"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -122,7 +122,7 @@
                                                               class="form-control" 
                                                               rows="3" 
                                                               placeholder="Eventuali diagnosi psichiatriche precedenti..."
-                                                              t-raw="clinical_sheet.previous_psychiatric_diagnoses or ''"></textarea>
+                                                              t-out="clinical_sheet.previous_psychiatric_diagnoses or ''"></textarea>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -132,7 +132,7 @@
                                                               class="form-control" 
                                                               rows="3" 
                                                               placeholder="Trattamenti psicoterapeutici precedenti..."
-                                                              t-raw="clinical_sheet.previous_psychotherapies or ''"></textarea>
+                                                              t-out="clinical_sheet.previous_psychotherapies or ''"></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -144,7 +144,7 @@
                                                               class="form-control" 
                                                               rows="3" 
                                                               placeholder="Farmaci psichiatrici assunti in passato..."
-                                                              t-raw="clinical_sheet.previous_medications or ''"></textarea>
+                                                              t-out="clinical_sheet.previous_medications or ''"></textarea>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -154,7 +154,7 @@
                                                               class="form-control" 
                                                               rows="3" 
                                                               placeholder="Eventuali ricoveri psichiatrici..."
-                                                              t-raw="clinical_sheet.psychiatric_hospitalizations or ''"></textarea>
+                                                              t-out="clinical_sheet.psychiatric_hospitalizations or ''"></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -172,7 +172,7 @@
                                                       class="form-control" 
                                                       rows="2" 
                                                       placeholder="Dettagli sui tentativi di suicidio..."
-                                                      t-raw="clinical_sheet.suicide_attempts_details or ''"></textarea>
+                                                      t-out="clinical_sheet.suicide_attempts_details or ''"></textarea>
                                         </div>
                                         
                                         <div class="form-check mb-2">
@@ -186,7 +186,7 @@
                                                       class="form-control" 
                                                       rows="2" 
                                                       placeholder="Dettagli sui comportamenti autolesivi..."
-                                                      t-raw="clinical_sheet.self_harm_details or ''"></textarea>
+                                                      t-out="clinical_sheet.self_harm_details or ''"></textarea>
                                         </div>
 
                                         <div class="form-check mb-2">
@@ -200,7 +200,7 @@
                                                       class="form-control" 
                                                       rows="2" 
                                                       placeholder="Dettagli sui comportamenti aggressivi..."
-                                                      t-raw="clinical_sheet.aggressive_details or ''"></textarea>
+                                                      t-out="clinical_sheet.aggressive_details or ''"></textarea>
                                         </div>
 
                                         <!-- Storia Familiare -->
@@ -216,7 +216,7 @@
                                                       class="form-control" 
                                                       rows="3" 
                                                       placeholder="Dettagli sulla storia familiare psichiatrica..."
-                                                      t-raw="clinical_sheet.family_history_details or ''"></textarea>
+                                                      t-out="clinical_sheet.family_history_details or ''"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -246,7 +246,7 @@
                                                               class="form-control" 
                                                               rows="3" 
                                                               placeholder="Dettagli sulle malattie croniche..."
-                                                              t-raw="clinical_sheet.chronic_diseases_details or ''"></textarea>
+                                                              t-out="clinical_sheet.chronic_diseases_details or ''"></textarea>
                                                 </div>
                                                 <div class="form-check mb-2">
                                                     <input type="checkbox" name="previous_surgeries" 
@@ -259,7 +259,7 @@
                                                               class="form-control" 
                                                               rows="3" 
                                                               placeholder="Dettagli sugli interventi..."
-                                                              t-raw="clinical_sheet.surgeries_details or ''"></textarea>
+                                                              t-out="clinical_sheet.surgeries_details or ''"></textarea>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -269,7 +269,7 @@
                                                               class="form-control" 
                                                               rows="3" 
                                                               placeholder="Farmaci attualmente in uso..."
-                                                              t-raw="clinical_sheet.current_medications or ''"></textarea>
+                                                              t-out="clinical_sheet.current_medications or ''"></textarea>
                                                 </div>
                                                 <div class="form-check mb-2">
                                                     <input type="checkbox" name="allergies" 
@@ -282,7 +282,7 @@
                                                               class="form-control" 
                                                               rows="3" 
                                                               placeholder="Dettagli sulle allergie..."
-                                                              t-raw="clinical_sheet.allergies_details or ''"></textarea>
+                                                              t-out="clinical_sheet.allergies_details or ''"></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -336,7 +336,7 @@
                                                               class="form-control" 
                                                               rows="2" 
                                                               placeholder="Dettagli sul fumo..."
-                                                              t-raw="clinical_sheet.smoking_details or ''"></textarea>
+                                                              t-out="clinical_sheet.smoking_details or ''"></textarea>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
@@ -351,7 +351,7 @@
                                                               class="form-control" 
                                                               rows="2" 
                                                               placeholder="Dettagli sul consumo di alcol..."
-                                                              t-raw="clinical_sheet.alcohol_details or ''"></textarea>
+                                                              t-out="clinical_sheet.alcohol_details or ''"></textarea>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
@@ -366,7 +366,7 @@
                                                               class="form-control" 
                                                               rows="2" 
                                                               placeholder="Dettagli sull'uso di sostanze..."
-                                                              t-raw="clinical_sheet.drugs_details or ''"></textarea>
+                                                              t-out="clinical_sheet.drugs_details or ''"></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -416,7 +416,7 @@
                                                               class="form-control" 
                                                               rows="3" 
                                                               placeholder="Descrivi il supporto sociale disponibile..."
-                                                              t-raw="clinical_sheet.social_support_description or ''"></textarea>
+                                                              t-out="clinical_sheet.social_support_description or ''"></textarea>
                                                 </div>
                                                 <div class="form-group mb-3">
                                                     <label>Relazioni significative:</label>
@@ -424,7 +424,7 @@
                                                               class="form-control" 
                                                               rows="3" 
                                                               placeholder="Relazioni importanti nella vita del paziente..."
-                                                              t-raw="clinical_sheet.significant_relationships or ''"></textarea>
+                                                              t-out="clinical_sheet.significant_relationships or ''"></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -434,7 +434,7 @@
                                                       class="form-control" 
                                                       rows="3" 
                                                       placeholder="Informazioni sul contesto familiare..."
-                                                      t-raw="clinical_sheet.family_context or ''"></textarea>
+                                                      t-out="clinical_sheet.family_context or ''"></textarea>
                                         </div>
                                         <div class="form-group mb-3">
                                             <label>Storia evolutiva:</label>
@@ -442,7 +442,7 @@
                                                       class="form-control" 
                                                       rows="3" 
                                                       placeholder="Storia dello sviluppo del paziente..."
-                                                      t-raw="clinical_sheet.developmental_history or ''"></textarea>
+                                                      t-out="clinical_sheet.developmental_history or ''"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -465,7 +465,7 @@
                                                       class="form-control" 
                                                       rows="4" 
                                                       placeholder="Descrizione dettagliata del problema attuale..."
-                                                      t-raw="clinical_sheet.problem_description or ''"></textarea>
+                                                      t-out="clinical_sheet.problem_description or ''"></textarea>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-6">
@@ -483,7 +483,7 @@
                                                               class="form-control" 
                                                               rows="3" 
                                                               placeholder="Problemi attuali riferiti dal paziente..."
-                                                              t-raw="clinical_sheet.current_issues or ''"></textarea>
+                                                              t-out="clinical_sheet.current_issues or ''"></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -498,7 +498,7 @@
                                                               class="form-control" 
                                                               rows="2" 
                                                               placeholder="Presenza e caratteristiche della tristezza..."
-                                                              t-raw="clinical_sheet.sadness_depression or ''"></textarea>
+                                                              t-out="clinical_sheet.sadness_depression or ''"></textarea>
                                                 </div>
                                                 <div class="form-group mb-3">
                                                     <label>Perdita interesse/piacere:</label>
@@ -506,7 +506,7 @@
                                                               class="form-control" 
                                                               rows="2" 
                                                               placeholder="Anedonia, perdita di interesse..."
-                                                              t-raw="clinical_sheet.anhedonia or ''"></textarea>
+                                                              t-out="clinical_sheet.anhedonia or ''"></textarea>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -516,7 +516,7 @@
                                                               class="form-control" 
                                                               rows="2" 
                                                               placeholder="Episodi di irritabilità o rabbia..."
-                                                              t-raw="clinical_sheet.irritability_anger or ''"></textarea>
+                                                              t-out="clinical_sheet.irritability_anger or ''"></textarea>
                                                 </div>
                                                 <div class="form-group mb-3">
                                                     <label>Labilità emotiva:</label>
@@ -524,7 +524,7 @@
                                                               class="form-control" 
                                                               rows="2" 
                                                               placeholder="Cambiamenti rapidi dell'umore..."
-                                                              t-raw="clinical_sheet.emotional_lability or ''"></textarea>
+                                                              t-out="clinical_sheet.emotional_lability or ''"></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -539,7 +539,7 @@
                                                               class="form-control" 
                                                               rows="2" 
                                                               placeholder="Presenza di ansia generalizzata..."
-                                                              t-raw="clinical_sheet.generalized_anxiety or ''"></textarea>
+                                                              t-out="clinical_sheet.generalized_anxiety or ''"></textarea>
                                                 </div>
                                                 <div class="form-group mb-3">
                                                     <label>Attacchi di panico:</label>
@@ -547,7 +547,7 @@
                                                               class="form-control" 
                                                               rows="2" 
                                                               placeholder="Episodi di panico..."
-                                                              t-raw="clinical_sheet.panic_attacks or ''"></textarea>
+                                                              t-out="clinical_sheet.panic_attacks or ''"></textarea>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -557,7 +557,7 @@
                                                               class="form-control" 
                                                               rows="2" 
                                                               placeholder="Fobie specifiche..."
-                                                              t-raw="clinical_sheet.phobias or ''"></textarea>
+                                                              t-out="clinical_sheet.phobias or ''"></textarea>
                                                 </div>
                                                 <div class="form-group mb-3">
                                                     <label>Sintomi ossessivo-compulsivi:</label>
@@ -565,7 +565,7 @@
                                                               class="form-control" 
                                                               rows="2" 
                                                               placeholder="Ossessioni e compulsioni..."
-                                                              t-raw="clinical_sheet.ocd_symptoms or ''"></textarea>
+                                                              t-out="clinical_sheet.ocd_symptoms or ''"></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -594,7 +594,7 @@
                                                               class="form-control" 
                                                               rows="2" 
                                                               placeholder="Cura della persona, abbigliamento..."
-                                                              t-raw="clinical_sheet.appearance_hygiene or ''"></textarea>
+                                                              t-out="clinical_sheet.appearance_hygiene or ''"></textarea>
                                                 </div>
                                                 <div class="form-group mb-3">
                                                     <label>Atteggiamento:</label>
@@ -602,7 +602,7 @@
                                                               class="form-control" 
                                                               rows="2" 
                                                               placeholder="Atteggiamento durante il colloquio..."
-                                                              t-raw="clinical_sheet.attitude or ''"></textarea>
+                                                              t-out="clinical_sheet.attitude or ''"></textarea>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -612,7 +612,7 @@
                                                               class="form-control" 
                                                               rows="2" 
                                                               placeholder="Espressioni facciali, gesti..."
-                                                              t-raw="clinical_sheet.mimics_gestures or ''"></textarea>
+                                                              t-out="clinical_sheet.mimics_gestures or ''"></textarea>
                                                 </div>
                                                 <div class="form-group mb-3">
                                                     <label>Attività psicomotoria:</label>
@@ -620,7 +620,7 @@
                                                               class="form-control" 
                                                               rows="2" 
                                                               placeholder="Agitazione, rallentamento..."
-                                                              t-raw="clinical_sheet.psychomotor_activity or ''"></textarea>
+                                                              t-out="clinical_sheet.psychomotor_activity or ''"></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -635,7 +635,7 @@
                                                               class="form-control" 
                                                               rows="2" 
                                                               placeholder="Orientamento spazio-temporale..."
-                                                              t-raw="clinical_sheet.orientation or ''"></textarea>
+                                                              t-out="clinical_sheet.orientation or ''"></textarea>
                                                 </div>
                                                 <div class="form-group mb-3">
                                                     <label>Insight:</label>
@@ -654,7 +654,7 @@
                                                               class="form-control" 
                                                               rows="2" 
                                                               placeholder="Memoria a breve e lungo termine..."
-                                                              t-raw="clinical_sheet.memory_exam or ''"></textarea>
+                                                              t-out="clinical_sheet.memory_exam or ''"></textarea>
                                                 </div>
                                                 <div class="form-group mb-3">
                                                     <label>Giudizio:</label>
@@ -717,7 +717,7 @@
                                                               class="form-control" 
                                                               rows="2" 
                                                               placeholder="Dettagli sui mezzi disponibili..."
-                                                              t-raw="clinical_sheet.suicide_means_details or ''"></textarea>
+                                                              t-out="clinical_sheet.suicide_means_details or ''"></textarea>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -727,7 +727,7 @@
                                                               class="form-control" 
                                                               rows="3" 
                                                               placeholder="Altri fattori che aumentano il rischio..."
-                                                              t-raw="clinical_sheet.suicide_risk_factors or ''"></textarea>
+                                                              t-out="clinical_sheet.suicide_risk_factors or ''"></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -754,7 +754,7 @@
                                                               class="form-control" 
                                                               rows="2" 
                                                               placeholder="Target dell'aggressività..."
-                                                              t-raw="clinical_sheet.aggression_target or ''"></textarea>
+                                                              t-out="clinical_sheet.aggression_target or ''"></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -781,7 +781,7 @@
                                                               class="form-control" 
                                                               rows="4" 
                                                               placeholder="Risorse personali, resilienza, strategie di coping..."
-                                                              t-raw="clinical_sheet.individual_protective_factors or ''"></textarea>
+                                                              t-out="clinical_sheet.individual_protective_factors or ''"></textarea>
                                                 </div>
                                                 <div class="form-group mb-3">
                                                     <label>Supporto sociale:</label>
@@ -789,7 +789,7 @@
                                                               class="form-control" 
                                                               rows="4" 
                                                               placeholder="Rete di supporto, relazioni positive..."
-                                                              t-raw="clinical_sheet.social_protective_factors or ''"></textarea>
+                                                              t-out="clinical_sheet.social_protective_factors or ''"></textarea>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -799,7 +799,7 @@
                                                               class="form-control" 
                                                               rows="4" 
                                                               placeholder="Motivazione, compliance, alleanza terapeutica..."
-                                                              t-raw="clinical_sheet.treatment_engagement or ''"></textarea>
+                                                              t-out="clinical_sheet.treatment_engagement or ''"></textarea>
                                                 </div>
                                                 <div class="form-group mb-3">
                                                     <label>Fattori di stabilità:</label>
@@ -807,7 +807,7 @@
                                                               class="form-control" 
                                                               rows="4" 
                                                               placeholder="Stabilità lavorativa, abitativa, economica..."
-                                                              t-raw="clinical_sheet.stability_factors or ''"></textarea>
+                                                              t-out="clinical_sheet.stability_factors or ''"></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -859,7 +859,7 @@
                                                               class="form-control" 
                                                               rows="3" 
                                                               placeholder="Disturbi in comorbilità..."
-                                                              t-raw="clinical_sheet.comorbidity or ''"></textarea>
+                                                              t-out="clinical_sheet.comorbidity or ''"></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -872,7 +872,7 @@
                                                       class="form-control" 
                                                       rows="4" 
                                                       placeholder="Riassunto dei punti salienti dell'assessment..."
-                                                      t-raw="clinical_sheet.clinical_summary or ''"></textarea>
+                                                      t-out="clinical_sheet.clinical_summary or ''"></textarea>
                                         </div>
                                         <div class="form-group mb-3">
                                             <label>Ipotesi diagnostiche:</label>
@@ -880,7 +880,7 @@
                                                       class="form-control" 
                                                       rows="3" 
                                                       placeholder="Ipotesi diagnostiche formulate..."
-                                                      t-raw="clinical_sheet.diagnostic_hypotheses or ''"></textarea>
+                                                      t-out="clinical_sheet.diagnostic_hypotheses or ''"></textarea>
                                         </div>
 
                                         <!-- Piano di Trattamento -->
@@ -893,7 +893,7 @@
                                                               class="form-control" 
                                                               rows="4" 
                                                               placeholder="Obiettivi specifici del trattamento..."
-                                                              t-raw="clinical_sheet.treatment_goals or ''"></textarea>
+                                                              t-out="clinical_sheet.treatment_goals or ''"></textarea>
                                                 </div>
                                                 <div class="form-group mb-3">
                                                     <label>Aspettative del paziente:</label>
@@ -901,7 +901,7 @@
                                                               class="form-control" 
                                                               rows="3" 
                                                               placeholder="Cosa si aspetta il paziente dal trattamento..."
-                                                              t-raw="clinical_sheet.patient_expectations or ''"></textarea>
+                                                              t-out="clinical_sheet.patient_expectations or ''"></textarea>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -911,7 +911,7 @@
                                                               class="form-control" 
                                                               rows="4" 
                                                               placeholder="Strategia terapeutica, frequenza, modalità..."
-                                                              t-raw="clinical_sheet.treatment_plan or ''"></textarea>
+                                                              t-out="clinical_sheet.treatment_plan or ''"></textarea>
                                                 </div>
                                                 <div class="form-group mb-3">
                                                     <label>Fattori di rischio e protezione rilevanti:</label>
@@ -919,7 +919,7 @@
                                                               class="form-control" 
                                                               rows="3" 
                                                               placeholder="Sintesi dei fattori più rilevanti..."
-                                                              t-raw="clinical_sheet.relevant_risk_protective_factors or ''"></textarea>
+                                                              t-out="clinical_sheet.relevant_risk_protective_factors or ''"></textarea>
                                                 </div>
                                             </div>
                                         </div>
