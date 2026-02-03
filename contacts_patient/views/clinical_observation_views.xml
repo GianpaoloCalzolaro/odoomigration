@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="view_clinical_observation_tree" model="ir.ui.view">
-        <field name="name">clinical.observation.tree</field>
+        <field name="name">clinical.observation.list</field>
         <field name="model">clinical.observation</field>
         <field name="arch" type="xml">
             <list string="Clinical Observations">

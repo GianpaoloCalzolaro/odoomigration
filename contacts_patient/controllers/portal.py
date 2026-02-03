@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 
 # Part of Contacts Patient Module. See LICENSE file for full copyright and licensing details.
 

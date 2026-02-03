@@ -195,7 +195,7 @@
     </record>
 
     <record id="view_clinical_sheet_tree" model="ir.ui.view">
-        <field name="name">clinical.sheet.tree</field>
+        <field name="name">clinical.sheet.list</field>
         <field name="model">clinical.sheet</field>
         <field name="arch" type="xml">
 
