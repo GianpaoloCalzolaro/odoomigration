@@ -164,16 +164,21 @@ class HrEmployee(models.Model):
     link=fields.Char(string="Link", help="Link to appointment")
     service = fields.Many2one('product.template', string="Service")
 
-    # Employee type - extending the base selection with 'professionista'
-    employee_type = fields.Selection(
-        selection=[
+    @api.model
+    def _get_employee_type_selection(self):
+        """Return selection options for employee_type field (lazy evaluation for Odoo 19)."""
+        return [
             ('employee', 'Employee'),
             ('student', 'Student'),
             ('trainee', 'Trainee'),
             ('contractor', 'Contractor'),
             ('freelance', 'Freelance'),
             ('professionista', 'Professionista'),
-        ],
+        ]
+
+    # Employee type - using method-based selection for Odoo 19 compatibility
+    employee_type = fields.Selection(
+        selection='_get_employee_type_selection',
         string='Employee Type',
         default='employee',
     )
