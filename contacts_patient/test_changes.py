@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 
 """
 Test script per verificare che le modifiche per l'estensione dell'accesso 

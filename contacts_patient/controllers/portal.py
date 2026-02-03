@@ -1,9 +1,6 @@
-# -*- coding: utf-8 -*-
 
 # Part of Contacts Patient Module. See LICENSE file for full copyright and licensing details.
 
-from collections import OrderedDict
-import werkzeug
 import base64
 from datetime import datetime
 import logging
@@ -11,8 +8,6 @@ from odoo import http, _
 from odoo.http import request
 from odoo.exceptions import AccessError, MissingError, ValidationError
 from odoo.addons.portal.controllers.portal import CustomerPortal, pager as portal_pager
-
-from odoo.osv.expression import OR
 
 _logger = logging.getLogger(__name__)
 
@@ -112,7 +107,7 @@ class ContactsPatientPortal(CustomerPortal):
         if search and search_in:
             search_domain = []
             if search_in in ('name', 'all'):
-                search_domain = OR([search_domain, [('name', 'ilike', search)]])
+                search_domain = [('name', 'ilike', search)]
             domain += search_domain
 
         # content according to pager and archive selected
@@ -730,10 +725,12 @@ class ContactsPatientPortal(CustomerPortal):
                 'tags': [{'id': t.id, 'name': t.name} for t in e.specializzazioni],
             } for e in employees]
 
-            region_groups = request.env['hr.employee'].sudo()._read_group(
-                [('job_id.department_id', 'child_of', dep_filter)], ['region'], ['region']
-            )
-            regions = sorted([g['region'] for g in region_groups if g.get('region')])
+            # Get unique regions using search (Odoo 19 compatible)
+            employees_with_regions = request.env['hr.employee'].sudo().search([
+                ('job_id.department_id', 'child_of', dep_filter),
+                ('region', '!=', False)
+            ])
+            regions = sorted(set(e.region for e in employees_with_regions if e.region))
 
             data = {
                 'professionals': professionals,
