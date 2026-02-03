@@ -18,7 +18,7 @@
     'author': 'Gian Paolo Calzolaro',
     'website': 'https://www.infologis.biz',
     'license': 'LGPL-3',
-    'depends': ['hr_recruitment','product'],
+    'depends': ['hr', 'hr_recruitment', 'product'],
     "data": [
         "security/ir.model.access.csv",
         "data/hr_specialization_data.xml",
