@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Contacts Patient',
-    'version': '18.0.9.0.0',
+    'version': '19.0.1.0.0',
     'category': 'Contacts',
     'summary': 'Extend contacts with patient information',
     'description': """

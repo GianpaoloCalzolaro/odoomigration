@@ -3,15 +3,4 @@
     <!-- No additional security groups needed as we're using existing ones -->
     <!-- The module inherits security from the contacts module -->
     <!-- All fields use groups="base.group_user" which is the same permission level as contact fields -->
-    
-    <!-- Add access rights for portal users to res.partner model -->
-    <record id="portal_access_res_partner" model="ir.model.access">
-        <field name="name">res.partner: portal users</field>
-        <field name="model_id" ref="base.model_res_partner"/>
-        <field name="group_id" ref="base.group_portal"/>
-        <field name="perm_read" eval="True"/>
-        <field name="perm_write" eval="True"/>
-        <field name="perm_create" eval="False"/>
-        <field name="perm_unlink" eval="False"/>
-    </record>
 </odoo>

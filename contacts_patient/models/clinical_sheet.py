@@ -8,7 +8,7 @@ class ClinicalSheet(models.Model):
 
     partner_id = fields.Many2one('res.partner', string='Paziente', required=True, ondelete='cascade',
                                 domain=[('is_patient', '=', True)])
-    name = fields.Char(related='partner_id.name', store=True, readonly=True)
+    name = fields.Char(related='partner_id.name', store=True)
     active = fields.Boolean(default=True)
 
     # --- Campi migrati da res.partner e nuovi campi ---
