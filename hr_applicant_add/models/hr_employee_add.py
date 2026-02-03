@@ -164,10 +164,18 @@ class HrEmployee(models.Model):
     link=fields.Char(string="Link", help="Link to appointment")
     service = fields.Many2one('product.template', string="Service")
 
-    # new selection
+    # Employee type - extending the base selection with 'professionista'
     employee_type = fields.Selection(
-        selection_add=[('professionista', 'Professionista')],
-        ondelete={'professionista': 'set default'}
+        selection=[
+            ('employee', 'Employee'),
+            ('student', 'Student'),
+            ('trainee', 'Trainee'),
+            ('contractor', 'Contractor'),
+            ('freelance', 'Freelance'),
+            ('professionista', 'Professionista'),
+        ],
+        string='Employee Type',
+        default='employee',
     )
 
     limite_incarichi_raggiunto = fields.Boolean(
