@@ -1,0 +1,206 @@
+SUMMARY:
+Modulo calendar_meeting_portal - Migrazione da Odoo 18 a 19
+Complessita: MEDIA
+Il modulo estende calendar.event per gestire appuntamenti dal portale con sistema di esiti. Richiede interventi su pattern Python deprecati (name_get), pulizia import controller, risoluzione conflitto permessi security e rimozione file JavaScript duplicato.
+
+---
+
+PREREQUISITES:
+- Modulo calendar (core) aggiornato a v19
+- Modulo portal (core) aggiornato a v19
+- Modulo hr (core) aggiornato a v19
+- Modulo website (core) aggiornato a v19
+- Dipendenza implicita: modulo esterno che definisce campo appointment_status su calendar.event (riferito in calendar_event_views.xml)
+- Dipendenza implicita per test: modello appointment.type (usato in test_calendar_event_outcome.py e test_security.py)
+
+---
+
+CHANGES REQUIRED:
+
+[Manifest]
+
+File: __manifest__.py
+Modifica: Aggiornare numero versione da 18.0.4.0.0 a 19.0.1.0.0
+Azione: Modificare manualmente la stringa version
+
+File: __manifest__.py
+Modifica: Verificare compatibilita dipendenze con v19
+Azione: Testare installazione con moduli core calendar, portal, hr, website in ambiente v19
+
+File: __manifest__.py
+Modifica: Commento riga 64 errato riferisce a HR ma dipendenza e website
+Azione: Correggere commento o rimuoverlo
+
+---
+
+[Models]
+
+File: models/calendar_event_outcome.py (righe 70-76)
+Modifica: Metodo name_get() deprecato da Odoo 17
+Azione: Sostituire name_get() con campo computed display_name usando metodo _compute_display_name
+Codice attuale:
+    def name_get(self):
+        result = []
+        for record in self:
+            name = f"[{record.code}] {record.name}" if record.code else record.name
+            result.append((record.id, name))
+        return result
+Da convertire in:
+    display_name = fields.Char(compute='_compute_display_name', store=True)
+    @api.depends('code', 'name')
+    def _compute_display_name(self):
+        for record in self:
+            record.display_name = f"[{record.code}] {record.name}" if record.code else record.name
+
+File: models/calendar_event_outcome.py (riga 46)
+Modifica: Campo riciesta_azione ha store=True ma non e un campo computed
+Azione: Rimuovere attributo store=True (non necessario per campi semplici Boolean)
+
+File: models/calendar_event.py
+Modifica: Nessuna modifica richiesta - codice compatibile v19
+Azione: Verificare in test che @api.model_create_multi funzioni correttamente
+
+---
+
+[Controllers]
+
+File: controllers/portal.py (riga 14)
+Modifica: Import deprecati e non utilizzati
+Azione: Rimuovere import registry e SUPERUSER_ID dalla riga:
+    from odoo import models,registry, SUPERUSER_ID
+Diventare:
+    from odoo import models
+
+File: controllers/portal.py (riga 16)
+Modifica: Funzione get_records_pager deprecata da v16
+Azione: Rimuovere import get_records_pager se non utilizzato nel codice (verificare uso effettivo)
+
+File: controllers/portal.py (riga 6)
+Modifica: Import werkzeug.urls.url_encode
+Azione: Verificare compatibilita con Werkzeug 3.x usato in Odoo 19. Considerare uso di urllib.parse.urlencode come alternativa
+
+File: controllers/main.py (riga 17)
+Modifica: Uso di _() con variabile dinamica non e corretto per traduzioni
+Azione: Sostituire group_msg = _(custom_calendar_comment) con group_msg = custom_calendar_comment
+Il contenuto utente non deve passare per la funzione di traduzione
+
+---
+
+[Views]
+
+File: views/calendar_event_views.xml (riga 13)
+Modifica: xpath dipende da campo appointment_status definito in modulo esterno
+Azione: Aggiungere dipendenza esplicita nel manifest o gestire graceful fallback con position="before" su altro campo esistente in calendar.event core
+
+File: views/calendar_event_outcome_views.xml (riga 41)
+Modifica: Attributo readonly="id" sintassi non standard
+Azione: Verificare funzionamento in v19. Forma corretta potrebbe essere readonly="bool(id)" o usare invisible condizionale
+
+File: views/calendar_portal_templates.xml (riga 32)
+Modifica: Riferimento a immagine /project/static/src/img/tasks.svg
+Azione: Verificare esistenza path in v19 o sostituire con icona disponibile in web module
+
+File: views/portal_meeting_create.xml (riga 40, 58, 74, 105)
+Modifica: Attributo required="true" non standard per input HTML
+Azione: Usare required="required" oppure solo required (senza valore)
+
+---
+
+[Security]
+
+File: security/ir.model.access.csv (righe 4-6)
+Modifica: Conflitto permessi - CSV da CRUD completo a portal ma record rule limita a sola lettura
+Azione: Allineare permessi in CSV per calendar.event.outcome portal:
+    access_calendar_event_outcome_portal,calendar.event.outcome portal access,model_calendar_event_outcome,base.group_portal,1,0,0,0
+(solo perm_read=1, altri a 0 come da record rule)
+
+File: security/ir.model.access.csv (riga 5)
+Modifica: Internal user ha CRUD completo su calendar.event.outcome
+Azione: Verificare se intenzionale o limitare a sola lettura per utenti interni non admin
+
+File: security/calendar_event_security.xml
+Modifica: Nessuna modifica richiesta - record rules compatibili v19
+Azione: Verificare che eval syntax [(4, ref('...'))] funzioni correttamente
+
+---
+
+[Assets]
+
+File: static/src/meeting_create_validation.js
+Modifica: File duplicato - esiste versione piu completa in static/src/js/meeting_create_validation.js
+Azione: Rimuovere file static/src/meeting_create_validation.js (duplicato incompleto)
+
+File: static/src/js/calendar_comment.js e static/src/js/meeting_create_validation.js
+Modifica: Pattern export default potrebbe richiedere aggiornamento per sistema moduli v19
+Azione: Verificare che @odoo-module pragma sia sufficiente o se richiesto @odoo-module alias=...
+
+File: static/src/js/meeting_create_validation.js (riga 278-280)
+Modifica: Export non utilizzato dal sistema Odoo
+Azione: Rimuovere export default inutilizzato o convertire in export OWL component se necessario
+
+---
+
+[Data/Migrations]
+
+File: data/calendar_event_outcome_data.xml
+Modifica: Nessuna modifica richiesta - struttura compatibile v19
+Azione: Verificare che noupdate="1" sia rispettato durante upgrade
+
+Migrazione dati:
+Modifica: Se esistono installazioni v18 con dati, valutare script migrazione
+Azione: Valutare uso openupgradelib per:
+- Nessuna rinomina tabelle/colonne richiesta (modello nuovo)
+- Eventuale pulizia orfani se esito_evento_id punta a outcome eliminati
+
+---
+
+[Tests]
+
+File: tests/test_calendar_event_outcome.py e tests/test_security.py
+Modifica: Dipendenza da modello appointment.type non dichiarata
+Azione: Aggiungere skip condition o mock se modulo appointment non installato:
+    @tagged('post_install', '-at_install')
+    @unittest.skipUnless(hasattr(cls.env, 'appointment.type'), 'Requires appointment module')
+
+File: tests/test_calendar_event_outcome.py (riga 175)
+Modifica: Test verifica domain come stringa letterale
+Azione: Aggiornare test se implementazione display_name computed modifica comportamento
+
+---
+
+[Note Tecniche Aggiuntive]
+
+1. OWL e JavaScript:
+   - Verificare che bootstrap.Modal.getInstance sia disponibile in v19
+   - Testare comportamento modali con nuova versione Bootstrap
+
+2. Template QWeb:
+   - Verificare che t-attf-class con espressioni ternarie funzioni in v19
+   - Controllare che request.csrf_token() sia ancora il metodo corretto
+
+3. Controller HTTP:
+   - Verificare che decoratore @http.route supporti ancora type='http' con website=True
+   - Testare redirect con f-string in v19
+
+4. Multi-company:
+   - Il modulo non gestisce esplicitamente company_id su calendar.event.outcome
+   - Valutare se aggiungere campo company_id con record rule per ambienti multi-company
+
+5. Performance:
+   - Metodo search con sudo() in controller potrebbe beneficiare di limit esplicito
+   - Considerare aggiunta indici su campi usati in domain frequenti
+
+---
+
+CHECKLIST PRE-MIGRAZIONE:
+[ ] Backup database v18
+[ ] Esportare dati calendar.event.outcome esistenti
+[ ] Verificare moduli dipendenti (appointment_status, appointment.type)
+[ ] Preparare ambiente test v19
+
+CHECKLIST POST-MIGRAZIONE:
+[ ] Testare creazione appuntamento da portale
+[ ] Verificare assegnazione esiti da dipendenti
+[ ] Controllare visibilita esiti per utenti portal
+[ ] Eseguire test suite completa
+[ ] Verificare invio email notifiche
