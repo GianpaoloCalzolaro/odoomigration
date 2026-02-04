@@ -9,11 +9,11 @@ import logging
 import base64
 from datetime import datetime
 import pytz
-from odoo import http, _
+from odoo import http
 from odoo.http import request
-from odoo import models,registry, SUPERUSER_ID
+from odoo import models
 from odoo.exceptions import AccessError, MissingError, ValidationError
-from odoo.addons.portal.controllers.portal import CustomerPortal, pager as portal_pager, get_records_pager
+from odoo.addons.portal.controllers.portal import CustomerPortal, pager as portal_pager
 
 from odoo.osv.expression import OR
 
@@ -24,7 +24,7 @@ class CustomerPortal(CustomerPortal):
 
 
     def _prepare_portal_layout_values(self):
-        values = super(CustomerPortal, self)._prepare_portal_layout_values()
+        values = super()._prepare_portal_layout_values()
         partner = request.env.user.partner_id
  
         CalendarMeeting = request.env['calendar.event']
@@ -103,9 +103,9 @@ class CustomerPortal(CustomerPortal):
         outcomes = outcome_obj.search([('active', '=', True)])
 
         searchbar_filters = {
-            'all': {'label': _('All'), 'domain': []},
-            'unconfirmed': {'label': _('Non confermati'), 'domain': [('id', 'in', unconfirmed_ids)]},
-            'no_outcome': {'label': _('Senza esito'), 'domain': [('esito_evento_id', '=', False)]},
+            'all': {'label': request.env._('All'), 'domain': []},
+            'unconfirmed': {'label': request.env._('Non confermati'), 'domain': [('id', 'in', unconfirmed_ids)]},
+            'no_outcome': {'label': request.env._('Senza esito'), 'domain': [('esito_evento_id', '=', False)]},
         }
 
         for outcome in outcomes:
@@ -115,12 +115,12 @@ class CustomerPortal(CustomerPortal):
             }
 
         searchbar_sortings = {
-            'start': {'label': _('Start Date Ascending'), 'order': 'start'},
-            'start desc': {'label': _('Start Date Descending'), 'order': 'start desc'},
+            'start': {'label': request.env._('Start Date Ascending'), 'order': 'start'},
+            'start desc': {'label': request.env._('Start Date Descending'), 'order': 'start desc'},
         }
 
         searchbar_inputs = {
-            'name': {'input': 'name', 'label': _('Search in Subject')},
+            'name': {'input': 'name', 'label': request.env._('Search in Subject')},
         }
 
         if not sortby or sortby not in searchbar_sortings:
@@ -211,12 +211,12 @@ class CustomerPortal(CustomerPortal):
         meeting.write({'active': False})
         try:
             meeting.message_post(
-                body=_('The meeting has been cancelled.'),
+                body=request.env._('The meeting has been cancelled.'),
                 message_type='email',
                 partner_ids=meeting.partner_ids.ids,
             )
-        except Exception:
-            pass
+        except Exception as e:
+            _logger.warning("Failed to send meeting cancellation email: %s", e)
         return request.redirect('/my/custom_meeting_request')
 
     # NUOVE ROUTE PER CREAZIONE APPUNTAMENTI
@@ -287,13 +287,13 @@ class CustomerPortal(CustomerPortal):
             end_date_str = post.get('end_date', '').strip()
 
             if not meeting_name:
-                raise ValidationError("Il nome dell'appuntamento è obbligatorio.")
+                raise ValidationError(request.env._("Il nome dell'appuntamento è obbligatorio."))
             
             if not start_date_str:
-                raise ValidationError("La data di inizio è obbligatoria.")
+                raise ValidationError(request.env._("La data di inizio è obbligatoria."))
                 
             if not end_date_str:
-                raise ValidationError("La data di fine è obbligatoria.")
+                raise ValidationError(request.env._("La data di fine è obbligatoria."))
 
             # Conversione e validazione date con gestione timezone
             try:
@@ -314,22 +314,22 @@ class CustomerPortal(CustomerPortal):
                 end_date = end_date_local.astimezone(pytz.UTC).replace(tzinfo=None)
                 
             except ValueError:
-                raise ValidationError("Formato data non valido.")
+                raise ValidationError(request.env._("Formato data non valido."))
             except pytz.exceptions.UnknownTimeZoneError:
-                raise ValidationError("Timezone non valido.")
+                raise ValidationError(request.env._("Timezone non valido."))
 
             if end_date <= start_date:
-                raise ValidationError("La data di fine deve essere successiva alla data di inizio.")
+                raise ValidationError(request.env._("La data di fine deve essere successiva alla data di inizio."))
 
             # Validazione partecipante (obbligatorio e deve essere tra quelli permessi)
             partner_id_raw = (post.get('partner_id') or '').strip()
             if not partner_id_raw:
-                raise ValidationError("Seleziona un partecipante.")
+                raise ValidationError(request.env._("Seleziona un partecipante."))
 
             try:
                 partner_id = int(partner_id_raw)
             except (ValueError, TypeError):
-                raise ValidationError("Partecipante non valido.")
+                raise ValidationError(request.env._("Partecipante non valido."))
 
             employee = request.env['hr.employee'].sudo().search([
                 ('user_id', '=', request.env.user.id)
@@ -338,7 +338,7 @@ class CustomerPortal(CustomerPortal):
             domain = self._get_portal_meeting_allowed_partners_domain(employee)
             allowed_partner = request.env['res.partner'].sudo().search(domain + [('id', '=', partner_id)], limit=1)
             if not allowed_partner:
-                raise ValidationError("Partecipante non valido o non autorizzato.")
+                raise ValidationError(request.env._("Partecipante non valido o non autorizzato."))
 
             # Preparazione dei dati per il meeting
             user = request.env.user

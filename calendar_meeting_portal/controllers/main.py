@@ -2,8 +2,11 @@
 
 # Part of Probuse Consulting Service Pvt Ltd. See LICENSE file for full copyright and licensing details.
 
-from odoo import http, _
+import logging
+from odoo import http
 from odoo.http import request
+
+_logger = logging.getLogger(__name__)
 
 class WebsiteCustomerCalendarComment(http.Controller):
         
@@ -14,7 +17,7 @@ class WebsiteCustomerCalendarComment(http.Controller):
         redirect_url = request.httprequest.referrer
         if custom_calendar_comment and custom_calendar_id:
             record_id = request.env['calendar.event'].sudo().browse(int(custom_calendar_id))
-            group_msg = _(custom_calendar_comment)
+            group_msg = custom_calendar_comment
             record_id.message_post(body=group_msg, message_type='comment')
             try:
                 record_id.message_post(
@@ -22,10 +25,6 @@ class WebsiteCustomerCalendarComment(http.Controller):
                     message_type='email',
                     partner_ids=record_id.partner_ids.ids,
                 )
-            except Exception:
-                # Ignore email sending errors and continue
-                pass
+            except Exception as e:
+                _logger.warning("Failed to send message to partners: %s", e)
         return request.redirect(redirect_url or '/')
-
-
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:hashiftwidth=4:
