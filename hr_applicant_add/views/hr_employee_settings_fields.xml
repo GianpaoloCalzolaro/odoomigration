@@ -5,8 +5,8 @@
         <field name="model">hr.employee</field>
         <field name="inherit_id" ref="hr.view_employee_form"/>
         <field name="arch" type="xml">
-            <!-- Inserisce i nuovi campi dopo il campo user_id nel tab settings -->
-            <xpath expr="//page[@name='hr_settings']//field[@name='employee_type']" position="after">
+            <!-- Inserisce i nuovi campi dopo il campo employee_type nel tab Payroll -->
+            <xpath expr="//page[@name='payroll_information']//field[@name='employee_type']" position="after">
                 <field name="service"/>
                 <field name="link"/>
             </xpath>
