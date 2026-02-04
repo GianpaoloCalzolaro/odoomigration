@@ -157,4 +157,3 @@ class ResourceCalendarAttendance(models.Model):
         return created_attendances
 
 
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

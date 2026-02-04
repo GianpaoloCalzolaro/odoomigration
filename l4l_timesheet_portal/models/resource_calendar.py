@@ -127,8 +127,8 @@ class ResourceCalendar(models.Model):
         """
         if employee_creator_id and not custom_name:
             raise ValidationError(
-                "Configurazione invalida: il nome del calendario è obbligatorio. "
-                "Inserisci un nome personalizzato per il tuo calendario."
+                self.env._("Configurazione invalida: il nome del calendario è obbligatorio. "
+                "Inserisci un nome personalizzato per il tuo calendario.")
             )
 
     def _validate_slot_configuration(self, slot_config_json, employee_creator_id):
@@ -151,27 +151,27 @@ class ResourceCalendar(models.Model):
         # Parse del JSON
         if not slot_config_json:
             raise ValidationError(
-                "Configurazione invalida: nessun orario di lavoro configurato. "
-                "Aggiungi almeno uno slot orario per attivare il calendario."
+                self.env._("Configurazione invalida: nessun orario di lavoro configurato. "
+                "Aggiungi almeno uno slot orario per attivare il calendario.")
             )
 
         try:
             slot_data_list = json.loads(slot_config_json)
         except (json.JSONDecodeError, TypeError) as e:
             raise ValidationError(
-                f"Configurazione invalida: formato JSON non valido. Dettaglio: {e}"
+                self.env._("Configurazione invalida: formato JSON non valido. Dettaglio: %s") % e
             )
 
         if not isinstance(slot_data_list, list):
             raise ValidationError(
-                "Configurazione invalida: la configurazione degli slot deve essere una lista."
+                self.env._("Configurazione invalida: la configurazione degli slot deve essere una lista.")
             )
 
         # Validazione: almeno uno slot configurato (0 ore/settimana)
         if len(slot_data_list) == 0:
             raise ValidationError(
-                "Configurazione invalida: nessun orario di lavoro configurato (0 ore/settimana). "
-                "Aggiungi almeno uno slot orario per attivare il calendario."
+                self.env._("Configurazione invalida: nessun orario di lavoro configurato (0 ore/settimana). "
+                "Aggiungi almeno uno slot orario per attivare il calendario.")
             )
 
         # Validazione: controllo sovrapposizioni nello stesso giorno
@@ -253,12 +253,15 @@ class ResourceCalendar(models.Model):
                 if current_slot['hour_to'] > next_slot['hour_from']:
                     day_name = day_names.get(day, f'Giorno {day}')
                     raise ValidationError(
-                        f"Sovrapposizione rilevata: {day_name} ha slot che si sovrappongono. "
-                        f"Lo slot {self._format_hour(current_slot['hour_from'])}-"
-                        f"{self._format_hour(current_slot['hour_to'])} si sovrappone con "
-                        f"{self._format_hour(next_slot['hour_from'])}-"
-                        f"{self._format_hour(next_slot['hour_to'])}. "
-                        "Correggi gli orari per evitare sovrapposizioni."
+                        self.env._("Sovrapposizione rilevata: %s ha slot che si sovrappongono. "
+                        "Lo slot %s-%s si sovrappone con %s-%s. "
+                        "Correggi gli orari per evitare sovrapposizioni.") % (
+                            day_name,
+                            self._format_hour(current_slot['hour_from']),
+                            self._format_hour(current_slot['hour_to']),
+                            self._format_hour(next_slot['hour_from']),
+                            self._format_hour(next_slot['hour_to'])
+                        )
                     )
 
     def _format_hour(self, hour_float):
@@ -669,4 +672,4 @@ class ResourceCalendar(models.Model):
 
         return hour_float
 
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
+

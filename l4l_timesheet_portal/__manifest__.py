@@ -8,10 +8,9 @@
 {
     'name': "Timesheet Portal",
     'category': 'Human Resources/Time Off',
-    'version': '18.0.1.0',
+    'version': '19.0.1.0.0',
     'sequence': 1,
     'summary': """Timesheet Portal, Hr Timesheet Portal, Employee Timesheet Portal, Employee Timesheet, Short By, Search By, Filter By, Search Functionality, Website, Sale Order, Order, Purchase, Invoice, Bill, Receipt, Vendor, Partner, Contact, Transfer, Inventory, Shipment, Picking Portal, Picking, Portal, Create timesheet from portal, portal create timesheet, portal user create timesheet, Delivery""",
-    'description': """This module offers users a streamlined and intuitive method for managing their timesheet records. It provides a complete range of features that simplify tasks such as viewing, filtering, adding, updating, and deleting timesheet data.""",
     'author': 'Leap4Logic Solutions Private Limited',
     'website': 'https://leap4logic.com/',
     'depends': ['mail', 'website', 'hr_timesheet'],
@@ -31,7 +30,6 @@
             "l4l_timesheet_portal/static/src/js/calendar_manager.js",
         ],
     },
-    'installable': True,
     'application': True,
     'license': 'OPL-1',
     'images': ['static/description/banner.gif'],
@@ -39,5 +37,3 @@
     'currency': 'USD',
     'live_test_url': 'https://youtu.be/8ezTgKNtLhE',
 }
-
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

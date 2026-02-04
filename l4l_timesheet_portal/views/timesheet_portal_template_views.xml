@@ -40,7 +40,7 @@
                                                 <b>Create Timesheet</b>
                                             </h5>
                                             <button type="button" class="btn btn-secondary close_timesheet_wizard"
-                                                    data-dismiss="modal"
+                                                    data-bs-dismiss="modal"
                                                     aria-label="Close">
                                                 <span aria-hidden="true">&#215;</span>
                                             </button>
@@ -150,7 +150,7 @@
                                                 Submit
                                             </button>
                                             <button type="button" class="btn btn-secondary close_timesheet_wizard"
-                                                    data-dismiss="modal">
+                                                    data-bs-dismiss="modal">
                                                 Close
                                             </button>
                                         </div>
@@ -206,7 +206,7 @@
                                             <b>Update Timesheet</b>
                                         </h5>
                                         <button type="button" class="btn btn-secondary close_timesheet_wizard"
-                                                data-dismiss="modal"
+                                                data-bs-dismiss="modal"
                                                 aria-label="Close">
                                             <span aria-hidden="true">&#215;</span>
                                         </button>
@@ -319,7 +319,7 @@
                                             Submit
                                         </button>
                                         <button type="button" class="btn btn-secondary close_timesheet_wizard"
-                                                data-dismiss="modal">
+                                                data-bs-dismiss="modal">
                                             Close
                                         </button>
                                     </div>
