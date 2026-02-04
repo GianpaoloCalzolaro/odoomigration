@@ -1,7 +1,18 @@
 SUMMARY:
 Modulo calendar_meeting_portal - Migrazione da Odoo 18 a 19
 Complessita: MEDIA
-Il modulo estende calendar.event per gestire appuntamenti dal portale con sistema di esiti. Richiede interventi su pattern Python deprecati (name_get), pulizia import controller, risoluzione conflitto permessi security e rimozione file JavaScript duplicato.
+Rating pylint-odoo: 9.33/10
+
+Il modulo estende calendar.event per gestire appuntamenti dal portale con sistema di esiti.
+Richiede interventi su:
+- Pattern Python deprecati (name_get) - ERROR E8146
+- Deprecazione pattern traduzione _() -> self.env._
+- Stringhe ValidationError non tradotte
+- Pulizia manifest (chiavi deprecate/superflue)
+- Rimozione file JavaScript duplicato
+
+Analisi eseguita con: pylint-odoo 10.0.0, pylint 4.0.4
+Nota: odoo-module-migrate 0.5.0 non supporta ancora target v19 (max 18.0)
 
 ---
 
@@ -10,79 +21,125 @@ PREREQUISITES:
 - Modulo portal (core) aggiornato a v19
 - Modulo hr (core) aggiornato a v19
 - Modulo website (core) aggiornato a v19
-- Dipendenza implicita: modulo esterno che definisce campo appointment_status su calendar.event (riferito in calendar_event_views.xml)
-- Dipendenza implicita per test: modello appointment.type (usato in test_calendar_event_outcome.py e test_security.py)
+- Dipendenza implicita: modulo esterno che definisce campo appointment_status su calendar.event
+- Dipendenza implicita per test: modello appointment.type
 
 ---
 
 CHANGES REQUIRED:
 
-[Manifest]
+[Manifest - Risultati pylint-odoo]
+
+File: __manifest__.py
+Errore: C8103 manifest-deprecated-key
+Modifica: Chiave "description" nel manifest deprecata
+Azione: Spostare contenuto description in README.rst e rimuovere chiave dal manifest
+
+File: __manifest__.py
+Errore: C8112 missing-readme
+Modifica: Manca file README.rst
+Azione: Creare file README.rst seguendo template OCA: https://github.com/OCA/maintainer-tools/blob/master/template/module/README.rst
+
+File: __manifest__.py
+Errore: C8116 manifest-superfluous-key (x2)
+Modifica: Chiavi "installable" e "application" superflue (valori default)
+Azione: Rimuovere righe 82-83 dal manifest:
+    'installable': True,
+    'application': False,
 
 File: __manifest__.py
 Modifica: Aggiornare numero versione da 18.0.4.0.0 a 19.0.1.0.0
 Azione: Modificare manualmente la stringa version
 
-File: __manifest__.py
-Modifica: Verificare compatibilita dipendenze con v19
-Azione: Testare installazione con moduli core calendar, portal, hr, website in ambiente v19
-
-File: __manifest__.py
-Modifica: Commento riga 64 errato riferisce a HR ma dipendenza e website
-Azione: Correggere commento o rimuoverlo
-
 ---
 
-[Models]
+[Models - Risultati pylint-odoo]
 
-File: models/calendar_event_outcome.py (righe 70-76)
-Modifica: Metodo name_get() deprecato da Odoo 17
-Azione: Sostituire name_get() con campo computed display_name usando metodo _compute_display_name
-Codice attuale:
+File: models/calendar_event_outcome.py (riga 70)
+Errore: E8146 deprecated-name-get (CRITICAL)
+Modifica: Metodo name_get() deprecato - Rif: https://github.com/odoo/odoo/pull/122085
+Azione: Sostituire name_get() con _compute_display_name:
+
+Codice attuale (righe 70-76):
     def name_get(self):
         result = []
         for record in self:
             name = f"[{record.code}] {record.name}" if record.code else record.name
             result.append((record.id, name))
         return result
-Da convertire in:
+
+Sostituire con:
     display_name = fields.Char(compute='_compute_display_name', store=True)
+
     @api.depends('code', 'name')
     def _compute_display_name(self):
         for record in self:
             record.display_name = f"[{record.code}] {record.name}" if record.code else record.name
 
-File: models/calendar_event_outcome.py (riga 46)
-Modifica: Campo riciesta_azione ha store=True ma non e un campo computed
-Azione: Rimuovere attributo store=True (non necessario per campi semplici Boolean)
+File: models/calendar_event_outcome.py (righe 62, 66)
+Errore: W8161 prefer-env-translation (x2)
+Modifica: Usare self.env._ invece di _() per traduzioni
+Azione: Sostituire _("...") con self.env._("...") nei metodi _check_code e _check_name
+Riferimento: https://github.com/odoo/odoo/pull/174844
 
-File: models/calendar_event.py
-Modifica: Nessuna modifica richiesta - codice compatibile v19
-Azione: Verificare in test che @api.model_create_multi funzioni correttamente
+File: models/calendar_event.py (riga 12)
+Errore: W8113 attribute-string-redundant
+Modifica: Attributo string ridondante (uguale al nome variabile)
+Azione: Rimuovere string="Esito Evento" se il campo si chiama esito_evento_id (Odoo genera automaticamente il label)
 
 ---
 
-[Controllers]
+[Controllers - Risultati pylint-odoo]
+
+File: controllers/portal.py (righe 106, 107, 108, 118, 119, 123, 214)
+Errore: W8161 prefer-env-translation (x7)
+Modifica: Usare request.env._ invece di _() per traduzioni nei controller
+Azione: Sostituire tutti i _("...") con request.env._("...")
+
+File: controllers/portal.py (righe 290, 293, 296, 317, 319, 322, 327, 332, 341)
+Errore: C8107 translation-required (x9)
+Modifica: Stringhe ValidationError richiedono traduzione
+Azione: Avvolgere tutte le stringhe in ValidationError() con request.env._()
+Esempio: ValidationError(request.env._("Il nome dell'appuntamento è obbligatorio."))
+
+File: controllers/portal.py (riga 218)
+Errore: W8138 except-pass
+Modifica: Blocco except con pass senza logging
+Azione: Aggiungere logging dell'eccezione:
+    except Exception as e:
+        _logger.warning("Failed to send meeting cancellation email: %s", e)
+
+File: controllers/portal.py (riga 27)
+Errore: R1725 super-with-arguments
+Modifica: Usare super() stile Python 3 senza argomenti
+Azione: Sostituire super(CustomerPortal, self) con super()
 
 File: controllers/portal.py (riga 14)
-Modifica: Import deprecati e non utilizzati
-Azione: Rimuovere import registry e SUPERUSER_ID dalla riga:
+Modifica: Import non utilizzati
+Azione: Rimuovere import registry e SUPERUSER_ID:
     from odoo import models,registry, SUPERUSER_ID
-Diventare:
+Diventa:
     from odoo import models
 
 File: controllers/portal.py (riga 16)
-Modifica: Funzione get_records_pager deprecata da v16
-Azione: Rimuovere import get_records_pager se non utilizzato nel codice (verificare uso effettivo)
+Modifica: Import get_records_pager non utilizzato
+Azione: Rimuovere get_records_pager dall'import
 
-File: controllers/portal.py (riga 6)
-Modifica: Import werkzeug.urls.url_encode
-Azione: Verificare compatibilita con Werkzeug 3.x usato in Odoo 19. Considerare uso di urllib.parse.urlencode come alternativa
+File: controllers/main.py (riga 31)
+Errore: W8202 use-vim-comment
+Modifica: Commento vim presente nel file
+Azione: Rimuovere la riga con il commento vim (es: # vim: ... o # -*- vim: ... -*-)
 
 File: controllers/main.py (riga 17)
-Modifica: Uso di _() con variabile dinamica non e corretto per traduzioni
+Errore: W8161 prefer-env-translation
+Modifica: Usare request.env._ invece di _()
 Azione: Sostituire group_msg = _(custom_calendar_comment) con group_msg = custom_calendar_comment
-Il contenuto utente non deve passare per la funzione di traduzione
+Nota: Il contenuto utente non deve passare per la funzione di traduzione
+
+File: controllers/main.py (riga 25)
+Errore: W8138 except-pass
+Modifica: Blocco except con pass
+Azione: Aggiungere logging dell'eccezione
 
 ---
 
@@ -90,19 +147,15 @@ Il contenuto utente non deve passare per la funzione di traduzione
 
 File: views/calendar_event_views.xml (riga 13)
 Modifica: xpath dipende da campo appointment_status definito in modulo esterno
-Azione: Aggiungere dipendenza esplicita nel manifest o gestire graceful fallback con position="before" su altro campo esistente in calendar.event core
+Azione: Aggiungere dipendenza esplicita nel manifest o gestire graceful fallback
 
 File: views/calendar_event_outcome_views.xml (riga 41)
 Modifica: Attributo readonly="id" sintassi non standard
-Azione: Verificare funzionamento in v19. Forma corretta potrebbe essere readonly="bool(id)" o usare invisible condizionale
+Azione: Verificare funzionamento in v19 o usare readonly="bool(id)"
 
-File: views/calendar_portal_templates.xml (riga 32)
-Modifica: Riferimento a immagine /project/static/src/img/tasks.svg
-Azione: Verificare esistenza path in v19 o sostituire con icona disponibile in web module
-
-File: views/portal_meeting_create.xml (riga 40, 58, 74, 105)
+File: views/portal_meeting_create.xml (righe 40, 58, 74, 105)
 Modifica: Attributo required="true" non standard per input HTML
-Azione: Usare required="required" oppure solo required (senza valore)
+Azione: Usare required="required" oppure solo required
 
 ---
 
@@ -111,46 +164,44 @@ Azione: Usare required="required" oppure solo required (senza valore)
 File: security/ir.model.access.csv (righe 4-6)
 Modifica: Conflitto permessi - CSV da CRUD completo a portal ma record rule limita a sola lettura
 Azione: Allineare permessi in CSV per calendar.event.outcome portal:
-    access_calendar_event_outcome_portal,calendar.event.outcome portal access,model_calendar_event_outcome,base.group_portal,1,0,0,0
-(solo perm_read=1, altri a 0 come da record rule)
-
-File: security/ir.model.access.csv (riga 5)
-Modifica: Internal user ha CRUD completo su calendar.event.outcome
-Azione: Verificare se intenzionale o limitare a sola lettura per utenti interni non admin
-
-File: security/calendar_event_security.xml
-Modifica: Nessuna modifica richiesta - record rules compatibili v19
-Azione: Verificare che eval syntax [(4, ref('...'))] funzioni correttamente
+    access_calendar_event_outcome_portal,...,1,0,0,0
+(solo perm_read=1)
 
 ---
 
 [Assets]
 
 File: static/src/meeting_create_validation.js
-Modifica: File duplicato - esiste versione piu completa in static/src/js/meeting_create_validation.js
-Azione: Rimuovere file static/src/meeting_create_validation.js (duplicato incompleto)
+Modifica: File duplicato - esiste versione in static/src/js/meeting_create_validation.js
+Azione: Rimuovere file static/src/meeting_create_validation.js
 
-File: static/src/js/calendar_comment.js e static/src/js/meeting_create_validation.js
-Modifica: Pattern export default potrebbe richiedere aggiornamento per sistema moduli v19
-Azione: Verificare che @odoo-module pragma sia sufficiente o se richiesto @odoo-module alias=...
-
-File: static/src/js/meeting_create_validation.js (riga 278-280)
-Modifica: Export non utilizzato dal sistema Odoo
-Azione: Rimuovere export default inutilizzato o convertire in export OWL component se necessario
+File: __manifest__.py (assets)
+Modifica: Verificare che il bundle web.assets_frontend carichi il file corretto
+Azione: Controllare path in assets punta a static/src/js/meeting_create_validation.js
 
 ---
 
-[Data/Migrations]
+[Code Quality - Risultati pylint standard]
 
-File: data/calendar_event_outcome_data.xml
-Modifica: Nessuna modifica richiesta - struttura compatibile v19
-Azione: Verificare che noupdate="1" sia rispettato durante upgrade
+File: controllers/portal.py
+Errore: R0914 too-many-locals (metodo portal_my_custom_meeting)
+Modifica: Metodo con troppe variabili locali (28/15)
+Azione: Refactoring opzionale per estrarre logica in metodi helper
 
-Migrazione dati:
-Modifica: Se esistono installazioni v18 con dati, valutare script migrazione
-Azione: Valutare uso openupgradelib per:
-- Nessuna rinomina tabelle/colonne richiesta (modello nuovo)
-- Eventuale pulizia orfani se esito_evento_id punta a outcome eliminati
+File: controllers/portal.py
+Errore: R0913/R0917 too-many-arguments
+Modifica: Metodo portal_my_custom_meeting ha troppi argomenti (8/5)
+Azione: Accettabile per route controller, nessuna azione richiesta
+
+File: Multipli
+Errore: C0301 line-too-long (>100 caratteri)
+Modifica: Linee troppo lunghe in vari file
+Azione: Opzionale - formattare linee per rispettare limite 100 caratteri
+
+File: Multipli
+Errore: C0303 trailing-whitespace, C0304/C0305 newlines
+Modifica: Whitespace e newline inconsistenti
+Azione: Eseguire pre-commit hooks o formatter automatico
 
 ---
 
@@ -158,49 +209,51 @@ Azione: Valutare uso openupgradelib per:
 
 File: tests/test_calendar_event_outcome.py e tests/test_security.py
 Modifica: Dipendenza da modello appointment.type non dichiarata
-Azione: Aggiungere skip condition o mock se modulo appointment non installato:
-    @tagged('post_install', '-at_install')
-    @unittest.skipUnless(hasattr(cls.env, 'appointment.type'), 'Requires appointment module')
-
-File: tests/test_calendar_event_outcome.py (riga 175)
-Modifica: Test verifica domain come stringa letterale
-Azione: Aggiornare test se implementazione display_name computed modifica comportamento
+Azione: Aggiungere skip condition se modulo non installato
 
 ---
 
-[Note Tecniche Aggiuntive]
+[Data/Migrations]
 
-1. OWL e JavaScript:
-   - Verificare che bootstrap.Modal.getInstance sia disponibile in v19
-   - Testare comportamento modali con nuova versione Bootstrap
+File: data/calendar_event_outcome_data.xml
+Modifica: Nessuna modifica richiesta
+Azione: Verificare che noupdate="1" sia rispettato
 
-2. Template QWeb:
-   - Verificare che t-attf-class con espressioni ternarie funzioni in v19
-   - Controllare che request.csrf_token() sia ancora il metodo corretto
+Migrazione dati:
+Azione: Valutare uso openupgradelib se necessario per:
+- Pulizia orfani esito_evento_id
 
-3. Controller HTTP:
-   - Verificare che decoratore @http.route supporti ancora type='http' con website=True
-   - Testare redirect con f-string in v19
+---
 
-4. Multi-company:
-   - Il modulo non gestisce esplicitamente company_id su calendar.event.outcome
-   - Valutare se aggiungere campo company_id con record rule per ambienti multi-company
+RIEPILOGO ERRORI PYLINT-ODOO PER PRIORITA:
 
-5. Performance:
-   - Metodo search con sudo() in controller potrebbe beneficiare di limit esplicito
-   - Considerare aggiunta indici su campi usati in domain frequenti
+CRITICAL (da risolvere):
+- E8146: deprecated-name-get in calendar_event_outcome.py:70
+
+WARNING (consigliato):
+- W8161: prefer-env-translation (11 occorrenze)
+- W8138: except-pass (2 occorrenze)
+- W8202: use-vim-comment (1 occorrenza)
+- W8113: attribute-string-redundant (1 occorrenza)
+
+CONVENTION (opzionale per OCA compliance):
+- C8107: translation-required (9 occorrenze)
+- C8103: manifest-deprecated-key
+- C8112: missing-readme
+- C8116: manifest-superfluous-key (2 occorrenze)
+- C8101: manifest-required-author (non applicabile se non OCA)
 
 ---
 
 CHECKLIST PRE-MIGRAZIONE:
 [ ] Backup database v18
 [ ] Esportare dati calendar.event.outcome esistenti
-[ ] Verificare moduli dipendenti (appointment_status, appointment.type)
+[ ] Verificare moduli dipendenti
 [ ] Preparare ambiente test v19
 
 CHECKLIST POST-MIGRAZIONE:
+[ ] Eseguire pylint-odoo e verificare 0 errori E8xxx
 [ ] Testare creazione appuntamento da portale
-[ ] Verificare assegnazione esiti da dipendenti
-[ ] Controllare visibilita esiti per utenti portal
+[ ] Verificare assegnazione esiti
+[ ] Controllare traduzioni funzionanti
 [ ] Eseguire test suite completa
-[ ] Verificare invio email notifiche
