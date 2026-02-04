@@ -4,6 +4,9 @@ from odoo.http import request
 from odoo.exceptions import ValidationError, UserError
 import urllib.parse
 import json
+import logging
+
+_logger = logging.getLogger(__name__)
 
 
 class PortalTimeOff(http.Controller):
@@ -13,9 +16,9 @@ class PortalTimeOff(http.Controller):
         user = request.env.user
         employee = request.env['hr.employee'].sudo().search([('user_id', '=', user.id)], limit=1)
         time_offs = request.env['hr.leave'].sudo().search([('employee_id.user_id', '=', user.id)])
-        print("time off is:::", time_offs)
+        _logger.debug("time off is: %s", time_offs)
         leave_types = request.env['hr.leave.type'].sudo().search([])
-        print("leave_types is:::", leave_types)
+        _logger.debug("leave_types is: %s", leave_types)
         
         resource_calendars = request.env['resource.calendar'].sudo().search([
             '|',
@@ -87,7 +90,7 @@ class PortalTimeOff(http.Controller):
             date_to_str = post.get('date_to')
             
             if not date_from_str or not date_to_str:
-                raise UserError("Date di inizio e fine sono obbligatorie")
+                raise UserError(request.env._("Date di inizio e fine sono obbligatorie"))
             
             # Parse the datetime strings
             date_from_dt = datetime.strptime(date_from_str, '%Y-%m-%dT%H:%M')
@@ -99,7 +102,7 @@ class PortalTimeOff(http.Controller):
             
             # Validate dates
             if date_from_dt >= date_to_dt:
-                raise UserError("La data di fine deve essere successiva alla data di inizio")
+                raise UserError(request.env._("La data di fine deve essere successiva alla data di inizio"))
             
             # Aggiungere una variabile per recuperare l'ID del tipo di ferie dai dati del form  
             time_off_type_id = int(post.get('time_off_type'))
@@ -165,22 +168,10 @@ class PortalTimeOff(http.Controller):
                 })
             
             # Creare il record usando il dizionario preparato con contesto appropriato
-            context = dict(request.env.context)
-            
-            # Gestire il contesto in base al tipo di validazione e al tipo di richiesta
-            if leave_type.leave_validation_type == 'no_validation':
-                # Auto-approvazione: non usare leave_fast_create per permettere l'auto-approvazione
-                if is_hourly_request:
-                    context.update({'skip_validation': True})
-            else:
-                # Approvazione richiesta: usa leave_fast_create solo per ferie orarie problematiche
-                if is_hourly_request:
-                    context.update({
-                        'skip_validation': True,
-                        'leave_fast_create': True,
-                    })
-            
-            leave = request.env['hr.leave'].with_context(context).sudo().create(leave_vals)
+            leave = request.env['hr.leave'].with_context(
+                skip_validation=True,
+                leave_fast_create=is_hourly_request and leave_type.leave_validation_type != 'no_validation',
+            ).sudo().create(leave_vals)
             
             # Redirect con messaggio di successo usando URL encoding
             return request.redirect('/my/time_off?success=1&leave_type=%s&date_from=%s&date_to=%s' % (
@@ -310,7 +301,7 @@ class PortalTimeOff(http.Controller):
         try:
             custom_name = post.get('custom_name', '').strip()
             if not custom_name:
-                raise UserError("Il nome del calendario è obbligatorio.")
+                raise UserError(request.env._("Il nome del calendario è obbligatorio."))
 
             # Recupera la configurazione degli slot orari dal form
             slot_config_json = post.get('slot_config_json', '[]')
@@ -321,7 +312,7 @@ class PortalTimeOff(http.Controller):
                 if not isinstance(slot_data, list):
                     raise ValueError("slot_config_json deve essere una lista")
             except (json.JSONDecodeError, ValueError) as e:
-                raise UserError(f"Configurazione slot orari non valida: {e}")
+                raise UserError(request.env._(f"Configurazione slot orari non valida: {e}"))
 
             # Crea il calendario
             calendar_vals = {
