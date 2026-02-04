@@ -9,7 +9,6 @@ import json
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 from datetime import datetime
-from odoo.http import request
 
 
 class AccountAnalyticLine(models.Model):
@@ -31,7 +30,7 @@ class AccountAnalyticLine(models.Model):
     @api.model
     def create_timesheet(self, timesheet_details):
         if not isinstance(timesheet_details, dict):
-            raise ValidationError("Invalid data format. Expected a dictionary.")
+            raise ValidationError(self.env._("Invalid data format. Expected a dictionary."))
 
         value = {
             "name": timesheet_details.get('name'),
@@ -55,14 +54,14 @@ class AccountAnalyticLine(models.Model):
                     'message': "Employee's Timesheet created successfully!"
                 }
         except Exception as e:
-            raise ValidationError(f"Failed to create timesheet: {e}")
+            raise ValidationError(self.env._("Failed to create timesheet: %s") % e)
 
     @api.model
     def onchange_project_id(self, ProjectId):
         task_vals = []
         if ProjectId:
-            project = request.env['project.project'].sudo().search([('id', '=', ProjectId)])
-            tasks = request.env['project.task'].sudo().search([('project_id', '=?', project.id), ("is_closed", "=", False), ('display_in_project', '=', True)])
+            project = self.env['project.project'].sudo().search([('id', '=', ProjectId)])
+            tasks = self.env['project.task'].sudo().search([('project_id', '=?', project.id), ("is_closed", "=", False), ('display_in_project', '=', True)])
             if tasks:
                 for task in tasks:
                     task_vals.append(self.prepare_task_values(task))
@@ -111,7 +110,7 @@ class AccountAnalyticLine(models.Model):
                     'message': "Employee's Timesheet created successfully!"
                 }
         except Exception as e:
-            raise ValidationError(f"Failed to create timesheet: {e}")
+            raise ValidationError(self.env._("Failed to update timesheet: %s") % e)
 
     @api.model
     def delete_emp_timesheet(self, timesheet_id):
@@ -123,5 +122,3 @@ class HrEmployee(models.Model):
     _inherit = 'hr.employee'
 
     leap_own_portal_user = fields.Boolean(string="Can view own timesheet in portal", help="Allow user to view their own timesheet in the portal.")
-
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

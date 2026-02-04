@@ -12,7 +12,6 @@ from odoo.osv.expression import AND, FALSE_DOMAIN
 from odoo.addons.portal.controllers.portal import CustomerPortal, pager as portal_pager
 from odoo.http import content_disposition, Controller, request, route
 from odoo.osv import expression
-from odoo.tools import groupby as groupbyelem
 from operator import itemgetter
 from odoo.addons.hr_timesheet.controllers.portal import TimesheetCustomerPortal
 
@@ -40,8 +39,8 @@ class TimesheetPortal(TimesheetCustomerPortal):
 
     def _get_searchbar_sortings(self):
         return super()._get_searchbar_sortings() | {
-            'id desc': {'label': _('Newest')},
-            'date desc': {'label': _('Date')},
+            'id desc': {'label': request.env._('Newest')},
+            'date desc': {'label': request.env._('Date')},
         }
 
     @http.route(['/my/timesheets', '/my/timesheets/page/<int:page>'], type='http', auth="user", website=True)
@@ -71,25 +70,25 @@ class TimesheetPortal(TimesheetCustomerPortal):
         employees = request.env['hr.employee'].sudo().search([('id', 'in', request.env.user.partner_id.employee_ids.ids)])
 
         searchbar_filters = {
-            'all': {'label': _('All'), 'domain': []},
-            'employee': {'label': _('Employee'), 'domain': [('employee_id', '=', employees.id)]},
-            'last_year': {'label': _('Last Year'), 'domain': [('date', '>=', date_utils.start_of(last_year, 'year')),
+            'all': {'label': request.env._('All'), 'domain': []},
+            'employee': {'label': request.env._('Employee'), 'domain': [('employee_id', '=', employees.id)]},
+            'last_year': {'label': request.env._('Last Year'), 'domain': [('date', '>=', date_utils.start_of(last_year, 'year')),
                                                               ('date', '<=', date_utils.end_of(last_year, 'year'))]},
-            'last_quarter': {'label': _('Last Quarter'),
+            'last_quarter': {'label': request.env._('Last Quarter'),
                              'domain': [('date', '>=', last_quarter_start), ('date', '<=', last_quarter_end)]},
-            'last_month': {'label': _('Last Month'),
+            'last_month': {'label': request.env._('Last Month'),
                            'domain': [('date', '>=', date_utils.start_of(last_month, 'month')),
                                       ('date', '<=', date_utils.end_of(last_month, 'month'))]},
-            'last_week': {'label': _('Last Week'), 'domain': [('date', '>=', date_utils.start_of(last_week, "week")),
+            'last_week': {'label': request.env._('Last Week'), 'domain': [('date', '>=', date_utils.start_of(last_week, "week")),
                                                               ('date', '<=', date_utils.end_of(last_week, 'week'))]},
-            'today': {'label': _('Today'), 'domain': [("date", "=", today)]},
-            'week': {'label': _('This Week'), 'domain': [('date', '>=', date_utils.start_of(today, "week")),
+            'today': {'label': request.env._('Today'), 'domain': [("date", "=", today)]},
+            'week': {'label': request.env._('This Week'), 'domain': [('date', '>=', date_utils.start_of(today, "week")),
                                                          ('date', '<=', date_utils.end_of(today, 'week'))]},
-            'month': {'label': _('This Month'), 'domain': [('date', '>=', date_utils.start_of(today, 'month')),
+            'month': {'label': request.env._('This Month'), 'domain': [('date', '>=', date_utils.start_of(today, 'month')),
                                                            ('date', '<=', date_utils.end_of(today, 'month'))]},
-            'quarter': {'label': _('This Quarter'),
+            'quarter': {'label': request.env._('This Quarter'),
                         'domain': [('date', '>=', quarter_start), ('date', '<=', quarter_end)]},
-            'year': {'label': _('This Year'), 'domain': [('date', '>=', date_utils.start_of(today, 'year')),
+            'year': {'label': request.env._('This Year'), 'domain': [('date', '>=', date_utils.start_of(today, 'year')),
                                                          ('date', '<=', date_utils.end_of(today, 'year'))]},
         }
         # default sort by value

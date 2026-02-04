@@ -1,7 +1,6 @@
 /** @odoo-module **/
 
 import publicWidget from "@web/legacy/js/public/public_widget";
-import { useService } from "@web/core/utils/hooks";
 
 publicWidget.registry.hr_timesheet = publicWidget.Widget.extend({
     selector: '.search-bar',
