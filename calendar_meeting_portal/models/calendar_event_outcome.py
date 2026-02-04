@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 from odoo.exceptions import ValidationError
 
 
@@ -48,10 +48,17 @@ class CalendarEventOutcome(models.Model):
         help='Indicare se per questo esito è richiesta una azione',
         store=True
     )
+    display_name = fields.Char(compute='_compute_display_name', store=True)
 
     _sql_constraints = [
         ('code_unique', 'UNIQUE(code)', 'Il codice della tipologia di esito deve essere univoco!')
     ]
+
+    @api.depends('code', 'name')
+    def _compute_display_name(self):
+        """Display name with code for better identification"""
+        for record in self:
+            record.display_name = f"[{record.code}] {record.name}" if record.code else record.name
 
     @api.constrains('code')
     def _check_code_format(self):
@@ -59,18 +66,10 @@ class CalendarEventOutcome(models.Model):
         for record in self:
             if record.code:
                 if not record.code.replace('_', '').replace('-', '').isalnum():
-                    raise ValidationError(_(
+                    raise ValidationError(self.env._(
                         "Il codice può contenere solo lettere, numeri, underscore (_) e trattini (-)."
                     ))
                 if record.code != record.code.lower():
-                    raise ValidationError(_(
+                    raise ValidationError(self.env._(
                         "Il codice deve essere in minuscolo."
                     ))
-
-    def name_get(self):
-        """Display name with code for better identification"""
-        result = []
-        for record in self:
-            name = f"[{record.code}] {record.name}" if record.code else record.name
-            result.append((record.id, name))
-        return result

@@ -3,4 +3,4 @@ access_calendar_event_portal,calendar.event.portal.access,calendar.model_calenda
 access_calendar_attendee_portal,calendar.attendee.portal.access,calendar.model_calendar_attendee,base.group_portal,1,1,0,0
 access_calendar_event_outcome_admin,calendar.event.outcome admin access,model_calendar_event_outcome,base.group_system,1,1,1,1
 access_calendar_event_outcome_user,calendar.event.outcome user access,model_calendar_event_outcome,base.group_user,1,1,1,1
-access_calendar_event_outcome_portal,calendar.event.outcome portal access,model_calendar_event_outcome,base.group_portal,1,1,1,1
+access_calendar_event_outcome_portal,calendar.event.outcome portal access,model_calendar_event_outcome,base.group_portal,1,0,0,0
