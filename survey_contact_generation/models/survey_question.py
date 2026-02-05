@@ -1,7 +1,11 @@
 # Copyright 2022 Tecnativa - David Vidal
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
-from odoo import api, fields, models
+import logging
+
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
+
+_logger = logging.getLogger(__name__)
 
 
 class SurveyQuestion(models.Model):
@@ -145,10 +149,7 @@ class SurveyQuestion(models.Model):
                 self.suggested_answer_ids = [(5, 0, 0)]
                 new_answers = []
                 for sequence, (value, label) in enumerate(selection_values, 1):
-                    # Debug: log per verificare i valori
-                    import logging
-                    _logger = logging.getLogger(__name__)
-                    _logger.info(f"Selection value: {value}, label: {label}")
+                    _logger.info("Selection value: %s, label: %s", value, label)
                     
                     new_answers.append(
                         (
@@ -179,10 +180,7 @@ class SurveyQuestion(models.Model):
                 self.suggested_answer_ids = [(5, 0, 0)]
                 new_answers = []
                 for sequence, (value, label) in enumerate(selection_values, 1):
-                    # Debug: log per verificare i valori
-                    import logging
-                    _logger = logging.getLogger(__name__)
-                    _logger.info(f"Selection value: {value}, label: {label}")
+                    _logger.info("Selection value: %s, label: %s", value, label)
                     
                     new_answers.append(
                         (
@@ -213,10 +211,7 @@ class SurveyQuestion(models.Model):
                 self.suggested_answer_ids = [(5, 0, 0)]
                 new_answers = []
                 for sequence, (value, label) in enumerate(selection_values, 1):
-                    # Debug: log per verificare i valori
-                    import logging
-                    _logger = logging.getLogger(__name__)
-                    _logger.info(f"Selection value: {value}, label: {label}")
+                    _logger.info("Selection value: %s, label: %s", value, label)
                     
                     new_answers.append(
                         (
@@ -237,8 +232,8 @@ class SurveyQuestion(models.Model):
         for record in self:
             if record.hr_applicant_field and record.hr_candidate_field:
                 raise ValidationError(
-                    "Non è possibile mappare la stessa domanda su entrambi i campi Applicant e Candidate. "
-                    "Scegliere solo uno dei due campi."
+                    _("Non è possibile mappare la stessa domanda su entrambi i campi Applicant e Candidate. "
+                      "Scegliere solo uno dei due campi.")
                 )
 
     @api.constrains("hr_candidate_field")
@@ -335,7 +330,6 @@ class SurveyQuestionAnswer(models.Model):
         selection="_selection_hr_candidate_field_resource_ref",
     )
     selection_value = fields.Char(
-        string="Selection Value",
         help="Technical value for selection fields",
     )
     file_upload_data = fields.Binary(
