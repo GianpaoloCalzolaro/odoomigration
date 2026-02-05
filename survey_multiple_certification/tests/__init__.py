@@ -1,1 +1,1 @@
-# Test module initialization
+from . import test_survey_multiple_certification

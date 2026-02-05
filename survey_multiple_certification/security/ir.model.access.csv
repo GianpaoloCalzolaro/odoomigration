@@ -1,5 +1,6 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_survey_certification_threshold,survey.certification.threshold,model_survey_certification_threshold,base.group_user,1,1,1,1
+access_survey_certification_threshold_user,survey.certification.threshold user,model_survey_certification_threshold,base.group_user,1,0,0,0
+access_survey_certification_threshold_manager,survey.certification.threshold manager,model_survey_certification_threshold,survey.group_survey_manager,1,1,1,1
 access_survey_user_input_history,survey.user_input.history,model_survey_user_input_history,base.group_user,1,0,0,0
-access_survey_threshold_wizard_line,survey.threshold.wizard.line,model_survey_threshold_wizard_line,base.group_user,1,1,1,1
-access_survey_threshold_wizard,survey.threshold.wizard,model_survey_threshold_wizard,base.group_user,1,1,1,1
+access_survey_threshold_wizard_line,survey.threshold.wizard.line,model_survey_threshold_wizard_line,survey.group_survey_manager,1,1,1,1
+access_survey_threshold_wizard,survey.threshold.wizard,model_survey_threshold_wizard,survey.group_survey_manager,1,1,1,1
