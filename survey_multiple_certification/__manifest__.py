@@ -1,14 +1,10 @@
 {
     'name': 'Survey Multiple Certification',
-    'version': '18.0.1.0.2',  # Versione compatibile con Odoo 18 - Fix can_retake
+    'version': '19.0.1.0.0',  # Migrazione a Odoo 19
     'category': 'Marketing/Surveys',
     'summary': 'Add multiple certification thresholds to surveys',
-    'description': """
-        Questo modulo permette di aggiungere più soglie di certificazione ai sondaggi Odoo.
-        Ideale per gestire livelli diversi di certificazione in base ai punteggi ottenuti dagli utenti.
-    """,
     'author': 'Gian Paolo Calzolaro',
-    'website': 'www.infologis.biz',
+    'website': 'https://www.infologis.biz',
     'maintainer': 'Gian Paolo Calzolaro',
     'support': 'info@infologis.biz',
     'depends': ['survey', 'gamification', 'web', 'website'],
@@ -23,6 +19,4 @@
     ],
     'license': 'LGPL-3',
     'application': True,
-    'installable': True,
-    'auto_install': False,
 }

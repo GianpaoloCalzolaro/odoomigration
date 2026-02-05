@@ -29,21 +29,21 @@ class Survey(models.Model):
         self.ensure_one()
         
         if percentage is False or percentage is None:
-            _logger.warning(f"Survey {self.id}: Invalid percentage value: {percentage}")
+            _logger.warning("Survey %s: Invalid percentage value: %s", self.id, percentage)
             return False
             
         # Ordina le soglie per sequenza (da più bassa a più alta)
         thresholds = self.threshold_ids.sorted(key=lambda t: t.sequence)
         
         if not thresholds:
-            _logger.warning(f"Survey {self.id}: No thresholds configured for multiple certification mode")
+            _logger.warning("Survey %s: No thresholds configured for multiple certification mode", self.id)
             return False
         
-        _logger.info(f"Survey {self.id}: Looking for threshold for {percentage}% among {len(thresholds)} thresholds")
+        _logger.info("Survey %s: Looking for threshold for %s%% among %s thresholds", self.id, percentage, len(thresholds))
         
         # Trova la prima soglia che contiene la percentuale
         for threshold in thresholds:
-            _logger.debug(f"Checking threshold {threshold.name}: {threshold.percentage_min}-{threshold.percentage_max}%")
+            _logger.debug("Checking threshold %s: %s-%s%%", threshold.name, threshold.percentage_min, threshold.percentage_max)
             
             # Verifica se la percentuale rientra in questa soglia
             # percentage_min è escluso, percentage_max è incluso (tranne per la prima soglia)
@@ -51,11 +51,11 @@ class Survey(models.Model):
             max_included = threshold.percentage_max
             
             if min_included <= percentage <= max_included:
-                _logger.info(f"Found matching threshold: {threshold.name} for {percentage}%")
+                _logger.info("Found matching threshold: %s for %s%%", threshold.name, percentage)
                 return threshold
         
         # Se nessuna soglia contiene la percentuale, logga un warning
-        _logger.warning(f"Survey {self.id}: No threshold found for percentage {percentage}%. Available thresholds: {[(t.name, t.percentage_min, t.percentage_max) for t in thresholds]}")
+        _logger.warning("Survey %s: No threshold found for percentage %s%%. Available thresholds: %s", self.id, percentage, [(t.name, t.percentage_min, t.percentage_max) for t in thresholds])
         return False
 
     def action_open_threshold_wizard(self):

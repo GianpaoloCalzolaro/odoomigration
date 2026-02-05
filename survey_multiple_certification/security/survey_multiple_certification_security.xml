@@ -1,4 +1,45 @@
 <?xml version="1.0"?>
 <odoo>
-    <!-- Placeholder for record rules -->
+    <!-- Record Rule: Threshold visibili solo per survey accessibili -->
+    <record id="survey_certification_threshold_rule" model="ir.rule">
+        <field name="name">Certification Threshold: visible if survey is accessible</field>
+        <field name="model_id" ref="model_survey_certification_threshold"/>
+        <field name="domain_force">[
+            '|',
+            ('survey_id.user_id', '=', user.id),
+            ('survey_id.user_id', '=', False)
+        ]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <!-- Record Rule: History visibile solo per i propri tentativi -->
+    <record id="survey_user_input_history_rule" model="ir.rule">
+        <field name="name">User Input History: own attempts only</field>
+        <field name="model_id" ref="model_survey_user_input_history"/>
+        <field name="domain_force">[('user_input_id.partner_id', '=', user.partner_id.id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <!-- Manager può vedere tutto -->
+    <record id="survey_certification_threshold_manager_rule" model="ir.rule">
+        <field name="name">Certification Threshold: manager sees all</field>
+        <field name="model_id" ref="model_survey_certification_threshold"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('survey.group_survey_manager'))]"/>
+    </record>
+
+    <record id="survey_user_input_history_manager_rule" model="ir.rule">
+        <field name="name">User Input History: manager sees all</field>
+        <field name="model_id" ref="model_survey_user_input_history"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('survey.group_survey_manager'))]"/>
+    </record>
 </odoo>

@@ -13,7 +13,7 @@ class SurveyMultipleCertification(Survey):
     def survey_submit(self, survey_token, answer_token, **kwargs):
         # Chiama prima il metodo originale
         response = super().survey_submit(survey_token, answer_token, **kwargs)
-        print("SURVEY SUBMIT - CONTROLLER CHIAMATO")
+        _logger.info("SURVEY SUBMIT - CONTROLLER CHIAMATO")
         return response
 
     @http.route(['/survey/<string:survey_token>/<string:answer_token>', '/survey/fill/<string:survey_token>/<string:answer_token>'], 
@@ -35,9 +35,7 @@ class SurveyMultipleCertification(Survey):
             
         # Verifica se il sondaggio usa la modalità multiple
         survey = answer.survey_id
-        _logger.info(f"Survey {survey.id} - certification_mode: {survey.certification_mode}, answer_state: {answer.state}")
-        print("SURVEY MODE:", survey.certification_mode)
-        print("ANSWER STATE:", answer.state)
+        _logger.info("Survey %s - certification_mode: %s, answer_state: %s", survey.id, survey.certification_mode, answer.state)
         
         # Calcola se l'utente può rifare il test (can_retake)
         # Questa logica sostituisce il campo answer.can_retake che non esiste nel modello
@@ -55,18 +53,18 @@ class SurveyMultipleCertification(Survey):
         
         # Aggiungi can_retake al contesto per tutti i tipi di survey
         response.qcontext['can_retake'] = can_retake
-        _logger.info(f"Setting can_retake = {can_retake} for answer {answer.id}")
+        _logger.info("Setting can_retake = %s for answer %s", can_retake, answer.id)
         
         # Calcola survey_url per sostituire answer.survey_id.website_url che non esiste
         survey_url = None
         if answer.state == 'done':
             # Costruisci l'URL per tornare al survey usando il token
-            base_url = request.httprequest.url_root.rstrip('/')
-            survey_url = f"{base_url}/survey/start/{survey.access_token}"
+            base_url = request.env['ir.config_parameter'].sudo().get_param('web.base.url')
+            survey_url = "%s/survey/start/%s" % (base_url, survey.access_token)
         
         # Aggiungi survey_url al contesto per tutti i tipi di survey
         response.qcontext['survey_url'] = survey_url
-        _logger.info(f"Setting survey_url = {survey_url} for survey {survey.id}")
+        _logger.info("Setting survey_url = %s for survey %s", survey_url, survey.id)
         
         if survey.certification_mode == 'multiple' and answer.state == 'done':
             # Modalità multiple: calcola sempre la soglia se non è già impostata
@@ -75,12 +73,12 @@ class SurveyMultipleCertification(Survey):
             if not threshold and answer.scoring_percentage is not False:
                 # Calcola la soglia se non è già impostata
                 threshold = survey._get_threshold_for_percentage(answer.scoring_percentage)
-                _logger.info(f"Calculated threshold for {answer.scoring_percentage}%: {threshold.name if threshold else 'None'}")
+                _logger.info("Calculated threshold for %s%%: %s", answer.scoring_percentage, threshold.name if threshold else 'None')
                 
                 # Salva la soglia nel database usando sudo per evitare problemi di permessi
                 if threshold:
                     answer.sudo().write({'threshold_reached_id': threshold.id})
-                    _logger.info(f"Threshold {threshold.name} saved to database for answer {answer.id}")
+                    _logger.info("Threshold %s saved to database for answer %s", threshold.name, answer.id)
             
             # Imposta sempre is_multiple_certification = True per modalità multiple
             threshold_data = {
@@ -94,7 +92,7 @@ class SurveyMultipleCertification(Survey):
                     'threshold_name': threshold.name,
                     'threshold_description': threshold.description_html or '',
                 })
-                _logger.info(f"Setting threshold data: {threshold.name}")
+                _logger.info("Setting threshold data: %s", threshold.name)
             else:
                 # Gestione caso edge: nessuna soglia trovata
                 threshold_data.update({
@@ -102,7 +100,7 @@ class SurveyMultipleCertification(Survey):
                     'threshold_name': 'Nessuna soglia configurata',
                     'threshold_description': 'Non sono state configurate soglie per questo punteggio.',
                 })
-                _logger.warning(f"No threshold found for percentage {answer.scoring_percentage}%")
+                _logger.warning("No threshold found for percentage %s%%", answer.scoring_percentage)
             
             response.qcontext.update(threshold_data)
             
