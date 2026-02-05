@@ -7,6 +7,8 @@ from odoo.tools import format_date, format_datetime, is_html_empty
 
 
 class SurveyUserInput(models.Model):
+    """Extension of survey.user_input to compute and send survey results."""
+
     _inherit = "survey.user_input"
 
     survey_result = fields.Html(compute="_compute_survey_result")
@@ -112,7 +114,7 @@ class SurveyUserInput(models.Model):
         for user_input in self.filtered(
             lambda x: x.survey_id.send_result_mail and (x.partner_id.email or x.email)
         ):
-            template = self.survey_id.result_mail_template_id or self.env.ref(
+            template = user_input.survey_id.result_mail_template_id or self.env.ref(
                 "survey_result_mail.mail_template_user_input_result_inline"
             )
             template.send_mail(

@@ -14,7 +14,7 @@
             <div class="page">
                 <div class="row col-10 offset-1">
                     <t
-                        t-raw="user_input.with_context(survey_result_mode='bootstrap').survey_result"
+                        t-out="user_input.with_context(survey_result_mode='bootstrap').survey_result"
                     />
                 </div>
             </div>
@@ -39,7 +39,7 @@
         <field name="name">Survey results</field>
         <field name="report_name">survey_result_mail.survey_result_report_view</field>
         <field name="report_type">qweb-pdf</field>
-        <field name="attachment">'surevey_results.pdf'</field>
+        <field name="attachment">'survey_results.pdf'</field>
         <field
             name="print_report_name"
         >'Survey results - %s' % (object.survey_id.display_name)</field>

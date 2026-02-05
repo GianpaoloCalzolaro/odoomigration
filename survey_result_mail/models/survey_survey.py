@@ -4,6 +4,8 @@ from odoo import fields, models
 
 
 class SurveySurvey(models.Model):
+    """Extension of survey.survey to add result mail functionality."""
+
     _inherit = "survey.survey"
 
     send_result_mail = fields.Boolean(
