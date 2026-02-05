@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo noupdate="1">
+    <!-- Update mail templates after migration to Odoo 19 -->
+    <record id="mail_template_user_input_result_report" model="mail.template">
+        <field name="body_html" type="html">
+<div style="margin: 0px; padding: 0px; font-size: 13px;">
+    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+        Dear <t t-out="object.partner_id.name or object.nickname or 'participant'" />.
+        <br /><br />
+
+        You'll find attached your survey answers so you can review them.
+
+
+        Thank you for your participation.
+    </p>
+</div>
+        </field>
+    </record>
+    <record id="mail_template_user_input_result_inline" model="mail.template">
+        <field name="body_html" type="html">
+<div style="margin: 0px; padding: 0px; font-size: 13px;">
+    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+        Dear <t t-out="object.partner_id.name or object.nickname or 'participant'" />.
+        <br /><br />
+
+        Here you have a copy of your answers:
+    </p>
+    <p>
+        <t t-out="object._build_answers_html()" />
+    </p>
+    <p>
+        Thank you for your participation.
+    </p>
+</div>
+        </field>
+    </record>
+</odoo>

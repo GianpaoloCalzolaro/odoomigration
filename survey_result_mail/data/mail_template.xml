@@ -16,7 +16,7 @@
         You'll find attached your survey answers so you can review them.
 
 
-        Thanks you for your participation.
+        Thank you for your participation.
     </p>
 </div>
     </field>
@@ -49,7 +49,7 @@
         <t t-out="object._build_answers_html()" />
     </p>
     <p>
-        Thanks you for your participation.
+        Thank you for your participation.
     </p>
 </div>
     </field>
