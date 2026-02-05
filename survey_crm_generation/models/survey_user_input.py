@@ -2,7 +2,10 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 import logging
 
+from markupsafe import Markup
+
 from odoo import fields, models
+from odoo.tools import format_date, format_datetime
 
 _logger = logging.getLogger(__name__)
 
@@ -45,8 +48,11 @@ class SurveyUserInput(models.Model):
                 vals[field_name] = line[f"value_{line.answer_type}"]
             else:
                 _logger.warning(
-                    f"Campo {field_name} non esiste in crm.lead, ignorato "
-                    f"(survey: {self.survey_id.title}, question: {line.question_id.title})"
+                    "Campo %s non esiste in crm.lead, ignorato "
+                    "(survey: %s, question: %s)",
+                    field_name,
+                    self.survey_id.title,
+                    line.question_id.title,
                 )
         for line in elegible_inputs - basic_inputs:
             field_name = line.question_id.crm_lead_field.name
@@ -59,10 +65,76 @@ class SurveyUserInput(models.Model):
                 vals[field_name] = value
             else:
                 _logger.warning(
-                    f"Campo {field_name} non esiste in crm.lead, ignorato "
-                    f"(survey: {self.survey_id.title}, question: {line.question_id.title})"
+                    "Campo %s non esiste in crm.lead, ignorato "
+                    "(survey: %s, question: %s)",
+                    field_name,
+                    self.survey_id.title,
+                    line.question_id.title,
                 )
         return vals
+
+    def _build_answers_html(self, given_answers=False):
+        """Basic html formatted answers. Can be used in mail communications and other
+        html fields without worring about styles
+
+        Copied from survey_result_mail v17.0 to remove unavailable dependency in 19.0
+        Source: https://github.com/OCA/survey/blob/17.0/survey_result_mail/models/survey_user_input.py
+        """
+
+        def _answer_element(title, value):
+            return f"<li><em>{title}</em>: <b>{value}</b></li>"
+
+        given_answers = (given_answers or self.user_input_line_ids).filtered(
+            lambda x: not x.skipped
+        )
+        questions_dict = {}
+        for answer in given_answers.filtered(lambda x: x.answer_type != "suggestion"):
+            if answer.answer_type == "date":
+                value = format_date(self.env, answer.value_date)
+            elif answer.answer_type == "datetime":
+                value = format_datetime(self.env, answer.value_datetime)
+            else:
+                value = answer[f"value_{answer.answer_type}"]
+            questions_dict[answer.question_id] = _answer_element(
+                answer.question_id.title, value
+            )
+        for answer in given_answers.filtered(
+            lambda x: x.question_id.question_type == "simple_choice"
+        ):
+            questions_dict[answer.question_id] = _answer_element(
+                answer.question_id.title,
+                answer.suggested_answer_id.value or answer.value_char_box,
+            )
+        multiple_choice_dict = {}
+        for answer in given_answers.filtered(
+            lambda x: x.question_id.question_type == "multiple_choice"
+        ):
+            multiple_choice_dict.setdefault(answer.question_id, [])
+            multiple_choice_dict[answer.question_id].append(
+                answer.suggested_answer_id.value or answer.value_char_box
+            )
+        for question, answers in multiple_choice_dict.items():
+            questions_dict[question] = _answer_element(
+                question.title, " / ".join([x for x in answers if x])
+            )
+        matrix_dict = {}
+        for answer in given_answers.filtered(
+            lambda x: x.question_id.question_type == "matrix"
+        ):
+            matrix_dict.setdefault(answer.question_id, {})
+            matrix_dict[answer.question_id].setdefault(answer.matrix_row_id, [])
+            matrix_dict[answer.question_id][answer.matrix_row_id].append(
+                answer.suggested_answer_id.value or answer.value_char_box
+            )
+        for question, rows in matrix_dict.items():
+            questions_dict[question] = f"<li><em>{question.title}:</em><ul>"
+            for row, answers in rows.items():
+                questions_dict[question] += _answer_element(
+                    row.value, " / ".join([x for x in answers if x])
+                )
+            questions_dict[question] += "</ul></li>"
+        answers_html = "".join([questions_dict[q] for q in given_answers.question_id])
+        return Markup(answers_html)
 
     def _prepare_lead_description(self):
         """We can have surveys without partner. It's handy to have some relevant info
