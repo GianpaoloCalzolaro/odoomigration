@@ -8,10 +8,9 @@
 from odoo import http, _, SUPERUSER_ID, models, fields
 from dateutil.relativedelta import relativedelta
 from odoo.tools import date_utils, groupby as groupbyelem
-from odoo.osv.expression import AND, FALSE_DOMAIN
+from odoo.fields import Domain
 from odoo.addons.portal.controllers.portal import CustomerPortal, pager as portal_pager
 from odoo.http import content_disposition, Controller, request, route
-from odoo.osv import expression
 from operator import itemgetter
 from odoo.addons.hr_timesheet.controllers.portal import TimesheetCustomerPortal
 
@@ -32,7 +31,7 @@ class TimesheetPortal(TimesheetCustomerPortal):
     def _domain_project_id(self):
         domain = [('allow_timesheets', '=', True)]
         if not request.env.user.has_group('hr_timesheet.group_timesheet_manager'):
-            return expression.AND([domain,
+            return Domain.AND([domain,
                 ['|', ('privacy_visibility', '!=', 'followers'), ('message_partner_ids', 'in', [request.env.user.partner_id.id])]
             ])
         return domain
@@ -97,19 +96,19 @@ class TimesheetPortal(TimesheetCustomerPortal):
         # default filter by value
         if not filterby:
             filterby = 'employee'
-        domain = AND([domain, searchbar_filters[filterby]['domain']])
+        domain = Domain.AND([domain, searchbar_filters[filterby]['domain']])
 
         if search and search_in:
-            domain = AND([domain, self._get_search_domain(search_in, search)])
+            domain = Domain.AND([domain, self._get_search_domain(search_in, search)])
 
         if parent_task_id := kw.get('parent_task_id'):
-            domain = AND([domain, [('parent_task_id', '=', int(parent_task_id))]])
+            domain = Domain.AND([domain, [('parent_task_id', '=', int(parent_task_id))]])
 
         projects = request.env['project.project'].sudo().search([])
         tasks = request.env['project.task'].sudo().search([('allow_timesheets', '=', True), ('project_id', 'in', projects.ids)])
 
         if employees.leap_own_portal_user:
-            domain = AND([domain, [('employee_id', 'in', request.env.user.partner_id.employee_ids.ids)]])
+            domain = Domain.AND([domain, [('employee_id', 'in', request.env.user.partner_id.employee_ids.ids)]])
 
         timesheet_count = Timesheet_sudo.search_count(domain)
         # pager

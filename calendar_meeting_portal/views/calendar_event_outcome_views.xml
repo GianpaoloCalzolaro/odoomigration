@@ -94,9 +94,10 @@
                 
                 <separator/>
                 
-                <group expand="0" string="Raggruppa per">
-                    <filter name="group_by_active" 
-                            string="Stato" 
+                <group>
+                    <filter name="group_by_active"
+                            string="Stato"
+                            domain="[]"
                             context="{'group_by': 'active'}"/>
                 </group>
             </search>
