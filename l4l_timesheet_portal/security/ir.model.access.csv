@@ -1,34 +1,3 @@
-# =============================================================================
-# PERMESSI MODELLO PER CALENDARI PERSONALIZZATI (MODEL ACCESS)
-# =============================================================================
-#
-# PANORAMICA PERMESSI UTENTI PORTAL:
-# - perm_read=1: Permesso di lettura per visualizzare i calendari
-# - perm_write=1: Permesso di scrittura per modificare i propri calendari
-# - perm_create=1: Permesso di creazione per creare nuovi calendari personalizzati
-# - perm_unlink=0: NEGATO il permesso di cancellazione per proteggere i dati
-#
-# MOTIVAZIONI PER perm_unlink=0:
-# - Protezione dati: I calendari e i relativi slot orari contengono informazioni
-#   sensibili sugli orari di lavoro che non devono essere eliminati accidentalmente
-# - Integrità referenziale: I calendari potrebbero essere collegati a timesheet,
-#   contratti o altre entità che richiedono la loro persistenza
-# - Disattivazione vs Eliminazione: Gli utenti possono disattivare un calendario
-#   (active=False) invece di eliminarlo, preservando lo storico
-# - Coerenza: Segue il pattern di sicurezza adottato in altri moduli del portale
-#   (es. calendar_meeting_portal, portal_time_off) dove perm_unlink=0 per portal
-#
-# COERENZA CON PERMESSI HR/ADMIN:
-# - Gli utenti HR e Admin mantengono i loro permessi completi (incluso unlink)
-#   definiti nel modulo resource base di Odoo
-# - Queste regole si applicano SOLO agli utenti del gruppo base.group_portal
-# - Le record rules in resource_calendar_rules.xml definiscono ulteriori
-#   restrizioni di visibilità (ogni dipendente vede solo i propri calendari)
-#
-# MODELLI GESTITI:
-# - resource.calendar: Calendario risorse (orari di lavoro personalizzati)
-# - resource.calendar.attendance: Slot orari del calendario (fasce orarie)
-# =============================================================================
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_resource_calendar_portal,resource.calendar.portal,resource.model_resource_calendar,base.group_portal,1,1,1,0
 access_resource_calendar_attendance_portal,resource.calendar.attendance.portal,resource.model_resource_calendar_attendance,base.group_portal,1,1,1,0

@@ -71,10 +71,12 @@
                     </group>
                 </page>
             </xpath>
-            <xpath expr="//page[@name='hr_settings']//group[@name='active_group']" position="inside">
-                <field name="limite_incarichi_raggiunto" readonly="1" widget="boolean"/>
-                <field name="numero_incarichi" readonly="1"/>
-                <field name="percentuale_incarichi" readonly="1" widget="percentage"/>
+            <xpath expr="//page[@name='hr_settings']//group[@name='settings_group']" position="inside">
+                <group string="Limite Incarichi" name="limite_incarichi_group">
+                    <field name="limite_incarichi_raggiunto" readonly="1" widget="boolean"/>
+                    <field name="numero_incarichi" readonly="1"/>
+                    <field name="percentuale_incarichi" readonly="1" widget="percentage"/>
+                </group>
             </xpath>
         </field>
     </record>
