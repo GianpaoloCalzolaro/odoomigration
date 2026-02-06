@@ -165,11 +165,11 @@ class HrEmployee(models.Model):
     service = fields.Many2one('product.template', string="Service")
 
     # Extend the standard employee_type selection from hr.version with custom option
-    employee_type = fields.Selection(
-        selection_add=[
-            ('professionista', 'Professionista'),
-        ],
-    )
+    #employee_type = fields.Selection(
+    #    selection_add=[
+    #        ('professionista', 'Professionista'),
+     #   ],
+    #)
 
     limite_incarichi_raggiunto = fields.Boolean(
         string="Limite Incarichi Raggiunto",
