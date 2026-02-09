@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="action_survey_user_input_send_whatsapp" model="ir.actions.act_window">
+        <field name="name">Send WhatsApp</field>
+        <field name="res_model">survey.whatsapp.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="survey.model_survey_user_input"/>
+        <field name="binding_view_types">list</field>
+    </record>
+</odoo>

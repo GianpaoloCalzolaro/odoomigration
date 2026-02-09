@@ -1,0 +1,14 @@
+<odoo>
+    <record id="view_partner_form_note_button" model="ir.ui.view">
+        <field name="name">res.partner.form.note.button</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button type="object" name="action_view_notes" class="oe_stat_button" icon="fa-book">
+                    <field name="note_count" widget="statinfo" string="Note Diario"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>

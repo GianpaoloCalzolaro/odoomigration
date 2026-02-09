@@ -1,0 +1,180 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* customer_notes_odoo
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-05-12 16:56+0000\n"
+"PO-Revision-Date: 2025-05-21 08:29+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.6\n"
+
+#. module: customer_notes_odoo
+#: model:ir.model.fields,field_description:customer_notes_odoo.field_portal_note__user_id
+msgid "Benutzer"
+msgstr "Utente"
+
+#. module: customer_notes_odoo
+#: model:ir.model.fields,field_description:customer_notes_odoo.field_portal_note__how_i_feel
+msgid "Come sto"
+msgstr "Come sto"
+
+#. module: customer_notes_odoo
+#: model:ir.model.fields,field_description:customer_notes_odoo.field_portal_note__create_uid
+msgid "Created by"
+msgstr "Creato da"
+
+#. module: customer_notes_odoo
+#: model:ir.model.fields,field_description:customer_notes_odoo.field_portal_note__create_date
+msgid "Created on"
+msgstr "Creato il"
+
+#. module: customer_notes_odoo
+#: model_terms:ir.ui.view,arch_db:customer_notes_odoo.portal_note_detail
+msgid "Delete Note"
+msgstr "Elimina voce di diario"
+
+#. module: customer_notes_odoo
+#: model_terms:ir.ui.view,arch_db:customer_notes_odoo.portal_notes_page
+msgid "Diario"
+msgstr "Diario"
+
+#. module: customer_notes_odoo
+#: model:ir.model.fields,field_description:customer_notes_odoo.field_portal_note__display_name
+msgid "Display Name"
+msgstr "Nome visualizzato"
+
+#. module: customer_notes_odoo
+#: model:ir.model.fields,field_description:customer_notes_odoo.field_portal_note__formatted_create_date
+msgid "Data Creazione"
+msgstr "Data Creazione"
+
+#. module: customer_notes_odoo
+#: model:ir.model.fields,field_description:customer_notes_odoo.field_portal_note__id
+msgid "ID"
+msgstr "ID"
+
+#. module: customer_notes_odoo
+#: model:ir.model.fields,field_description:customer_notes_odoo.field_portal_note__content
+msgid "Inhalt"
+msgstr "Contenuto"
+
+#. module: customer_notes_odoo
+#: model:ir.model.fields,field_description:customer_notes_odoo.field_portal_note__write_uid
+msgid "Last Updated by"
+msgstr "Ultimo aggiornamento di"
+
+#. module: customer_notes_odoo
+#: model:ir.model.fields,field_description:customer_notes_odoo.field_portal_note__write_date
+msgid "Last Updated on"
+msgstr "Ultimo aggiornamento il"
+
+#. module: customer_notes_odoo
+#: model_terms:ir.ui.view,arch_db:customer_notes_odoo.portal_note_detail
+#: model_terms:ir.ui.view,arch_db:customer_notes_odoo.portal_notes_page
+msgid "My Account"
+msgstr "Il mio account"
+
+#. module: customer_notes_odoo
+#: model_terms:ir.ui.view,arch_db:customer_notes_odoo.portal_notes_page
+msgid "No notes available."
+msgstr "Nessuna voce di diario disponibile."
+
+#. module: customer_notes_odoo
+#: model_terms:ir.ui.view,arch_db:customer_notes_odoo.portal_create_note
+msgid "Note Content"
+msgstr "Contenuto voce di diario"
+
+#. module: customer_notes_odoo
+#: model_terms:ir.ui.view,arch_db:customer_notes_odoo.portal_note_detail
+msgid "Note Content:"
+msgstr "Contenuto voce di diario:"
+
+#. module: customer_notes_odoo
+#: model_terms:ir.ui.view,arch_db:customer_notes_odoo.portal_note_detail
+msgid "Note Detail"
+msgstr "Dettaglio voce di diario"
+
+#. module: customer_notes_odoo
+#: model_terms:ir.ui.view,arch_db:customer_notes_odoo.portal_note_detail
+msgid "Note Title:"
+msgstr "Titolo voce di diario:"
+
+#. module: customer_notes_odoo
+#: model:ir.model,name:customer_notes_odoo.model_portal_note
+msgid "Portal Diario"
+msgstr "Portale Diario"
+
+#. module: customer_notes_odoo
+#: model_terms:ir.ui.view,arch_db:customer_notes_odoo.portal_create_note
+msgid "Save"
+msgstr "Salva"
+
+#. module: customer_notes_odoo
+#: model:ir.model.fields,selection:customer_notes_odoo.field_portal_note__how_i_feel
+msgid "STO MALE"
+msgstr "STO MALE"
+
+#. module: customer_notes_odoo
+#: model:ir.model.fields,selection:customer_notes_odoo.field_portal_note__how_i_feel
+msgid "STO MIGLIORANDO"
+msgstr "STO MIGLIORANDO"
+
+#. module: customer_notes_odoo
+#: model:ir.model.fields,selection:customer_notes_odoo.field_portal_note__how_i_feel
+msgid "STO MEGLIO"
+msgstr "STO MEGLIO"
+
+#. module: customer_notes_odoo
+#: model:ir.model.fields,selection:customer_notes_odoo.field_portal_note__how_i_feel
+msgid "MÒ STO BENE"
+msgstr "MÒ STO BENE"
+
+#. module: customer_notes_odoo
+#: model_terms:ir.ui.view,arch_db:customer_notes_odoo.portal_my_home_inherit
+msgid "Show and Create Notes"
+msgstr "Visualizza e crea voci di diario"
+
+#. module: customer_notes_odoo
+#: model_terms:ir.ui.view,arch_db:customer_notes_odoo.portal_note_detail
+msgid "This note doesn't exist or you don't have permission to view it."
+msgstr "Questa voce di diario non esiste o non si ha il permesso di visualizzarla."
+
+#. module: customer_notes_odoo
+#: model:ir.model.fields,field_description:customer_notes_odoo.field_portal_note__title
+msgid "Titel"
+msgstr "Titolo"
+
+#. module: customer_notes_odoo
+#: model_terms:ir.ui.view,arch_db:customer_notes_odoo.portal_create_note
+msgid "Title"
+msgstr "Titolo"
+
+#. module: customer_notes_odoo
+#: model_terms:ir.ui.view,arch_db:customer_notes_odoo.portal_note_detail
+#: model_terms:ir.ui.view,arch_db:customer_notes_odoo.portal_notes_page
+msgid "breadcrumb"
+msgstr "breadcrumb"
+
+#. module: customer_notes_odoo
+#: model_terms:ir.ui.view,arch_db:customer_notes_odoo.portal_notes_page
+msgid "Utente"
+msgstr "Utente"
+
+#. module: customer_notes_odoo
+#: model_terms:ir.ui.view,arch_db:customer_notes_odoo.portal_notes_page
+msgid "Raggruppa per utente"
+msgstr "Raggruppa per utente"
+
+#. module: customer_notes_odoo
+#: model_terms:ir.ui.view,arch_db:customer_notes_odoo.portal_note_detail
+msgid "Creato da"
+msgstr "Creato da"

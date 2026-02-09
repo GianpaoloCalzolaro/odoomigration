@@ -1,0 +1,41 @@
+<odoo>
+    <record id="portal_note_list_view" model="ir.ui.view">
+        <field name="name">portal.note.list</field>
+        <field name="model">portal.note</field>
+        <field name="arch" type="xml">
+            <list string="Portal Notes">
+                <field name="title"/>
+                <field name="user_id"/>
+                <field name="partner_name"/>
+                <field name="how_i_feel"/>
+                <field name="create_date"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="portal_note_form_view" model="ir.ui.view">
+        <field name="name">portal.note.form</field>
+        <field name="model">portal.note</field>
+        <field name="arch" type="xml">
+            <form string="Portal Note">
+                <sheet>
+                    <group>
+                        <field name="title"/>
+                        <field name="content" widget="html"/>
+                        <field name="user_id"/>
+                        <field name="partner_name" readonly="1"/>
+                        <field name="how_i_feel"/>
+                        <field name="create_date" readonly="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_portal_notes" model="ir.actions.act_window">
+        <field name="name">Note Diario</field>
+        <field name="res_model">portal.note</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="portal_note_list_view"/>
+    </record>
+</odoo>

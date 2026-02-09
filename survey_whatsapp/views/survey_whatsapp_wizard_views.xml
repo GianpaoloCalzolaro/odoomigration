@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_survey_whatsapp_wizard_form" model="ir.ui.view">
+        <field name="name">survey.whatsapp.wizard.form</field>
+        <field name="model">survey.whatsapp.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Send WhatsApp">
+                <sheet>
+                    <group>
+                        <field name="whatsapp_template_id" domain="[('model', '=', 'survey.user_input'), ('status', '=', 'approved'), ('quality', '!=', 'red'), ('wa_account_id', '!=', False), ('wa_account_id.active', '=', True), '|', ('allowed_user_ids', '=', False), ('allowed_user_ids', 'in', uid)]"/>
+                    </group>
+                    <separator string="Recipients Preview"/>
+                    <group>
+                        <group>
+                            <field name="valid_count" widget="statinfo" string="Valid" options="{'icon': 'fa-check'}"/>
+                        </group>
+                        <group>
+                            <field name="invalid_count" widget="statinfo" string="Invalid" options="{'icon': 'fa-times'}"/>
+                        </group>
+                    </group>
+                    <field name="preview_line_ids">
+                        <list>
+                            <field name="partner_id"/>
+                            <field name="mobile"/>
+                            <field name="is_valid" widget="badge" decoration-success="is_valid" decoration-danger="not is_valid"/>
+                            <field name="error_message"/>
+                        </list>
+                    </field>
+                </sheet>
+                <footer>
+                    <button string="Cancel" special="cancel" class="btn-secondary"/>
+                    <button name="action_send_whatsapp" string="Send WhatsApp" type="object" class="btn-primary" invisible="not can_send"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

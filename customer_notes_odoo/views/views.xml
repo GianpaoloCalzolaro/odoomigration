@@ -1,0 +1,293 @@
+<odoo>
+    <!-- Erweiterung des Portal-Dashboards mit Diario-Button -->
+    <!-- Card con stile standard Odoo Portal -->
+    <template id="portal_my_home_diario" name="Portal My Home: Diario" inherit_id="portal.portal_my_home" priority="28">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-if="show_diario_card">
+                <t t-call="portal.portal_docs_entry">
+                    <t t-set="icon" t-value="'/customer_notes_odoo/static/src/img/contactbook.svg'"/>
+                    <t t-set="title" t-value="'Diario'"/>
+                    <t t-set="url" t-value="'/my/notes'"/>
+                    <t t-set="text" t-value="'Le mie voci di diario'"/>
+                    <t t-set="config_card" t-value="True"/>
+                </t>
+            </t>
+        </xpath>
+    </template>
+
+    <!-- Portal Notes Page with Breadcrumbs and List of Notes -->
+    <!-- Rimosso doppio pulsante, mantiene solo quello nella sezione appropriata -->
+    <template id="portal_notes_page" name="Portal Diario Page">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Diario</t>
+            </t>
+            
+            <t t-if="not notes">
+                <div class="alert alert-warning mt-3" role="alert">
+                    <strong>Nessuna voce di diario disponibile.</strong>
+                    <br/>
+                    <t t-if="show_new_button">
+                        <a href="/my/notes/create" class="btn btn-primary btn-sm mt-2">
+                            <i class="fa fa-plus"/> Crea prima voce di diario
+                        </a>
+                    </t>
+                </div>
+            </t>
+            
+            <t t-if="notes">
+                <div class="mb-2 text-end">
+                    <a t-att-href="group_by_user and '/my/notes' or '/my/notes?group_by_user=1'" class="btn btn-secondary btn-sm">
+                        <t t-if="group_by_user">Lista semplice</t>
+                        <t t-else="true">Raggruppa per utente</t>
+                    </a>
+                </div>
+                <t t-call="portal.portal_table">
+                    <thead>
+                        <tr class="active">
+                            <th>Utente</th>
+                            <th>Titolo</th>
+                            <th>Come mi sento</th>
+                            <th>Contenuto</th>
+                            <th class="text-end">Data Creazione</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-if="group_by_user">
+                            <t t-foreach="notes_grouped.items()" t-as="group">
+                                <t t-set="user" t-value="group[0]"/>
+                                <t t-set="user_notes" t-value="group[1]"/>
+                                <tr class="table-secondary">
+                                    <td colspan="4"><strong><t t-esc="user.partner_id.name"/></strong></td>
+                                </tr>
+                                <t t-foreach="user_notes" t-as="note">
+                                    <tr>
+                                        <td></td>
+                                        <td>
+                                            <a t-att-href="'/my/notes/' + str(note.id)">
+                                                <t t-esc="note.title"/>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <t t-if="note.how_i_feel">
+                                                <span class="badge badge-info">
+                                                    <t t-esc="dict(note._fields['how_i_feel'].selection).get(note.how_i_feel, '')"/>
+                                                </span>
+                                            </t>
+                                            <t t-else="">
+                                                <span class="text-muted">-</span>
+                                            </t>
+                                        </td>
+                                        <td class="text-break">
+                                            <t t-esc="note.content"/>
+                                        </td>
+                                        <td class="text-end">
+                                            <span t-field="note.create_date" t-options="{'widget': 'datetime'}"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </t>
+                        </t>
+                        <t t-else="true">
+                            <t t-foreach="notes" t-as="note">
+                                <tr>
+                                    <td><t t-esc="note.user_id.partner_id.name"/></td>
+                                    <td>
+                                        <a t-att-href="'/my/notes/' + str(note.id)">
+                                            <t t-esc="note.title"/>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <t t-if="note.how_i_feel">
+                                            <span class="badge badge-info">
+                                                <t t-esc="dict(note._fields['how_i_feel'].selection).get(note.how_i_feel, '')"/>
+                                            </span>
+                                        </t>
+                                        <t t-else="">
+                                            <span class="text-muted">-</span>
+                                        </t>
+                                    </td>
+                                    <td class="text-break">
+                                        <t t-esc="note.content"/>
+                                    </td>
+                                    <td class="text-end">
+                                        <span t-field="note.create_date" t-options="{'widget': 'datetime'}"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </t>
+                    </tbody>
+                </t>
+                
+                <!-- Pulsante per creare nuova voce - SINGOLO -->
+                <t t-if="show_new_button">
+                    <div class="text-center mt-4">
+                        <a href="/my/notes/create" class="btn btn-primary">
+                            <i class="fa fa-plus"/> Nuova voce di diario
+                        </a>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <!-- Create New Note Page -->
+    <!-- Aggiornato con campo "Come sto" e editor HTML corretto -->
+    <template id="portal_create_note" name="Create Portal Diario">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Crea nuova voce di diario</t>
+            </t>
+            
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2">
+                    <form action="/my/notes/save" method="post" class="o_portal_form">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        
+                        <div class="row">
+                            <div class="form-group col-12">
+                                <label for="title" class="col-form-label">Titolo *</label>
+                                <input type="text" class="form-control" id="title" name="title" required="1" placeholder="Inserisci il titolo della voce di diario"/>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="form-group col-12">
+                                <label for="how_i_feel" class="col-form-label">Come mi sento oggi</label>
+                                <select class="form-control" id="how_i_feel" name="how_i_feel">
+                                    <option value="">-- Seleziona il tuo stato d'animo --</option>
+                                    <option value="sto_male">STO MALE</option>
+                                    <option value="sto_migliorando">STO MIGLIORANDO</option>
+                                    <option value="sto_meglio">STO MEGLIO</option>
+                                    <option value="sto_bene">MÒ STO BENE</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="form-group col-12">
+                                <label for="content" class="col-form-label">Contenuto *</label>
+                                <textarea class="form-control" id="content" name="content" rows="8" required="1" placeholder="Scrivi qui il contenuto della tua voce di diario..."/>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fa fa-save"/> Salva voce di diario
+                                </button>
+                                <a href="/my/notes" class="btn btn-secondary ml-2">
+                                    <i class="fa fa-times"/> Annulla
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Script per inizializzare editor HTML se disponibile 
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    // Verifica se CKEDITOR è disponibile e inizializza l'editor
+                    if (typeof CKEDITOR !== 'undefined') {
+                        CKEDITOR.replace('content', {
+                            height: 300,
+                            toolbar: [
+                                ['Bold', 'Italic', 'Underline'],
+                                ['NumberedList', 'BulletedList'],
+                                ['Link', 'Unlink'],
+                                ['Format']
+                            ]
+                        });
+                    }
+                });
+            </script>-->
+        </t>
+    </template>
+
+    <!-- Note Detail Page -->
+    <!-- Pulsante elimina corretto con conferma JavaScript -->
+    <template id="portal_note_detail" name="Portal Diario Detail">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Dettaglio voce di diario</t>
+            </t>
+            
+            <t t-if="note">
+                <div class="row">
+                    <div class="col-lg-8 offset-lg-2">
+                        <div class="o_portal_html_view">
+                            <!-- Header con titolo e metadati -->
+                            <div class="text-center mb-4">
+                                <h1 t-field="note.title"/>
+                                <div class="text-muted">
+                                    <small>
+                                        Creato il <span t-field="note.create_date" t-options="{'widget': 'datetime'}"/> da <t t-esc="note.user_id.partner_id.name"/>
+                                        
+                                        
+                                        <t t-if="note.how_i_feel">
+                                            | Stato d'animo: <strong><t t-esc="dict(note._fields['how_i_feel'].selection).get(note.how_i_feel, '')"/></strong>
+                                        </t>
+                                    </small>
+                                </div>
+                            </div>
+                            
+                            <!-- Contenuto della voce di diario -->
+                            <div class="o_portal_html_content">
+                                <t t-if="note.content">
+                                    <div t-field="note.content" class="oe_no_empty"/>
+                                </t>
+                                <t t-else="">
+                                    <p class="text-muted font-italic">Nessun contenuto disponibile.</p>
+                                </t>
+                            </div>
+                            
+                            <!-- Azioni -->
+                            <div class="text-center mt-4">
+                                <a href="/my/notes" class="btn btn-secondary">
+                                    <i class="fa fa-arrow-left"/> Torna all'elenco
+                                </a>
+                                <button type="button" class="btn btn-danger ml-2" onclick="confirmDelete()">
+                                    <i class="fa fa-trash"/> Elimina voce
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Form nascosto per eliminazione -->
+                <form id="deleteForm" action="/my/notes/delete" method="post" style="display: none;">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <input type="hidden" name="note_id" t-att-value="note.id"/>
+                </form>
+                
+                <!-- Script JavaScript per conferma eliminazione -->
+                <script type="text/javascript">
+                    function confirmDelete() {
+                        if (confirm('Sei sicuro di voler eliminare questa voce di diario? Questa azione non può essere annullata.')) {
+                            document.getElementById('deleteForm').submit();
+                        }
+                    }
+                </script>
+            </t>
+            
+            <t t-if="not note">
+                <div class="alert alert-warning" role="alert">
+                    <strong>Voce di diario non trovata</strong>
+                    <br/>
+                    Questa voce di diario non esiste o non hai i permessi per visualizzarla.
+                    <br/>
+                    <a href="/my/notes" class="btn btn-primary btn-sm mt-2">
+                        <i class="fa fa-arrow-left"/> Torna all'elenco
+                    </a>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>
