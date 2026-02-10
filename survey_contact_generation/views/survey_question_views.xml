@@ -16,6 +16,7 @@
                         domain="allowed_applicant_field_domain"
                         invisible="parent.generation_type != 'applicant'"/>
                     <field name="hr_candidate_field"
+                        string="Applicant field (extra)"
                         options="{'no_create': True, 'no_open': True}"
                         domain="allowed_candidate_field_domain"
                         invisible="parent.generation_type != 'applicant'"/>
@@ -57,10 +58,9 @@
                          invisible="parent.generation_type != 'applicant'">
                         <strong>Attenzione:</strong> 
                         <ul>
-                            <li><strong>Candidate field:</strong> Campo del candidato (hr.candidate)</li>
                             <li><strong>Applicant field:</strong> Campo della candidatura (hr.applicant)</li>
+                            <li><strong>Applicant field (extra):</strong> Campo aggiuntivo della candidatura (hr.applicant)</li>
                             <li>Non è possibile mappare la stessa domanda su entrambi i tipi di campo.</li>
-                            <li>Assicurarsi di mappare il nome del candidato per la creazione corretta.</li>
                         </ul>
                     </div>
                 </group>
