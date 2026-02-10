@@ -5,7 +5,7 @@
 from odoo import models
 
 
-class MailMail(models.AbstractModel):
+class MailMail(models.Model):
     _inherit = "mail.mail"
 
     def _prepare_outgoing_body(self):

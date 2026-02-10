@@ -12,13 +12,12 @@
     ( for powerd by) form all the templates
     removes any 'odoo' that are in tempalte texts > 20characters
     """,
-    "version": "18.0.1.0.1",
+    "version": "19.0.1.0.0",
     "category": "Social Network",
     "website": "https://github.com/OCA/mail",
     "author": """Tecnativa, ForgeFlow, Onestein, Sodexis, Nexterp Romania,
              Odoo Community Association (OCA)""",
     "license": "AGPL-3",
-    "installable": True,
     "depends": ["mail"],
     "development_status": "Production/Stable",
     "maintainers": ["pedrobaeza", "joao-p-marques"],
