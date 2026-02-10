@@ -1,2 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_survey_binary,access_survey_binary,model_survey_binary,,1,1,1,0
+access_survey_binary_user,access_survey_binary_user,model_survey_binary,base.group_user,1,1,1,0
+access_survey_binary_public,access_survey_binary_public,model_survey_binary,base.group_public,1,0,0,0
+access_survey_binary_portal,access_survey_binary_portal,model_survey_binary,base.group_portal,1,0,1,0

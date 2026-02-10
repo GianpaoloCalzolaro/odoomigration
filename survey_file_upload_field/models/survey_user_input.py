@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import base64
-from odoo import api, fields, models, _
+from odoo import api, fields, models
 
 
 class SurveySurvey(models.Model):
@@ -21,16 +21,16 @@ class SurveySurvey(models.Model):
                 survey.website_url = ''
 
     def _compute_attachment_number(self):
-        attachment_count = self.env['survey.binary'].search_count([
-            ('user_input_line_id.survey_id', '=', self.id),
-            ('user_input_line_id.user_input_id.test_entry', '=', False)
-        ])
-        self.attachment_count = attachment_count
+        for survey in self:
+            survey.attachment_count = self.env['survey.binary'].search_count([
+                ('user_input_line_id.survey_id', '=', survey.id),
+                ('user_input_line_id.user_input_id.test_entry', '=', False)
+            ])
 
     def action_survey_user_input_attachment(self):
         self.ensure_one()
         return {
-            'name': _('Documents'),
+            'name': self.env._('Documents'),
             'domain': [('user_input_line_id.survey_id', '=', self.id), ('user_input_line_id.user_input_id.test_entry', '=', False)],
             'res_model': 'survey.binary',
             'type': 'ir.actions.act_window',
@@ -48,21 +48,20 @@ class SurveyUserInput(models.Model):
                 ('user_input_id', '=', self.id),
                 ('question_id', '=', question.id)
             ])
-            self._save_line_upload_files(question, old_answers, answer, comment)
-        else:
-            super(SurveyUserInput, self)._save_lines(question, answer, comment, overwrite_existing)
+            return self._save_line_upload_files(question, old_answers, answer, comment)
+        return super()._save_lines(question, answer, comment, overwrite_existing)
 
     def _compute_attachment_number(self):
-        attachment_count = self.env['survey.binary'].search_count([
-            ('user_input_line_id.user_input_id', '=', self.id),
-            ('user_input_line_id.user_input_id.test_entry', '=', False),
-        ])
-        self.attachment_count = attachment_count
+        for user_input in self:
+            user_input.attachment_count = self.env['survey.binary'].search_count([
+                ('user_input_line_id.user_input_id', '=', user_input.id),
+                ('user_input_line_id.user_input_id.test_entry', '=', False),
+            ])
 
     def action_survey_user_input_attachment(self):
         self.ensure_one()
         return {
-            'name': _('Documents'),
+            'name': self.env._('Documents'),
             'domain': [('user_input_line_id.user_input_id', '=', self.id), ('user_input_line_id.user_input_id.test_entry', '=', False)],
             'res_model': 'survey.binary',
             'type': 'ir.actions.act_window',
@@ -112,7 +111,7 @@ class SurveyUserInputLine(models.Model):
     def _check_answer_type_skipped(self):
         for line in self:
             if line.answer_type != 'upload_file':
-                super(SurveyUserInputLine, line)._check_answer_type_skipped()
+                return super(SurveyUserInputLine, line)._check_answer_type_skipped()
 
     @api.depends(
         'answer_type', 'value_text_box', 'value_numerical_box',

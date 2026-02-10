@@ -2,14 +2,13 @@
 {
     "name": "Survey File Upload Field",
     "summary": "Survey Multi File Upload Field and upload in attachment",
-    "description": "Survey Multi File Upload Field and upload in attachment",
 
     'author': 'iPredict IT Solutions Pvt. Ltd.',
     'website': 'http://ipredictitsolutions.com',
     'support': 'ipredictitsolutions@gmail.com',
 
     'category': 'Survey',
-    'version': '18.0.0.1.0',
+    'version': '19.0.0.1.0',
     "depends": ["survey"],
 
     "data": [
@@ -32,9 +31,6 @@
     'license': "OPL-1",
     'price': 11,
     'currency': "EUR",
-
-    "auto_install": False,
-    "installable": True,
 
     'images': ['static/description/main.png'],
     'pre_init_hook': 'pre_init_check',

@@ -1,9 +1,6 @@
-/** @odoo-module **/
 import SurveyFormWidget from '@survey/js/survey_form';
-import { utils } from "@web/core/ui/ui_service";
 import { getDataURLFromFile } from "@web/core/utils/urls";
 import { _t } from "@web/core/l10n/translation";
-import { sprintf } from "@web/core/utils/strings";
 
 SurveyFormWidget.include({
 

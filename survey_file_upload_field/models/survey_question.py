@@ -14,4 +14,4 @@ class SurveyQuestion(models.Model):
                 return {}
             else:
                 return {self.id: self.constr_error_msg}
-        return super(SurveyQuestion, self).validate_question(answer)
+        return super().validate_question(answer, comment=comment)
