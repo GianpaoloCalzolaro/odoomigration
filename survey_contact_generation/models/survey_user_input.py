@@ -121,62 +121,6 @@ class SurveyUserInput(models.Model):
             ("generating_survey_user_input_id", "=", self.id)
         ], limit=limit)
 
-    def _get_or_create_candidate(self, applicant_vals):
-        Candidate = self.env["hr.candidate"]
-        # Prima prova a creare il candidato dai valori diretti
-        candidate_vals = self._prepare_candidate()
-        
-        # Se non ci sono valori diretti per il candidato, usa quelli dell'applicant
-        if not candidate_vals or not any(candidate_vals.get(key) for key in candidate_vals if key != "generating_survey_user_input_id"):
-            email = applicant_vals.get("email_from")
-            candidate = False
-            if email:
-                candidate = Candidate.search([
-                    ("email_from", "=ilike", email),
-                    "|",
-                    ("generating_survey_user_input_id", "=", False),
-                    ("generating_survey_user_input_id", "=", self.id)
-                ], limit=1)
-            if not candidate:
-                candidate_vals = {
-                    key: applicant_vals.get(key)
-                    for key in [
-                        "email_from",
-                        "partner_phone",
-                        "availability",
-                        "linkedin_profile",
-                        "type_id",
-                        "color",
-                        "categ_ids",
-                    ]
-                }
-                # Mappa partner_name su partner_name per hr.candidate
-                if applicant_vals.get("partner_name"):
-                    candidate_vals["partner_name"] = applicant_vals["partner_name"]
-                elif applicant_vals.get("email_from"):
-                    candidate_vals["partner_name"] = applicant_vals["email_from"]
-                
-                if self.survey_id.job_position_id.company_id:
-                    candidate_vals.setdefault(
-                        "company_id", self.survey_id.job_position_id.company_id.id
-                    )
-                candidate_vals["generating_survey_user_input_id"] = self.id
-                candidate = Candidate.create(candidate_vals)
-        else:
-            # Usa i valori diretti del candidato
-            email = candidate_vals.get("email_from")
-            candidate = False
-            if email:
-                candidate = Candidate.search([
-                    ("email_from", "=ilike", email),
-                    "|",
-                    ("generating_survey_user_input_id", "=", False),
-                    ("generating_survey_user_input_id", "=", self.id)
-                ], limit=1)
-            if not candidate:
-                candidate = Candidate.create(candidate_vals)
-        return candidate
-
     def _create_applicant_post_process(self, applicant):
         applicant.message_post_with_source(
             "mail.message_origin_link",
@@ -339,99 +283,35 @@ class SurveyUserInput(models.Model):
                     "applicant_id": existing_applicant.id,
                 })
                 continue
-            
-            # Fase 1: Gestione hr.candidate
-            candidate = None
-            candidate_vals = user_input._prepare_candidate()
-            
-            try:
-                # Controlla se è necessario creare il candidato
-                if candidate_vals and any(candidate_vals.get(key) for key in candidate_vals if key != "generating_survey_user_input_id"):
-                    # Verifica nome obbligatorio per hr.candidate
-                    if not candidate_vals.get("partner_name") and not candidate_vals.get("email_from"):
-                        continue  # Skip se non c'è nome né email
-                    
-                    # Cerca candidato esistente per email
-                    email = candidate_vals.get("email_from")
-                    if email:
-                        candidate = self.env["hr.candidate"].search([
-                            ("email_from", "=ilike", email),
-                            "|",
-                            ("generating_survey_user_input_id", "=", False),
-                            ("generating_survey_user_input_id", "=", user_input.id)
-                        ], limit=1)
-                    
-                    if not candidate:
-                        # Assicura che ci sia un partner_name
-                        if not candidate_vals.get("partner_name"):
-                            candidate_vals["partner_name"] = candidate_vals.get("email_from", "Candidato Senza Nome")
-                        candidate = self.env["hr.candidate"].create(candidate_vals)
-                        
-            except Exception as e:
-                # Se la creazione del candidato fallisce, logga l'errore e salta
-                _logger.error(f"Errore nella creazione del candidato: {e}")
-                continue
-            
-            # Fase 2: Gestione hr.applicant
+
+            # Prepara i valori dall'applicant field mapping
             vals = user_input._prepare_applicant()
-            _logger.info("Prepared applicant vals keys=%s", list(vals.keys()))
-            for k, v in vals.items():
-                if isinstance(v, str):
-                    _logger.info("Prepared vals field=%s type=str len=%s", k, len(v) if v else 0)
-                else:
-                    _logger.info("Prepared vals field=%s type=%s value=%s", k, type(v).__name__, bool(v))
+
+            # Prepara i valori extra dal candidate field mapping
+            # (ora puntano a hr.applicant) e fondili
+            extra_vals = user_input._prepare_candidate_as_applicant()
+            if extra_vals:
+                extra_vals.pop("generating_survey_user_input_id", None)
+                for key, value in extra_vals.items():
+                    if key not in vals or not vals[key]:
+                        vals[key] = value
+
+            # Cerca applicant esistente per email
             applicant = False
             email = vals.get("email_from")
-            
             if email:
                 applicant = user_input._get_existing_applicant(email)
                 if applicant:
-                    # Se candidate è stato creato, collegalo all'applicant esistente
-                    if candidate:
-                        vals["candidate_id"] = candidate.id
                     applicant.write(vals)
-                    _logger.info("After write existing applicant id=%s keys=%s", applicant.id, list(vals.keys()))
-                    for k in [key for key in vals.keys() if isinstance(vals.get(key), str)]:
-                        try:
-                            val = getattr(applicant, k, False)
-                            _logger.info("Applicant field read post-write: %s len=%s", k, len(val) if val else 0)
-                        except Exception:
-                            _logger.info("Applicant field read post-write: %s not present", k)
                     user_input.update({
                         "partner_id": applicant.partner_id.id,
                         "email": applicant.email_from,
                         "applicant_id": applicant.id,
                     })
                     continue
-            
+
             # Crea nuovo applicant
-            if not candidate:
-                # Se non c'è candidato diretto, prova a ottenerlo dall'applicant
-                candidate = user_input._get_or_create_candidate(vals)
-            
-            if candidate:
-                vals["candidate_id"] = candidate.id
-            
-            _logger.info("Creating applicant with keys=%s", list(vals.keys()))
-            for k in [key for key in vals.keys() if isinstance(vals.get(key), str)]:
-                _logger.info("Create payload field=%s len=%s", k, len(vals.get(k) or ""))
             applicant = self.env["hr.applicant"].create(vals)
-            _logger.info("Applicant created id=%s", applicant.id)
-            for k in [key for key in vals.keys() if isinstance(vals.get(key), str)]:
-                try:
-                    val = getattr(applicant, k, False)
-                    _logger.info("Applicant field read post-create: %s len=%s", k, len(val) if val else 0)
-                except Exception:
-                    _logger.info("Applicant field read post-create: %s not present", k)
-            
-            # Gestisci partner per il candidato se necessario
-            if candidate and not candidate.partner_id and candidate.email_from:
-                partner = self.env["res.partner"].create({
-                    "name": candidate.partner_name or candidate.email_from,
-                    "email": candidate.email_from,
-                })
-                candidate.partner_id = partner
-            
             self._create_applicant_post_process(applicant)
             user_input.update({
                 "partner_id": applicant.partner_id.id,
@@ -441,8 +321,8 @@ class SurveyUserInput(models.Model):
 
         return result
 
-    def _prepare_candidate(self):
-        """Extract candidate values from the answers"""
+    def _prepare_candidate_as_applicant(self):
+        """Extract extra applicant values from candidate-mapped questions"""
         self.ensure_one()
         elegible_inputs = self.user_input_line_ids.filtered(
             lambda x: x.question_id.hr_candidate_field and not x.skipped

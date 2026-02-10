@@ -92,7 +92,7 @@ class SurveyQuestion(models.Model):
         for record in self:
             allowed_types = type_mapping.get(record.question_type, [])
             domain = [
-                ("model", "=", "hr.candidate"),
+                ("model", "=", "hr.applicant"),
                 ("ttype", "in", allowed_types),
                 ("store", "=", True),
                 ("readonly", "=", False),
