@@ -1,5 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_portal_note_user,Portal Note User,model_portal_note,base.group_user,1,1,1,0
 access_portal_note_manager,Portal Note Manager,model_portal_note,base.group_system,1,1,1,1
-access_portal_note_portal,Portal Note Portal,model_portal_note,base.group_portal,1,1,1,1
+access_portal_note_portal,Portal Note Portal,model_portal_note,base.group_portal,1,0,1,0
 
