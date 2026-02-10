@@ -72,7 +72,7 @@
                                         </td>
                                         <td>
                                             <t t-if="note.how_i_feel">
-                                                <span class="badge badge-info">
+                                                <span class="badge text-bg-info">
                                                     <t t-esc="dict(note._fields['how_i_feel'].selection).get(note.how_i_feel, '')"/>
                                                 </span>
                                             </t>
@@ -101,7 +101,7 @@
                                     </td>
                                     <td>
                                         <t t-if="note.how_i_feel">
-                                            <span class="badge badge-info">
+                                            <span class="badge text-bg-info">
                                                 <t t-esc="dict(note._fields['how_i_feel'].selection).get(note.how_i_feel, '')"/>
                                             </span>
                                         </t>
@@ -180,7 +180,7 @@
                                 <button type="submit" class="btn btn-primary">
                                     <i class="fa fa-save"/> Salva voce di diario
                                 </button>
-                                <a href="/my/notes" class="btn btn-secondary ml-2">
+                                <a href="/my/notes" class="btn btn-secondary ms-2">
                                     <i class="fa fa-times"/> Annulla
                                 </a>
                             </div>
@@ -253,7 +253,7 @@
                                 <a href="/my/notes" class="btn btn-secondary">
                                     <i class="fa fa-arrow-left"/> Torna all'elenco
                                 </a>
-                                <button type="button" class="btn btn-danger ml-2" onclick="confirmDelete()">
+                                <button type="button" class="btn btn-danger ms-2" onclick="confirmDelete()">
                                     <i class="fa fa-trash"/> Elimina voce
                                 </button>
                             </div>

@@ -12,6 +12,6 @@ class ResPartner(models.Model):
 
     def action_view_notes(self):
         self.ensure_one()
-        action = self.env.ref('customer_notes_odoo.action_portal_notes').read()[0]
+        action = self.env['ir.actions.act_window']._for_xml_id('customer_notes_odoo.action_portal_notes')
         action['domain'] = [('user_id.partner_id', '=', self.id)]
         return action

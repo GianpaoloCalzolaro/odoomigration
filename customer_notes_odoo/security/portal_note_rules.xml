@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Record Rules for portal.note model -->
+    
+    <!-- Portal users can only see their own notes -->
+    <record id="portal_note_rule_portal" model="ir.rule">
+        <field name="name">Portal Note: own notes only (Portal)</field>
+        <field name="model_id" ref="model_portal_note"/>
+        <field name="domain_force">[('user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+    </record>
+    
+    <!-- Employees can see all notes -->
+    <record id="portal_note_rule_employee" model="ir.rule">
+        <field name="name">Portal Note: all notes (Employee)</field>
+        <field name="model_id" ref="model_portal_note"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+</odoo>

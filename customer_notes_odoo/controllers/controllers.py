@@ -1,6 +1,9 @@
 from odoo import http
 from odoo.http import request
 from odoo.addons.portal.controllers.portal import CustomerPortal
+import logging
+
+_logger = logging.getLogger(__name__)
 
 class PortalNotes(http.Controller):
 
@@ -107,7 +110,7 @@ class PortalNotes(http.Controller):
             if allowed:
                 note.unlink()
         except (ValueError, TypeError):
-            pass
+            _logger.warning("Invalid note_id parameter in delete request")
 
         return request.redirect('/my/notes')
 

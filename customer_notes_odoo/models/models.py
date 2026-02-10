@@ -1,8 +1,11 @@
 from odoo import models, fields, api
+import pytz
+from pytz import timezone
 
 class PortalNote(models.Model):
     _name = 'portal.note'
-    _description = 'Portal Diario'  # Cambiato da "Portal Notizen" a "Portal Diario"
+    _description = 'Portal Diario'
+    _order = 'create_date desc'
 
     title = fields.Char(string="Titel", required=True)
     content = fields.Html(string="Inhalt")  # Cambiato da Text a Html per permettere formattazione ricca
@@ -22,10 +25,7 @@ class PortalNote(models.Model):
         """Computed field per formattare la data di creazione in formato italiano con orario"""
         for record in self:
             if record.create_date:
-                # Converte UTC al fuso orario dell'utente
-                user_tz = self.env.user.tz or 'Europe/Rome'
-                from pytz import timezone
-                import pytz
+                user_tz = record.env.user.tz or 'Europe/Rome'
                 
                 create_date_utc = record.create_date
                 if create_date_utc.tzinfo is None:
@@ -34,7 +34,6 @@ class PortalNote(models.Model):
                 user_timezone = timezone(user_tz)
                 create_date_local = create_date_utc.astimezone(user_timezone)
                 
-                # Converte la data in formato italiano gg/mm/aaaa hh:mm
                 record.formatted_create_date = create_date_local.strftime('%d/%m/%Y %H:%M')
             else:
                 record.formatted_create_date = ''
