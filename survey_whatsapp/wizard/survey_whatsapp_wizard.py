@@ -1,7 +1,7 @@
 import logging
 import time
 
-from odoo import api, fields, models, _
+from odoo import api, fields, models
 from odoo.exceptions import AccessError, UserError
 from odoo.osv.expression import OR
 
@@ -57,18 +57,17 @@ class SurveyWhatsappWizard(models.TransientModel):
         active_account = self.env["whatsapp.account"].search([("active", "=", True)], limit=1)
         if not active_account:
             raise UserError(
-                _("Nessun account WhatsApp attivo configurato. Configura un account nelle impostazioni di WhatsApp.")
+                self.env._("Nessun account WhatsApp attivo configurato. Configura un account nelle impostazioni di WhatsApp.")
             )
         template_domain = self._compute_template_domain()
         if not self.env["whatsapp.template"].search(template_domain, limit=1):
             raise UserError(
-                _(
+                self.env._(
                     "Nessun template WhatsApp approvato disponibile per i partecipanti del sondaggio. "
                     "Crea o approva un template per il modello Survey Responses."
                 )
             )
 
-    @api.depends("user_input_ids")
     def _compute_template_domain(self):
         return [
             ("model", "=", "survey.user_input"),
@@ -125,13 +124,13 @@ class SurveyWhatsappWizard(models.TransientModel):
         self.ensure_one()
         try:
             if not self.whatsapp_template_id:
-                raise UserError(_("Seleziona un template WhatsApp approvato."))
+                raise UserError(self.env._("Seleziona un template WhatsApp approvato."))
             valid_lines = self.preview_line_ids.filtered("is_valid")
             if not valid_lines:
-                raise UserError(_("Nessun destinatario valido disponibile per l'invio."))
+                raise UserError(self.env._("Nessun destinatario valido disponibile per l'invio."))
             message_vals = self._prepare_message_vals(valid_lines)
             if not message_vals:
-                raise UserError(_("Nessun messaggio valido da inviare."))
+                raise UserError(self.env._("Nessun messaggio valido da inviare."))
             messages = self.env["whatsapp.message"].create(message_vals)
             messages._send(force_send_by_cron=True)
             return self._show_summary(messages)
@@ -140,7 +139,7 @@ class SurveyWhatsappWizard(models.TransientModel):
         except Exception as exc:
             _logger.exception("Unexpected error while sending WhatsApp messages from survey wizard", exc_info=exc)
             raise UserError(
-                _(
+                self.env._(
                     "Si è verificato un errore inatteso durante l'invio dei messaggi WhatsApp. "
                     "Controlla i log di sistema e riprova."
                 )
@@ -194,15 +193,15 @@ class SurveyWhatsappWizard(models.TransientModel):
         sent_count = len(sent_messages.filtered(lambda msg: msg.state in success_states))
         error_messages = sent_messages.filtered(lambda msg: msg.state in {"error", "bounced"})
         failure_labels = {
-            "account": _("Errore configurazione account WhatsApp"),
-            "blacklisted": _("Numero in blacklist"),
-            "network": _("Errore di rete"),
-            "phone_invalid": _("Formato numero non valido"),
-            "template": _("Template non utilizzabile"),
-            "unknown": _("Errore sconosciuto"),
-            "whatsapp_recoverable": _("Errore temporaneo WhatsApp"),
-            "whatsapp_unrecoverable": _("Errore WhatsApp non recuperabile"),
-            "outdated_channel": _("Canale non più valido"),
+            "account": self.env._("Errore configurazione account WhatsApp"),
+            "blacklisted": self.env._("Numero in blacklist"),
+            "network": self.env._("Errore di rete"),
+            "phone_invalid": self.env._("Formato numero non valido"),
+            "template": self.env._("Template non utilizzabile"),
+            "unknown": self.env._("Errore sconosciuto"),
+            "whatsapp_recoverable": self.env._("Errore temporaneo WhatsApp"),
+            "whatsapp_unrecoverable": self.env._("Errore WhatsApp non recuperabile"),
+            "outdated_channel": self.env._("Canale non più valido"),
         }
         summary_lines = []
         Partner = self.env["res.partner"]
@@ -239,7 +238,7 @@ class SurveyWhatsappWizard(models.TransientModel):
         )
         return {
             "type": "ir.actions.act_window",
-            "name": _("WhatsApp Send Summary"),
+            "name": self.env._("WhatsApp Send Summary"),
             "res_model": "survey.whatsapp.summary.wizard",
             "view_mode": "form",
             "view_id": self.env.ref("survey_whatsapp.view_survey_whatsapp_summary_wizard_form").id,

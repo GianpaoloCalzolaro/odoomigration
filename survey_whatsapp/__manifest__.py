@@ -1,12 +1,9 @@
 {
     "name": "Survey WhatsApp Integration",
     "summary": "Send WhatsApp template messages to survey participants.",
-    "description": """
-Integrate Odoo Survey with WhatsApp Enterprise to send approved template messages to survey participants.
-""",
-    "version": "18.0.1.0.0",
+    "version": "19.0.1.0.0",
     "category": "Marketing/Surveys",
-    "website": "wwww.infologis.biz",
+    "website": "https://www.infologis.biz",
     "author": "infologis",
     "depends": [
         "survey",
@@ -20,7 +17,4 @@ Integrate Odoo Survey with WhatsApp Enterprise to send approved template message
         "views/survey_whatsapp_summary_wizard_views.xml",
     ],
     "license": "LGPL-3",
-    "installable": True,
-    "application": False,
-    "auto_install": False,
 }
