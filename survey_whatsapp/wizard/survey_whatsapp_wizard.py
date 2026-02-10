@@ -83,7 +83,7 @@ class SurveyWhatsappWizard(models.TransientModel):
     def _prepare_preview_line_commands(self, user_inputs):
         commands = [(5, 0, 0)]
         for user_input in user_inputs:
-            partner, mobile, is_valid, error = user_input._whatsapp_get_recipient_info()
+            partner, phone, is_valid, error = user_input._whatsapp_get_recipient_info()
             commands.append(
                 (
                     0,
@@ -91,7 +91,7 @@ class SurveyWhatsappWizard(models.TransientModel):
                     {
                         "user_input_id": user_input.id,
                         "partner_id": partner.id if partner else False,
-                        "mobile": mobile,
+                        "mobile": phone,
                         "is_valid": is_valid,
                         "error_message": error or False,
                     },
@@ -208,8 +208,6 @@ class SurveyWhatsappWizard(models.TransientModel):
         for message in error_messages:
             numbers = {num for num in (message.mobile_number, message.mobile_number_formatted) if num}
             domain = []
-            for number in numbers:
-                domain = OR(domain, [("mobile", "=", number)]) if domain else [("mobile", "=", number)]
             for number in numbers:
                 domain = OR(domain, [("phone", "=", number)]) if domain else [("phone", "=", number)]
             partner = Partner.search(domain, limit=1) if domain else Partner.browse()
