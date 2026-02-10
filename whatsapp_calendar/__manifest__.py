@@ -2,9 +2,8 @@
 
 {
     'name': 'WhatsApp-Calendar',
-    'version': '1.0',
+    'version': '19.0.1.0.0',
     'summary': 'Send whatsapp messages as event reminders',
-    'description': 'Send whatsapp messages as event reminders',
     'category': 'WhatsApp',
     'depends': ['calendar', 'whatsapp'],
     'data': [
